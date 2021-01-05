@@ -1,65 +1,66 @@
+import firebase from '../plugins/firebase'
+import PropTypes from 'prop-types'
+import 'firebase/firestore'
+
+import React from 'react'
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Link from 'next/link'
+import { Typography } from 'antd'
 
-export default function Home() {
+const { Title } = Typography
+
+export default function Home ({ reviews }) {
   return (
-    <div className={styles.container}>
+    <>
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Cafeteller</title>
       </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
+      <Title>Review Page</Title>
+      {
+        Object.keys(reviews).map(r => (
+          <Link key={r + '-link'} href={`/reviews/${r}`}>
+            <Title key={r} level={4}>{reviews[r].cafe.name}</Title>
+          </Link>
+        ))
+      }
+    </>
   )
+}
+
+Home.propTypes = {
+  // ...prop type definitions here
+  reviews: PropTypes.object
+}
+
+// This function gets called at build time
+export async function getStaticProps () {
+  // Call an external API endpoint to get posts
+  const db = firebase.firestore()
+  const reviewsDoc = await db.collection('reviews').get()
+  const reviews = {}
+  reviewsDoc.forEach(r => {
+    reviews[r.id] = r.data()
+  })
+
+  const cafes = []
+  for (const c in reviews) {
+    cafes.push(reviews[c].cafe.get())
+  }
+
+  const result = await Promise.all(cafes)
+  Object.keys(reviews).forEach((id, index) => {
+    reviews[id].cafe = result[index].data()
+
+    // convert all timestamp to date
+    reviews[id].createDate = reviews[id].createDate.toString()
+    reviews[id].updateDate = reviews[id].updateDate.toString()
+  })
+
+  // By returning { props: { posts } }, the Blog component
+  // will receive `posts` as a prop at build time
+  return {
+    props: {
+      reviews
+    }
+  }
 }
