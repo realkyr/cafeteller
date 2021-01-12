@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="15px" viewBox="0 0 8 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Location@1x</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Desktop" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linejoin="round">
+        <g id="Review-Content" transform="translate(-963.000000, -1075.000000)" fill="#AB9E91" fill-rule="nonzero" stroke="#AB9E91" stroke-width="0.3">
+            <g id="Group-10" transform="translate(932.000000, 827.000000)">
+                <g id="Group-9-Copy" transform="translate(31.000000, 246.000000)">
+                    <g id="noun_Pin_1364587" transform="translate(0.000000, 3.000000)">
+                        <path d="M4.2195122,13.4407317 L4.2195122,7.13853659 C6.13100051,7.01995063 7.60274234,5.4046527 7.5434209,3.49040842 C7.48409946,1.57616414 5.91516323,0.0550952527 4,0.0550952527 C2.08483677,0.0550952527 0.515900543,1.57616414 0.456579099,3.49040842 C0.397257656,5.4046527 1.86899949,7.01995063 3.7804878,7.13853659 L3.7804878,13.4407317 L4.2195122,13.4407317 Z M0.893901658,3.60658537 C0.893014454,2.3500868 1.64922757,1.21681739 2.80982612,0.735360786 C3.97042466,0.253904182 5.30677248,0.519106601 6.19556537,1.40727137 C7.08435826,2.29543613 7.35050536,3.63159613 6.86986937,4.79253476 C6.38923339,5.95347338 5.25649888,6.7104878 4,6.7104878 C2.28590745,6.709279 0.896323048,5.32067663 0.893901658,3.60658537 Z" id="Location"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

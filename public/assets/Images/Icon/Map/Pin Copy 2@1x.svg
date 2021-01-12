@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="19px" viewBox="0 0 16 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Icon / Map / Pin Copy 2@1x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M15.6167,7.5583 C15.6167,3.3839 12.2327,-0.0001 8.0583,-0.0001 C3.8839,-0.0001 0.5001,3.3839 0.5001,7.5583 C0.5001,9.9135 1.5657,11.5981 3.2659,13.4029 L8.0583,18.5953 L12.8507,13.4029 C14.5973,11.3375 15.6167,9.9135 15.6167,7.5583" id="path-1"></path>
+    </defs>
+    <g id="Desktop" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Search-/-Search-/-Suggestion-Copy" transform="translate(-704.000000, -570.000000)">
+            <g id="Icon-/-Map-/-Pin" transform="translate(704.000000, 570.000000)">
+                <g id="Color-/-Beige-Copy">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Mask" fill="#000000" xlink:href="#path-1"></use>
+                    <g id="Color-/-Beige" mask="url(#mask-2)" fill="#D8BC92">
+                        <g transform="translate(-6.000000, -4.000000)" id="Rectangle">
+                            <rect x="0" y="0" width="29" height="29"></rect>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
