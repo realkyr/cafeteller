@@ -5,19 +5,13 @@ import 'firebase/firestore'
 import React from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import { Typography } from 'antd'
+import { Typography, Row, Col, Image, Card } from 'antd'
 
-import { Grid, Row, Col, Image, Menu, Dropdown, Button, Card  } from 'antd';
 import styled from 'styled-components'
 
-const { Meta } = Card;
-const { Title } = Typography;
+const { Meta } = Card
+const { Title } = Typography
 
-const Container = styled.div`
-  max-width: 1350px;
-  margin-top: 20px;
-  margin: auto;
-`
 const Banner = styled.div`
   // height: 200px;
   padding-top: 66%;
@@ -213,7 +207,6 @@ const Pattern3 = styled.div`
 `
 
 export default function Home ({ reviews }) {
-  
   return (
     <>
       <Head>
@@ -223,9 +216,9 @@ export default function Home ({ reviews }) {
       <Row justify="center">
         <Col xs={24} xxl={18}>
           <Banner>
-            <Image style={{objectFit: "cover"}} src="/assets/Images/COVER1.png" preview={false}></Image>
+            <Image style={{ objectFit: 'cover' }} src="/assets/Images/COVER1.png" preview={false}></Image>
           </Banner>
-          <Pattern3 img={"/assets/Images/pattern4.jpg"}></Pattern3>
+          <Pattern3 img={'/assets/Images/pattern4.jpg'}></Pattern3>
           <Title>recebt Review</Title>
           <Divide />
           <RecentReview>
@@ -233,15 +226,15 @@ export default function Home ({ reviews }) {
             {
               Object.keys(reviews).map((r, i) => {
                 // <Link href={`/reviews/${r}`}>
-                  // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
-                if(i < 2) {
+                // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
+                if (i < 2) {
                   return (
                   <Col key={r + '-link'} xs={24} md={12}>
                     <RecentReviewCard key={r}>
                       <Link href={`/reviews/${r}`}>
                         <Card
                           bordered={false}
-                          cover={<Image height={"100%"} onError={(e)=>{e.target.onerror = null; e.target.src="/assets/Images/placeholder.png"}} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
+                          cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
                         >
                           <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
                         </Card>
@@ -250,8 +243,8 @@ export default function Home ({ reviews }) {
                   </Col>
                   // </Link>
                   )
-                  
                 }
+                return null
               })
             }
             </Row>
@@ -262,13 +255,13 @@ export default function Home ({ reviews }) {
             {
               Object.keys(reviews).map(r => (
                 // <Link href={`/reviews/${r}`}>
-                  // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
+                // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
                 <Col key={r + '-link'} xs={12} md={8}>
                   <AllReviewCard key={r}>
                     <Link href={`/reviews/${r}`}>
                     <Card
                       bordered={false}
-                      cover={<Image height={"100%"} onError={(e)=>{e.target.onerror = null; e.target.src="/assets/Images/placeholder.png"}} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
+                      cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
                     >
                       <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
                     </Card>
@@ -323,5 +316,4 @@ export async function getStaticProps () {
       reviews
     }
   }
-  
 }
