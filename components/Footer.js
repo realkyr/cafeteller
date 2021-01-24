@@ -23,6 +23,13 @@ const FooterCenterTop = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #f5f1eb;
+  font-family: Georgia;
+  font-size: 1.7rem;
+  
+  @media(min-width: 768px) {
+    text-transform: uppercase;
+    font-size: 2rem;
+  }
 `
 const FooterCenterBot = styled.div`
   border-top: solid 1px #988a7b;
@@ -31,6 +38,12 @@ const FooterCenterBot = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #f5f1eb;
+  font-family: Georgia;
+  font-style: italic;
+  font-size: 1rem;
+  @media(min-width: 768px) {
+    font-size: 1.3rem;
+  }
 `
 
 const SocialBar = styled.div`
@@ -39,7 +52,7 @@ const SocialBar = styled.div`
   display: flex; 
   justify-content: space-evenly;
   align-items: center;
-  height: 65px;
+  height: 60px;
 
   a {
     display: flex;
@@ -51,6 +64,11 @@ const SocialBar = styled.div`
     height: 75px;
   }
 `
+const S = styled.span`
+  @media(min-width: 768px) {
+    display: none;
+  }
+`
 
 export default function Footer () {
   return (
@@ -58,18 +76,18 @@ export default function Footer () {
     <Row justify="center" style={{marginTop: 50}}>
       <Col xs={24} xl={24} xxl={24}>
         <Row>
-          <Col xs={6} md={7}>
+          <Col xs={6} md={6} xl={7}>
             <Pattern img={"/assets/Images/pattern3.jpg"}></Pattern>
           </Col>
-          <Col xs={12} md={10}>
+          <Col xs={12} md={12} xl={10}>
             <FooterCenterTop>
-              CAFETELLER
+              Cafe<S>&nbsp;</S>Teller
             </FooterCenterTop>
             <FooterCenterBot>
               Find Us At
             </FooterCenterBot>
           </Col>
-          <Col xs={6} md={7}>
+          <Col xs={6} md={6} xl={7}>
             <Pattern img={"/assets/Images/pattern3.jpg"}></Pattern>
           </Col>
         </Row>
