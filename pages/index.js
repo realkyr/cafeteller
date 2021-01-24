@@ -22,8 +22,10 @@ const Banner = styled.div`
     position: absolute;
     top: 0;
     height: 100%;
+    width: 100%;
     .ant-image-img{
       height: 100%;
+      object-fit: cover;
     }
   }
 `
@@ -38,11 +40,27 @@ const RecentReview = styled.div`
     display: flex !important;
     justify-content: center;
   }
-  padding: 5%;
+  padding: 3%;
   padding-left: 7%;
   padding-right: 7%;
+  h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    font-family: 'Times New Roman';
+    span{
+      color: #233d77;
+      font-family: "Confidante";
+      font-weight: normal;
+    }
+    margin-bottom: 5px;
+  }
   @media (min-width: 768px) {
-    // margin: 20px;
+    width: 100%;
+    h2 {
+      font-size: 2.2rem;
+      span{
+      }
+    }
   }
 `
 const RecentReviewCard = styled.div`
@@ -129,6 +147,26 @@ const AllReview = styled.div`
   @media (min-width: 768px) {
     width: 95%;
   }
+  h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    font-family: 'Times New Roman';
+    margin-bottom: 5px;
+    span{
+      color: #233d77;
+      font-family: "Confidante";
+      font-weight: normal;
+    }
+  }
+  @media (min-width: 1200px) {
+    width: 98%;
+    margin-top: 20px;
+    h2 {
+      font-size: 2.2rem;
+      span{
+      }
+    }
+  }
 `
 const AllReviewCard = styled.div`
   display: flex;
@@ -140,7 +178,7 @@ const AllReviewCard = styled.div`
     object-fit: cover;
   }
   .ant-card-cover {
-    padding-top: 100%;
+    padding-top: 66%;
     overflow: hidden;
     height: 0;
     position: relative;
@@ -199,11 +237,37 @@ const AllReviewCard = styled.div`
     }
   }
 `
-const Pattern3 = styled.div`
-  border: solid 2px #d0c7be;
-  height: 100px;
+const Pattern1 = styled.div`
+  border: solid 2px #b5b5b5;
+  border-left: 0;
+  border-right: 0;
+  height: 63px;
   background-image: url(${props => props.img});
-  background-size: 15%;
+  background-size: 42%;
+
+  @media (min-width: 768px) {
+    background-size: 20%;
+  height: 77px;
+  }
+`
+const Pattern2 = styled.div`
+  border: solid 2px #b5b5b5;
+  border-left: 0;
+  border-right: 0;
+  height: 63px;
+  background-image: url(${props => props.img});
+  background-size: 42%;
+
+  @media (min-width: 768px) {
+    background-size: 20%;
+  height: 77px;
+  }
+`
+const Underline = styled.div`
+  border-bottom: solid 3px #555555;
+  width: 25px;
+  margin: auto;
+  border-radius: 26%;
 `
 
 export default function Home ({ reviews }) {
@@ -218,10 +282,16 @@ export default function Home ({ reviews }) {
           <Banner>
             <Image style={{ objectFit: 'cover' }} src="/assets/Images/COVER1.png" preview={false}></Image>
           </Banner>
+<<<<<<< Updated upstream
           <Pattern3 img={'/assets/Images/pattern4.jpg'}></Pattern3>
           <Title>recebt Review</Title>
           <Divide />
+=======
+          <Pattern1 img={"/assets/Images/pattern4.jpg"}></Pattern1>
+>>>>>>> Stashed changes
           <RecentReview>
+            <h2><span>Recent</span> Review</h2>
+            <Underline />
             <Row>
             {
               Object.keys(reviews).map((r, i) => {
@@ -249,8 +319,10 @@ export default function Home ({ reviews }) {
             }
             </Row>
           </RecentReview>
-          <Title>All Review</Title>
+          <Pattern2 img={"/assets/Images/pattern2.jpg"}></Pattern2>
           <AllReview>
+            <h2><span>All</span> Review</h2>
+            <Underline style={{marginBottom: 12}} />
             <Row>
             {
               Object.keys(reviews).map(r => (
