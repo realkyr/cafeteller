@@ -1,6 +1,5 @@
-import firebase from '../plugins/firebase'
+import axios from 'axios'
 import PropTypes from 'prop-types'
-import 'firebase/firestore'
 
 import React from 'react'
 import Head from 'next/head'
@@ -288,27 +287,8 @@ Home.propTypes = {
 // This function gets called at build time
 export async function getStaticProps () {
   // Call an external API endpoint to get posts
-  const db = firebase.firestore()
-  const reviewsDoc = await db.collection('reviews').get()
-  const reviews = {}
-  reviewsDoc.forEach(r => {
-    reviews[r.id] = r.data()
-  })
-
-  const cafes = []
-  for (const c in reviews) {
-    cafes.push(reviews[c].cafe.get())
-  }
-
-  const result = await Promise.all(cafes)
-  Object.keys(reviews).forEach((id, index) => {
-    reviews[id].cafe = result[index].data()
-
-    // convert all timestamp to date
-    reviews[id].createDate = reviews[id].createDate.toString()
-    reviews[id].updateDate = reviews[id].updateDate.toString()
-  })
-
+  const res = await axios.get('https://api.cafeteller.club/review')
+  const reviews = res.data
   // By returning { props: { posts } }, the Blog component
   // will receive `posts` as a prop at build time
   return {
