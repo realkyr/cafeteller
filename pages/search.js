@@ -6,7 +6,6 @@ import { Col, Row, Select } from 'antd'
 
 import styled from 'styled-components'
 
-React.useLayoutEffect = React.useEffect
 const { Option } = Select
 
 const Map = styled.div`
