@@ -59,6 +59,7 @@ const RecentReview = styled.div`
   }
 `
 const RecentReviewCard = styled.div`
+  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -87,6 +88,8 @@ const RecentReviewCard = styled.div`
   }
   .ant-card-meta-title {
     white-space: normal;
+    font-family: maitree;
+    font-weight: bold;
   }
   .ant-card {
     width: 100%;
@@ -187,9 +190,6 @@ const AllReviewCard = styled.div`
     justify-content: center;
     padding: 1.9vw;
   }
-  .ant-card-meta-title {
-    white-space: normal;
-  }
   .ant-card {
     width: 95%;
     height: 100%;
@@ -199,6 +199,9 @@ const AllReviewCard = styled.div`
   }
   .ant-card-meta-title {
     white-space: normal;
+    font-family: maitree;
+    font-weight: bold;
+    font-size: 14px;
   }
   .ant-image {
     top: 0;
@@ -291,12 +294,19 @@ export default function Home ({ reviews }) {
                   <Col key={r + '-link'} xs={24} md={12}>
                     <RecentReviewCard key={r}>
                       <Link href={`/reviews/${r}`}>
-                        <Card
-                          bordered={false}
-                          cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
-                        >
-                          <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
-                        </Card>
+                        <a className='flex-center'>
+                          <Card
+                            bordered={false}
+                            cover={<Image height={'100%'}
+                              onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
+                              alt={reviews[r].cafe.name}
+                              src={reviews[r].cafe.banner.url}
+                              fallback="/assets/Images/placeholder.png"
+                              preview={false} />}
+                          >
+                            <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
+                          </Card>
+                        </a>
                       </Link>
                     </RecentReviewCard>
                   </Col>
@@ -320,12 +330,14 @@ export default function Home ({ reviews }) {
                 <Col key={r + '-link'} xs={12} md={8}>
                   <AllReviewCard key={r}>
                     <Link href={`/reviews/${r}`}>
-                    <Card
-                      bordered={false}
-                      cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
-                    >
-                      <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
-                    </Card>
+                      <a className='flex-center'>
+                        <Card
+                          bordered={false}
+                          cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
+                        >
+                          <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
+                        </Card>
+                      </a>
                     </Link>
                   </AllReviewCard>
                 </Col>
