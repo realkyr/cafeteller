@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { loader } from '../plugins/gmap'
+// import { loader } from '../plugins/gmap'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
@@ -24,23 +24,23 @@ export default class Search extends Component {
     }
   }
 
-  componentDidMount () {
-    console.log('component did mount')
-    loader.load().then(() => {
-      const { google } = window
-      const { reviews } = this.props
-      const map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: -34.397, lng: 150.644 },
-        zoom: 8
-      })
-      const markers = Object.values(reviews).map(r => new google.maps.Marker({
-        map,
-        animation: google.maps.Animation.DROP,
-        position: { lat: r.cafe.location.lat, lng: r.cafe.location.lon }
-      }))
-      this.setState({ map, markers })
-    })
-  }
+  // componentDidMount () {
+  //   console.log('component did mount')
+  //   loader.load().then(() => {
+  //     const { google } = window
+  //     const { reviews } = this.props
+  //     const map = new google.maps.Map(document.getElementById('map'), {
+  //       center: { lat: -34.397, lng: 150.644 },
+  //       zoom: 8
+  //     })
+  //     const markers = Object.values(reviews).map(r => new google.maps.Marker({
+  //       map,
+  //       animation: google.maps.Animation.DROP,
+  //       position: { lat: r.cafe.location.lat, lng: r.cafe.location.lon }
+  //     }))
+  //     this.setState({ map, markers })
+  //   })
+  // }
 
   render () {
     const { amphoes, changwats, reviews } = this.props

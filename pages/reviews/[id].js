@@ -1,7 +1,7 @@
 import axios from 'axios'
 import PropTypes from 'prop-types'
 
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -351,7 +351,7 @@ export default function Home ({ reviews }) {
   let map
   let marker
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const raw = []
     console.log(reviews[id])
     if (!reviews[id]) return ''

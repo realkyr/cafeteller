@@ -1,4 +1,4 @@
-import React , { useState, useEffect }from 'react'
+import React, { useState, useEffect } from 'react'
 import { Row, Col, Image, Menu, Dropdown } from 'antd'
 import { AlignLeftOutlined, SearchOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
@@ -223,29 +223,26 @@ const Bordere = styled.div`
     border: 1px solid black;
 `
 
-
-
 export default function Navbar () {
   // const [isActive, setIsActive] = useState(false)
-  
-  const [scrolled,setScrolled]= useState(false);
 
-  const handleScroll=() => {
-    const offset=window.scrollY;
-    if(offset > 200 ){
-      setScrolled(true);
-    }
-    else{
-      setScrolled(false);
+  const [scrolled, setScrolled] = useState(false)
+
+  const handleScroll = () => {
+    const offset = window.scrollY
+    if (offset > 200) {
+      setScrolled(true)
+    } else {
+      setScrolled(false)
     }
   }
   useEffect(() => {
-    window.addEventListener('scroll',handleScroll)
-  })
+    window.addEventListener('scroll', handleScroll)
+  }, [])
 
-  let x=['navbar-scroll'];
-  if(scrolled){
-    x.push('scrolled');
+  const x = ['navbar-scroll']
+  if (scrolled) {
+    x.push('scrolled')
   }
 
   return (
@@ -320,7 +317,7 @@ export default function Navbar () {
       </Row>
 
       <ContainerScroll>
-        <Row justify="center" className={x.join(" ")}>
+        <Row justify="center" className={x.join(' ')}>
           <Col xs={24}>
             <Bordere></Bordere>
           </Col>
