@@ -281,7 +281,7 @@ const Content = styled.div`
    width: 30px;
   }
   img {
-    width: 90%;
+    // width: 90%;
   }
   .image-container {
     display: flex;
@@ -305,41 +305,40 @@ const Content = styled.div`
 
   @media (min-width: 768px) {
 
-    p {
-      font-size: 20px;
-      padding:0;
-      padding-top: 3%;
-      padding-bottom: 4%;
-    }
-    h2.article-header{
-      padding: 0;
-      font-size: 2.8rem;
-      color: black;
-      text-align: start;
-      margin: 0px;
-      margin-bottom: 5px;
-    }
-    .caption {
-      text-align: center;
-      font-size: 15px;
-      margin: 8px;
-      margin-top: 12px;
-    }
-    .caption-border {    
-      border: 1px solid #9e9e9e;
-      margin: 3px;
-    }
-    .image-container {
-      display: flex;
-      justify-content: space-evenly;
-      margin-bottom: 5px;
-    }
-    .divide-image {
-      width: 20px;
-    }
-    img {
-      width: 90%;
-    }
+  p {
+    font-size: 20px;
+    padding:0;
+    padding-top: 3%;
+    padding-bottom: 4%;
+  }
+  h2.article-header{
+    padding: 0;
+    font-size: 2.8rem;
+    color: black;
+    text-align: start;
+    margin: 0px;
+    margin-bottom: 5px;
+  }
+  .caption {
+    text-align: center;
+    font-size: 15px;
+    margin: 8px;
+    margin-top: 12px;
+  }
+  .caption-border {    
+    border: 1px solid #9e9e9e;
+    margin: 3px;
+  }
+  .image-container {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 5px;
+  }
+  .divide-image {
+    width: 20px;
+  }
+  img {
+    // width: 90%;
   }
 `
 
@@ -376,8 +375,8 @@ export default function Home ({ reviews }) {
           consecImage = 0
           break
         case 'image': {
-          const image = <Image height={'100%'} className="res-img"
-            onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} src={block.data.file.url}
+          const image = <Image height={"100%"} width={"100%"} className="res-img"
+            onError={(e)=>{e.target.onerror = null; e.target.src="/assets/Images/placeholder.png"}} src={block.data.file.url}
             fallback="/assets/Images/placeholder.png" preview={false} />
           // <img style={{
           //   display: 'inline',
@@ -453,8 +452,8 @@ export default function Home ({ reviews }) {
       <Row align="middle" justify="center">
         <Col xs={24} xxl={18}>
           <Banner>
-            <Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
-              alt={reviews[id].cafe.banner.url} src={reviews[id].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false}
+            <Image height={"100%"} width={"100%"} style={{objectFit:"cover"}} onError={(e)=>{e.target.onerror = null; e.target.src="/assets/Images/placeholder.png"}}
+              alt={reviews[id].cafe.banner.url} src={reviews[id].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} 
             />
           </Banner>
           <Row justify="space-around">
