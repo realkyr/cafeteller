@@ -261,7 +261,7 @@ const N2Scroll = styled.div`
     padding: 0;
     height: auto;
     h1{
-      font-size: 2.6rem;
+      font-size: 2rem;
     }
     background-image:none;
   }
@@ -384,7 +384,7 @@ export default function Navbar () {
           </N2Scroll>
         </Col>
         <Col xs={11} lg={9} className='border-left'>
-          <ReviewBar style={{ height: '99%' }}><ReviewBarInScroll img={'/assets/Images/icon/Review-blue.png'}>Reviews</ReviewBarInScroll></ReviewBar>
+          <ReviewBar style={{ height: '100%' }}><ReviewBarInScroll img={'/assets/Images/icon/Review-blue.png'}>Reviews</ReviewBarInScroll></ReviewBar>
 
         </Col>
         <Col xs={3} lg={2} className='flex-center search-scroll border-left'>
