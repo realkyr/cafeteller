@@ -1,7 +1,7 @@
 import axios from 'axios'
 import PropTypes from 'prop-types'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -298,47 +298,47 @@ const Content = styled.div`
     font-weight: 400;
     color: black;
   }
-  img{
+  img {
     height: 100%;
   }
-}
 
   @media (min-width: 768px) {
 
-  p {
-    font-size: 20px;
-    padding:0;
-    padding-top: 3%;
-    padding-bottom: 4%;
-  }
-  h2.article-header{
-    padding: 0;
-    font-size: 2.8rem;
-    color: black;
-    text-align: start;
-    margin: 0px;
-    margin-bottom: 5px;
-  }
-  .caption {
-    text-align: center;
-    font-size: 15px;
-    margin: 8px;
-    margin-top: 12px;
-  }
-  .caption-border {    
-    border: 1px solid #9e9e9e;
-    margin: 3px;
-  }
-  .image-container {
-    display: flex;
-    justify-content: space-evenly;
-    margin-bottom: 5px;
-  }
-  .divide-image {
-    width: 20px;
-  }
-  img {
-    // width: 90%;
+    p {
+      font-size: 20px;
+      padding:0;
+      padding-top: 3%;
+      padding-bottom: 4%;
+    }
+    h2.article-header{
+      padding: 0;
+      font-size: 2.8rem;
+      color: black;
+      text-align: start;
+      margin: 0px;
+      margin-bottom: 5px;
+    }
+    .caption {
+      text-align: center;
+      font-size: 15px;
+      margin: 8px;
+      margin-top: 12px;
+    }
+    .caption-border {    
+      border: 1px solid #9e9e9e;
+      margin: 3px;
+    }
+    .image-container {
+      display: flex;
+      justify-content: space-evenly;
+      margin-bottom: 5px;
+    }
+    .divide-image {
+      width: 20px;
+    }
+    img {
+      // width: 90%;
+    }
   }
 `
 
@@ -351,7 +351,7 @@ export default function Home ({ reviews }) {
   let map
   let marker
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const raw = []
     console.log(reviews[id])
     if (!reviews[id]) return ''
@@ -375,8 +375,8 @@ export default function Home ({ reviews }) {
           consecImage = 0
           break
         case 'image': {
-          const image = <Image height={"100%"} width={"100%"} className="res-img"
-            onError={(e)=>{e.target.onerror = null; e.target.src="/assets/Images/placeholder.png"}} src={block.data.file.url}
+          const image = <Image height={'100%'} width={'100%'} className="res-img"
+            onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} src={block.data.file.url}
             fallback="/assets/Images/placeholder.png" preview={false} />
           // <img style={{
           //   display: 'inline',
@@ -452,8 +452,8 @@ export default function Home ({ reviews }) {
       <Row align="middle" justify="center">
         <Col xs={24} xxl={18}>
           <Banner>
-            <Image height={"100%"} width={"100%"} style={{objectFit:"cover"}} onError={(e)=>{e.target.onerror = null; e.target.src="/assets/Images/placeholder.png"}}
-              alt={reviews[id].cafe.banner.url} src={reviews[id].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} 
+            <Image height={'100%'} width={'100%'} style={{ objectFit: 'cover' }} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
+              alt={reviews[id].cafe.banner.url} src={reviews[id].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false}
             />
           </Banner>
           <Row justify="space-around">
@@ -582,23 +582,24 @@ export default function Home ({ reviews }) {
               Object.keys(reviews).map((r, i) => {
                 if (i < 2) {
                   return (
-                // <Link href={`/reviews/${r}`}>
-                // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
-                <Col key={r + '-link'} xs={12} md={8}>
-                  <MoreReviewCard key={r}>
-                    <Link href={`/reviews/${r}`}>
-                        <Card
-                          bordered={false}
-                          cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
-                        >
-                          <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
-                        </Card>
-                    </Link>
-                  </MoreReviewCard>
-                </Col>
-                // </Link>
+                  // <Link href={`/reviews/${r}`}>
+                  // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
+                  <Col key={r + '-link'} xs={12} md={8}>
+                      <MoreReviewCard key={r}>
+                        <Link href={`/reviews/${r}`}>
+                            <Card
+                              bordered={false}
+                              cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
+                            >
+                              <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
+                            </Card>
+                        </Link>
+                      </MoreReviewCard>
+                    </Col>
+                    // </Link>
                   )
                 }
+                return null
               })
             }
             </Row>
