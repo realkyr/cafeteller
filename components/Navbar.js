@@ -316,13 +316,13 @@ export default function Navbar () {
         </Col>
       </Row>
 
-      <ContainerScroll>
+      {/* <ContainerScroll>
         <Row justify="center" className={x.join(' ')}>
           <Col xs={24}>
             <Bordere></Bordere>
           </Col>
         </Row>
-      </ContainerScroll>
+      </ContainerScroll> */}
     </>
   )
 }

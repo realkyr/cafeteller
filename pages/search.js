@@ -1,5 +1,5 @@
-import axios from 'axios'
-// import { loader } from '../plugins/gmap'
+import firebase from 'plugins/firebase'
+import { loader } from '../plugins/gmap'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
@@ -24,23 +24,23 @@ export default class Search extends Component {
     }
   }
 
-  // componentDidMount () {
-  //   console.log('component did mount')
-  //   loader.load().then(() => {
-  //     const { google } = window
-  //     const { reviews } = this.props
-  //     const map = new google.maps.Map(document.getElementById('map'), {
-  //       center: { lat: -34.397, lng: 150.644 },
-  //       zoom: 8
-  //     })
-  //     const markers = Object.values(reviews).map(r => new google.maps.Marker({
-  //       map,
-  //       animation: google.maps.Animation.DROP,
-  //       position: { lat: r.cafe.location.lat, lng: r.cafe.location.lon }
-  //     }))
-  //     this.setState({ map, markers })
-  //   })
-  // }
+  componentDidMount () {
+    console.log('component did mount')
+    loader.load().then(() => {
+      const { google } = window
+      const { reviews } = this.props
+      const map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: -34.397, lng: 150.644 },
+        zoom: 8
+      })
+      const markers = Object.values(reviews).map(r => new google.maps.Marker({
+        map,
+        animation: google.maps.Animation.DROP,
+        position: { lat: r.cafe.location.lat, lng: r.cafe.location.lon }
+      }))
+      this.setState({ map, markers })
+    })
+  }
 
   render () {
     const { amphoes, changwats, reviews } = this.props
@@ -104,12 +104,32 @@ Search.propTypes = {
 }
 
 // This function gets called at build time
-export async function getStaticProps () {
+export async function getServerSideProps () {
   // Call an external API endpoint to get posts
   const amphoes = await import('../public/assets/json/amphoes.json')
   const changwats = await import('../public/assets/json/changwats.json')
-  const res = await axios.get('https://api.cafeteller.club/review')
-  const reviews = res.data
+
+  const db = firebase.firestore()
+  const reviewsDoc = await db.collection('reviews').get()
+  const reviews = {}
+  reviewsDoc.forEach(r => {
+    reviews[r.id] = r.data()
+  })
+
+  const cafes = []
+  for (const c in reviews) {
+    cafes.push(reviews[c].cafe.get())
+  }
+
+  const result = await Promise.all(cafes)
+  Object.keys(reviews).forEach((id, index) => {
+    reviews[id].cafe = result[index].data()
+
+    // convert all timestamp to date
+    reviews[id].createDate = reviews[id].createDate.toString()
+    reviews[id].updateDate = reviews[id].updateDate.toString()
+  })
+
   return {
     props: {
       amphoes: amphoes.default,
