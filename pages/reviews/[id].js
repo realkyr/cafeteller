@@ -6,7 +6,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
-import { Loader } from '@googlemaps/js-api-loader'
+import { loader } from '../../plugins/gmap'
 
 import { Typography, Row, Col, Image, Card } from 'antd'
 
@@ -426,13 +426,6 @@ export default function Home ({ reviews }) {
     })
     setContent(raw)
 
-    const loader = new Loader({
-      apiKey: 'AIzaSyCxnAxJAY5NyxcS3dvXfjFTMMbGBevUm-U',
-      version: 'weekly',
-      libraries: ['places'],
-      language: 'th',
-      region: 'TH'
-    })
     loader.load().then(() => {
       const google = window.google
       const location = {

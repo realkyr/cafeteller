@@ -27,7 +27,6 @@ export default class MyDocument extends Document {
           {/* <title>My page</title> */}
           {/* Step 5: Output the styles in the head  */}
           {this.props.styleTags}
-          <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxnAxJAY5NyxcS3dvXfjFTMMbGBevUm-U&libraries=places&language=th-TH"></script>
         </Head>
         <body>
           <Main />
