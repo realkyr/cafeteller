@@ -1,7 +1,7 @@
 import firebase from 'plugins/firebase'
 import PropTypes from 'prop-types'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -98,7 +98,7 @@ const ContactInfo = styled.div`
       align-items: center;
     }
   }
-  @media (min-width: 1600px) {
+  @media (min-width: 992px) {
     border: 2px solid #d2c5b8;
     margin-bottom: 20px;
     border-bottom: 0;
@@ -113,12 +113,9 @@ const ShareBox = styled.div`
   @media (min-width: 768px) {
     margin-bottom: 50px;
   }
-  @media (min-width: 1200px) {
+  @media (min-width: 992px) {
     margin-bottom: 0px;
-  }
-  @media (min-width: 1600px) {
     border: 2px solid #d2c5b8;
-    margin-bottom: 0px;
   }
 `
 const ShareLeft = styled.div`
@@ -207,6 +204,8 @@ img{
   padding: 1.9vw;
 }
 .ant-card-meta-title {
+  font-family: maitree;
+  font-weight: bold;
   white-space: normal;
 }
 .ant-card {
@@ -215,9 +214,6 @@ img{
   display: inline-table;
   border: solid 2px #d0c7be;
   border-radius: 20px;
-}
-.ant-card-meta-title {
-  white-space: normal;
 }
 .ant-image {
   top: 0;
@@ -351,7 +347,7 @@ export default function Home ({ reviews }) {
   let map
   let marker
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const raw = []
     console.log(reviews[id])
     if (!reviews[id]) return ''
@@ -457,11 +453,11 @@ export default function Home ({ reviews }) {
             />
           </Banner>
           <Row justify="space-around">
-            <Col xs={24} md={11} xxl={16}>
+            <Col xs={24} md={19} lg={15} xxl={16}>
               {/* <Title>{reviews[id].cafe.name}</Title> */}
               <Content>{content}</Content>
             </Col>
-            <Col xs={24} md={9} xxl={7}>
+            <Col xs={24} md={19} lg={8} xxl={7}>
               <ContactInfo>
                 {(() => {
                   const contactBox = []
@@ -524,42 +520,42 @@ export default function Home ({ reviews }) {
               </ContactInfo>
               <ShareBox>
                 <Row>
-                  <Col xs={7} md={5}>
+                  <Col xs={7} md={8}>
                     <ShareLeft><span>Share</span></ShareLeft>
                   </Col>
-                  <Col xs={17} md={7}>
+                  <Col xs={17} md={14}>
                     <ShareRight>
-                {(() => {
-                  const shareBox = []
-                  if (typeof reviews[id].cafe.ig !== 'undefined') {
-                    shareBox.push(
-                      <a href={reviews[id].cafe.ig}>
-                        <Image src="/assets/Images/icon/Social/IG.png" preview={false} height={30} width={30} />
-                      </a>
-                    )
-                  }
-                  if (typeof reviews[id].cafe.fb !== 'undefined') {
-                    shareBox.push(
-                      <a href={reviews[id].cafe.fb}>
-                        <Image src="/assets/Images/icon/Social/FB.png" preview={false} height={30} width={30} />
-                      </a>
-                    )
-                  }
-                  if (typeof reviews[id].cafe.tw !== 'undefined') {
-                    shareBox.push(
-                      <a href={reviews[id].cafe.tw}>
-                        <Image src="/assets/Images/icon/Social/Twitter.png" preview={false} height={30} width={30} />
-                      </a>
-                    )
-                  }
-                  return (
-                    shareBox
-                  )
-                })()
-                }
+                    {(() => {
+                      const shareBox = []
+                      if (typeof reviews[id].cafe.ig !== 'undefined') {
+                        shareBox.push(
+                          <a href={reviews[id].cafe.ig}>
+                            <Image src="/assets/Images/icon/Social/IG.png" preview={false} height={30} width={30} />
+                          </a>
+                        )
+                      }
+                      if (typeof reviews[id].cafe.fb !== 'undefined') {
+                        shareBox.push(
+                          <a href={reviews[id].cafe.fb}>
+                            <Image src="/assets/Images/icon/Social/FB.png" preview={false} height={30} width={30} />
+                          </a>
+                        )
+                      }
+                      if (typeof reviews[id].cafe.tw !== 'undefined') {
+                        shareBox.push(
+                          <a href={reviews[id].cafe.tw}>
+                            <Image src="/assets/Images/icon/Social/Twitter.png" preview={false} height={30} width={30} />
+                          </a>
+                        )
+                      }
+                      return (
+                        shareBox
+                      )
+                    })()
+                    }
                     </ShareRight>
                   </Col>
-                  <Col xs={0} md={12} xl={0}>
+                  <Col xs={0} md={12} lg={0}>
                     <PatternShare img={'/assets/Images/pattern2.jpg'} />
                   </Col>
                 </Row>

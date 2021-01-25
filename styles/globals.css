@@ -6,7 +6,7 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Maitree:100,200,300,400,600&display=swap&subset=latin-ext,thai');
+@import url('https://fonts.googleapis.com/css?family=Maitree:100,200,300,400,600,700&display=swap&subset=latin-ext,thai');
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400&display=swap');
 @font-face {
   font-family: "Georgia";
@@ -28,6 +28,14 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 /* nav */
@@ -75,6 +83,43 @@ a {
 .nav-social-button {
   height: 80px;
 }
+.nav-social-button-scroll {
+  height: 55px;
+}
+
+.res-img{
+  
+  display: inline;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.navbar-scroll {
+  /* display: none; */
+  position: fixed;
+  /* height: 140px; */
+  width: 100%;
+  position: fixed;
+  top: 0;
+  background-color: rgb(253, 253, 253);
+  z-index: 5;
+  transform: translateY(-210px);
+  transition-duration: .1s;
+  text-align: center;
+  height: 56px;
+  border-bottom: 1px solid #a29b93;
+  /* border-top: 1px solid #a29b93; */
+}
+
+.navbar-scroll .border-left {
+  border-left: 1px solid #a29b93;
+}
+.scrolled {
+  transform: translateY(0px) !important;
+}
+.ant-dropdown-menu {
+  background-color: #1e315c;
+}
 /* // Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
   
@@ -88,15 +133,17 @@ a {
   .nav-row.n2{
     height: 54px;
   }
+  .navbar-scroll {
+    height: 87px;
+  }
+  .nav-social-button-scroll {
+    height: 85px;
+  }
 }
 
 /* // Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
   
-}
-
-/* // Extra large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
   .nav-box.n1 img {
     display: block;
   }
@@ -106,22 +153,22 @@ a {
   .nav-row.n2{
     height: 67px;
   }
+  .navbar-scroll {
+    height: 85px;
+    border: 0;
+  }
+  .nav-social-button {
+    height: 80px;
+  }
+  .search-scroll{
+    font-size: 1.3rem;
+  }
 }
 
-.res-img{
-  
-  display: inline;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* // Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
 }
-.navbar-scroll {
-  display: none;
-  position: fixed;
-}
-.scrolled {
-  display: block !important;
-}
+
 
 /* Mess */
 

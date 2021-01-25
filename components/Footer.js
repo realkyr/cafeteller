@@ -1,9 +1,6 @@
 import React from 'react'
-import { Typography } from 'antd'
-import { Grid, Row, Col, Image, Menu, Dropdown, Button } from 'antd';
+import { Row, Col, Image } from 'antd'
 import styled from 'styled-components'
-
-const { Title } = Typography
 
 const Pattern = styled.div`
   border: solid 1px #988a7b;
@@ -73,11 +70,11 @@ const S = styled.span`
 export default function Footer () {
   return (
     <>
-    <Row justify="center" style={{marginTop: 50}}>
+    <Row justify='center' style={{ marginTop: 50 }}>
       <Col xs={24} xl={24} xxl={24}>
         <Row>
           <Col xs={6} md={6} xl={7}>
-            <Pattern img={"/assets/Images/pattern3.jpg"}></Pattern>
+            <Pattern img={'/assets/Images/pattern3.jpg'}></Pattern>
           </Col>
           <Col xs={12} md={12} xl={10}>
             <FooterCenterTop>
@@ -88,27 +85,26 @@ export default function Footer () {
             </FooterCenterBot>
           </Col>
           <Col xs={6} md={6} xl={7}>
-            <Pattern img={"/assets/Images/pattern3.jpg"}></Pattern>
+            <Pattern img={'/assets/Images/pattern3.jpg'}></Pattern>
           </Col>
         </Row>
         <Row>
-          <Col span={24} style={{backgroundColor: "#1e315c"}}>
-            <Row justify="center">
+          <Col span={24} style={{ backgroundColor: '#1e315c' }}>
+            <Row justify='center'>
               <Col xs={16} md={8}>
                 <SocialBar>
-                  <a href="http://instagram.com/">
-                    <Image src="/assets/Images/icon/Social/FB.png" preview={false} height={25} width={25}/>
+                  <a href='http://instagram.com/'>
+                    <Image src='/assets/Images/icon/Social/FB.png' preview={false} height={25} width={25}/>
                   </a>
-                  <a href="http://instagram.com/">
-                    <Image src="/assets/Images/icon/Social/IG.png" preview={false} height={25} width={25} />
+                  <a href='http://instagram.com/'>
+                    <Image src='/assets/Images/icon/Social/IG.png' preview={false} height={25} width={25} />
                   </a>
-                  <a href="http://instagram.com/">
-                    <Image src="/assets/Images/icon/Social/Twitter.png" preview={false} height={25} width={25} />
+                  <a href='http://instagram.com/'>
+                    <Image src='/assets/Images/icon/Social/Twitter.png' preview={false} height={25} width={25} />
                   </a>
                 </SocialBar>
               </Col>
             </Row>
-            
           </Col>
         </Row>
       </Col>
