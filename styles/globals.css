@@ -110,9 +110,17 @@ a {
 
 .res-img{
   
-  display: 'inline';
-  width: '100%';
-  object-fit: 'cover';
+  display: inline;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.navbar-scroll {
+  display: none;
+  position: fixed;
+}
+.scrolled {
+  display: block !important;
 }
 
 /* Mess */
