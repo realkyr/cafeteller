@@ -1,7 +1,7 @@
 import firebase from 'plugins/firebase'
 import PropTypes from 'prop-types'
 
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -343,85 +343,86 @@ export default function Home ({ reviews }) {
   const { id } = router.query
   const [content, setContent] = useState([])
 
-  // eslint-disable-next-line no-unused-vars
   let map
   let marker
 
-  useLayoutEffect(() => {
-    const raw = []
-    console.log(reviews[id])
-    if (!reviews[id]) return ''
-    const blocks = [...reviews[id].review.blocks]
-    let consecImage = 0
-    blocks.forEach((block) => {
-      console.log(block)
-      switch (block.type) {
-        case 'header': {
-          const fullCafeName = block.data.text
-          const cafeArea = fullCafeName.split('—').pop()
-          const cafeName = fullCafeName.substring(0, fullCafeName.indexOf('—'))
-          raw.push(<Title level={block.data.level} className="article-header">{cafeName}</Title>)
-          raw.push(<TitleBox><TitlePattern img={'/assets/Images/pattern4.jpg'} /><Title level={block.data.level +
-            2} className="article-header">{cafeArea}</Title><TitlePattern img={'/assets/Images/pattern4.jpg'} /></TitleBox>)
-          consecImage = 0
-          break
-        }
-        case 'paragraph':
-          raw.push(<p>{block.data.text}</p>)
-          consecImage = 0
-          break
-        case 'image': {
-          const image = <Image height={'100%'} width={'100%'} className="res-img"
-            onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} src={block.data.file.url}
-            fallback="/assets/Images/placeholder.png" preview={false} />
-          // <img style={{
-          //   display: 'inline',
-          //   width: '100%',
-          //   objectFit: 'cover'
-          // }}
-          //   src={block.data.file.url} className="res-img"
-          // />
-          let caption = ''
-          if (block.data.caption) {
-            caption = <div className="caption">{block.data.caption}</div>
-          }
-          consecImage++
-          if (consecImage < 2) {
-            raw.push(
-            <div className="image-container">
-              <div className="image-container-img">
-                <div className="caption-border">
-                {
-                  [image, caption]
-                }
-                </div>
-              </div>
-            </div>)
-          } else {
-            raw[raw.length - 1] = (
-              <div className="image-container">
-                {raw[raw.length - 1].props.children}
-                <div className="divide-image"></div>
-                <div className="image-container-img">
-                <div className="caption-border">
-                  {[image, caption]}
-                </div>
-                </div>
-              </div>
-            )
+  useEffect(() => {
+    const didMount = async () => {
+      const raw = []
+      console.log(reviews[id])
+      if (!reviews[id]) return ''
+      const blocks = [...reviews[id].review.blocks]
+      let consecImage = 0
+      blocks.forEach((block) => {
+        console.log(block)
+        switch (block.type) {
+          case 'header': {
+            const fullCafeName = block.data.text
+            const cafeArea = fullCafeName.split('—').pop()
+            const cafeName = fullCafeName.substring(0, fullCafeName.indexOf('—'))
+            raw.push(<Title level={block.data.level} className="article-header">{cafeName}</Title>)
+            raw.push(<TitleBox><TitlePattern img={'/assets/Images/pattern4.jpg'} /><Title level={block.data.level +
+              2} className="article-header">{cafeArea}</Title><TitlePattern img={'/assets/Images/pattern4.jpg'} /></TitleBox>)
             consecImage = 0
+            break
           }
-          break
+          case 'paragraph':
+            raw.push(<p>{block.data.text}</p>)
+            consecImage = 0
+            break
+          case 'image': {
+            const image = <Image height={'100%'} width={'100%'} className="res-img"
+              onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} src={block.data.file.url}
+              fallback="/assets/Images/placeholder.png" preview={false} />
+            // <img style={{
+            //   display: 'inline',
+            //   width: '100%',
+            //   objectFit: 'cover'
+            // }}
+            //   src={block.data.file.url} className="res-img"
+            // />
+            let caption = ''
+            if (block.data.caption) {
+              caption = <div className="caption">{block.data.caption}</div>
+            }
+            consecImage++
+            if (consecImage < 2) {
+              raw.push(
+                <div className="image-container">
+                  <div className="image-container-img">
+                    <div className="caption-border">
+                      {
+                        [image, caption]
+                      }
+                    </div>
+                  </div>
+                </div>)
+            } else {
+              raw[raw.length - 1] = (
+                <div className="image-container">
+                  {raw[raw.length - 1].props.children}
+                  <div className="divide-image"></div>
+                  <div className="image-container-img">
+                    <div className="caption-border">
+                      {[image, caption]}
+                    </div>
+                  </div>
+                </div>
+              )
+              consecImage = 0
+            }
+            break
+          }
+          default:
+            // code block
+            raw.push(<p>{block.data.text}</p>)
+            consecImage = 0
         }
-        default:
-          // code block
-          raw.push(<p>{block.data.text}</p>)
-          consecImage = 0
-      }
-    })
-    setContent(raw)
+      })
+      setContent(raw)
 
-    loader.load().then(() => {
+      if (!window.google) await loader.load()
+
       const google = window.google
       const location = {
         lng: reviews[id].cafe.location.lon,
@@ -435,9 +436,11 @@ export default function Home ({ reviews }) {
       // eslint-disable-next-line no-unused-vars
       marker = new google.maps.Marker({
         position: location,
+        icon: '/assets/Images/pin.png',
         map
       })
-    })
+    }
+    didMount()
   }, [])
 
   return (
@@ -525,34 +528,34 @@ export default function Home ({ reviews }) {
                   </Col>
                   <Col xs={17} md={14}>
                     <ShareRight>
-                    {(() => {
-                      const shareBox = []
-                      if (typeof reviews[id].cafe.ig !== 'undefined') {
-                        shareBox.push(
-                          <a href={reviews[id].cafe.ig}>
-                            <Image src="/assets/Images/icon/Social/IG.png" preview={false} height={30} width={30} />
-                          </a>
+                      {(() => {
+                        const shareBox = []
+                        if (typeof reviews[id].cafe.ig !== 'undefined') {
+                          shareBox.push(
+                            <a href={reviews[id].cafe.ig}>
+                              <Image src="/assets/Images/icon/Social/IG.png" preview={false} height={30} width={30} />
+                            </a>
+                          )
+                        }
+                        if (typeof reviews[id].cafe.fb !== 'undefined') {
+                          shareBox.push(
+                            <a href={reviews[id].cafe.fb}>
+                              <Image src="/assets/Images/icon/Social/FB.png" preview={false} height={30} width={30} />
+                            </a>
+                          )
+                        }
+                        if (typeof reviews[id].cafe.tw !== 'undefined') {
+                          shareBox.push(
+                            <a href={reviews[id].cafe.tw}>
+                              <Image src="/assets/Images/icon/Social/Twitter.png" preview={false} height={30} width={30} />
+                            </a>
+                          )
+                        }
+                        return (
+                          shareBox
                         )
+                      })()
                       }
-                      if (typeof reviews[id].cafe.fb !== 'undefined') {
-                        shareBox.push(
-                          <a href={reviews[id].cafe.fb}>
-                            <Image src="/assets/Images/icon/Social/FB.png" preview={false} height={30} width={30} />
-                          </a>
-                        )
-                      }
-                      if (typeof reviews[id].cafe.tw !== 'undefined') {
-                        shareBox.push(
-                          <a href={reviews[id].cafe.tw}>
-                            <Image src="/assets/Images/icon/Social/Twitter.png" preview={false} height={30} width={30} />
-                          </a>
-                        )
-                      }
-                      return (
-                        shareBox
-                      )
-                    })()
-                    }
                     </ShareRight>
                   </Col>
                   <Col xs={0} md={12} lg={0}>
@@ -574,30 +577,30 @@ export default function Home ({ reviews }) {
           <MoreReview>
             <h2><span>More</span> Like This</h2>
             <Row>
-            {
-              Object.keys(reviews).map((r, i) => {
-                if (i < 2) {
-                  return (
-                  // <Link href={`/reviews/${r}`}>
-                  // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
-                  <Col key={r + '-link'} xs={12} md={8}>
-                      <MoreReviewCard key={r}>
-                        <Link href={`/reviews/${r}`}>
+              {
+                Object.keys(reviews).map((r, i) => {
+                  if (i < 2) {
+                    return (
+                      // <Link href={`/reviews/${r}`}>
+                      // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
+                      <Col key={r + '-link'} xs={12} md={8}>
+                        <MoreReviewCard key={r}>
+                          <Link href={`/reviews/${r}`}>
                             <Card
                               bordered={false}
                               cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
                             >
                               <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
                             </Card>
-                        </Link>
-                      </MoreReviewCard>
-                    </Col>
-                    // </Link>
-                  )
-                }
-                return null
-              })
-            }
+                          </Link>
+                        </MoreReviewCard>
+                      </Col>
+                      // </Link>
+                    )
+                  }
+                  return null
+                })
+              }
             </Row>
           </MoreReview>
         </Col>

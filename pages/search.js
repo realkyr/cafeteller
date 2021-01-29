@@ -1,9 +1,15 @@
 import firebase from 'plugins/firebase'
 import { loader } from '../plugins/gmap'
+import {
+  isArrayHasDuplicateEl,
+  isArrayExist
+} from '../plugins/customfunc'
+import types from 'public/assets/json/types'
+
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
-import { Col, Row, Select, Card, Image } from 'antd'
+import { Col, Row, Select, Card, Image, message } from 'antd'
 import Link from 'next/link'
 
 import styled from 'styled-components'
@@ -13,7 +19,7 @@ const { Option } = Select
 
 const Map = styled.div`
   width: 100%;
-  height: 50vh;
+  height: 80vh;
   background: gray;
 `
 const MapContainer = styled.div`
@@ -134,26 +140,92 @@ export default class Search extends Component {
     }
   }
 
+  setMapVisibleToMarker (map, markers) {
+    const { google } = window
+    const bounds = new google.maps.LatLngBounds()
+    for (const m of markers) {
+      const position = m.getPosition()
+      bounds.extend(position)
+    }
+    map.fitBounds(bounds)
+  }
+
   componentDidMount () {
     console.log('component did mount')
-    loader.load().then(() => {
+    const didMount = async () => {
+      if (!window.google) await loader.load()
       const { google } = window
       const { reviews } = this.props
       const map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: -34.397, lng: 150.644 },
         zoom: 8
       })
-      const markers = Object.values(reviews).map(r => new google.maps.Marker({
-        map,
-        animation: google.maps.Animation.DROP,
-        position: { lat: r.cafe.location.lat, lng: r.cafe.location.lon }
-      }))
+      const markers = Object.entries(reviews).map(r => {
+        const marker = new google.maps.Marker({
+          map,
+          icon: '/assets/Images/pin.png',
+          animation: google.maps.Animation.DROP,
+          position: { lat: r[1].cafe.location.lat, lng: r[1].cafe.location.lon }
+        })
+        reviews[r[0]].marker = marker
+        return marker
+      })
+
+      this.setMapVisibleToMarker(map, markers)
+
       this.setState({ map, markers })
-    })
+    }
+    didMount()
+  }
+
+  displayAllMarkers (markers, map) {
+    if (!markers) markers = this.state.markers
+    markers.forEach(m => m.setMap(map))
+  }
+
+  clearMarkers () {
+    const { markers } = this.state
+    this.displayAllMarkers(markers, null)
+  }
+
+  displaySelectedMarkers (markers) {
+    const { map } = this.state
+    this.displayAllMarkers(markers, map)
+  }
+
+  filterProvince () {
+    const { reviews } = this.props
+    const { map, selectedAmphoes, selectedChangwats, selectedTypes } = this.state
+    // clear all marker
+    this.clearMarkers()
+
+    // filter marker by location
+    const markers = Object.keys(reviews).filter(id => {
+      const review = reviews[id]
+      let condition = true
+      if (isArrayExist(selectedTypes)) condition = condition && isArrayHasDuplicateEl(selectedTypes, review.cafe.tags)
+      if (isArrayExist(selectedChangwats)) condition = condition && selectedChangwats.includes(review.cafe.administrative_area_level_1)
+      if (isArrayExist(selectedAmphoes)) condition = condition && selectedAmphoes.includes(review.cafe.sublocality_level_1)
+      return condition
+    }).map(id => reviews[id].marker)
+
+    if (!isArrayExist(markers)) {
+      message.error('ไม่มีคาเฟ่ตามเงื่อนไข')
+      map.panTo({
+        lat: 13.03887,
+        lng: 101.490104
+      })
+      map.setZoom(6)
+    } else {
+    // display only marker and then visible fit bounds
+      this.displaySelectedMarkers(markers)
+      this.setMapVisibleToMarker(map, markers)
+    }
   }
 
   render () {
     const { amphoes, changwats, reviews } = this.props
+    const { map, markers } = this.state
     return (
       <>
         <Head>
@@ -169,12 +241,44 @@ export default class Search extends Component {
                     <Col span={8}>
                       <Select
                         showSearch
-                        placeholder="Cafe name search"
+                        onChange={id => {
+                          if (id) {
+                            const selectedMarker = reviews[id].marker
+                            this.clearMarkers()
+                            this.displaySelectedMarkers([selectedMarker])
+                            map.panTo(selectedMarker.getPosition())
+                            map.setZoom(15)
+                          } else {
+                            this.displayAllMarkers(markers, map)
+                            this.setMapVisibleToMarker(map, markers)
+                          }
+                        }}
+                        allowClear
+                        optionFilterProp="children"
+                        placeholder="ค้นหาด้วยชื่อคาเฟ่"
                         style={{ width: '100%' }}
                       >
                         {
                           Object.keys(reviews).map(
-                            r => (<Option key={r}>{reviews[r].cafe.name}</Option>)
+                            r => (<Option value={r} key={r}>{reviews[r].cafe.name}</Option>)
+                          )
+                        }
+                      </Select>
+                    </Col>
+                    <Col span={8}>
+                      <Select
+                        showSearch
+                        onChange={selectedTypes => this.setState({ selectedTypes }, this.filterProvince)}
+                        mode="multiple"
+                        allowClear
+                        maxTagCount="responsive"
+                        optionFilterProp="children"
+                        placeholder="ค้นหาด้วยประเภท"
+                        style={{ width: '100%' }}
+                      >
+                        {
+                          types.map(
+                            r => (<Option value={r.value} key={r.key}>{r.value}</Option>)
                           )
                         }
                       </Select>
@@ -182,21 +286,61 @@ export default class Search extends Component {
                     <Col xs={8} offset={1}>
                       <Select
                         mode="multiple"
+                        maxTagCount="responsive"
+                        allowClear
+                        onChange={selectedChangwats => {
+                          this.setState({ selectedChangwats }, this.filterProvince)
+                        }}
                         style={{ width: '100%' }}
                         optionFilterProp="children"
-                        placeholder="select one country"
+                        placeholder="ค้นหาจังหวัด"
                         optionLabelProp="label"
                       >
                         {
-                          Object.keys(amphoes).map(amphoe => (
-                            <Option key={amphoe} value={amphoe} label={amphoes[amphoe].name.th}>
+                          Object.keys(changwats).map(changwatId => (
+                            <Option
+                              key={changwatId}
+                              value={changwats[changwatId].name.th}
+                              label={changwats[changwatId].name.th}
+                            >
                               {
-                                changwats[amphoes[amphoe].changwat_id].name.th +
-                                ' -> ' +
-                                amphoes[amphoe].name.th
+                                changwats[changwatId].name.th
                               }
                             </Option>
                           ))
+                        }
+                      </Select>
+                    </Col>
+                    <Col xs={8} offset={1}>
+                      <Select
+                        mode="multiple"
+                        allowClear
+                        maxTagCount="responsive"
+                        style={{ width: '100%' }}
+                        onChange={selectedAmphoes => {
+                          this.setState({ selectedAmphoes }, this.filterProvince)
+                        }}
+                        optionFilterProp="children"
+                        placeholder="ค้นหาอำเภอ/เขต"
+                        optionLabelProp="label"
+                      >
+                        {
+                          Object.keys(amphoes)
+                            .filter(amphoeId => {
+                              const { selectedChangwats } = this.state
+                              const province = changwats[amphoes[amphoeId].changwat_id].name.th
+                              if (!isArrayExist(selectedChangwats)) return true
+                              return selectedChangwats.includes(province)
+                            })
+                            .map(amphoe => (
+                              <Option key={amphoe} value={amphoes[amphoe].name.th} label={amphoes[amphoe].name.th}>
+                                {
+                                  changwats[amphoes[amphoe].changwat_id].name.th +
+                                  ' -> ' +
+                                  amphoes[amphoe].name.th
+                                }
+                              </Option>
+                            ))
                         }
                       </Select>
                     </Col>

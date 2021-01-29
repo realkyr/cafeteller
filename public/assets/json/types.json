@@ -1,0 +1,38 @@
+[
+  {
+    "key":1,
+    "value":"Specialty coffee"
+  },
+  {
+    "key":2,
+    "value":"Breakfast"
+  },
+  {
+    "key":3,
+    "value":"Grab and go"
+  },
+  {
+    "key":4,
+    "value":"Dine in"
+  },
+  {
+    "key":5,
+    "value":"Brunch"
+  },
+  {
+    "key":6,
+    "value":"Coffee Roaster"
+  },
+  {
+    "key":7,
+    "value":"Matcha"
+  },
+  {
+    "key":8,
+    "value":"Teahouse"
+  },
+  {
+    "key":9,
+    "value":"Green Tea"
+  }
+]
