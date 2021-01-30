@@ -11,6 +11,7 @@ import PropTypes from 'prop-types'
 import Head from 'next/head'
 import { Col, Row, Select, Card, Image, message } from 'antd'
 import Link from 'next/link'
+import { SearchOutlined } from '@ant-design/icons'
 
 import styled from 'styled-components'
 
@@ -19,8 +20,10 @@ const { Option } = Select
 
 const Map = styled.div`
   width: 100%;
-  height: 80vh;
+  height: 60vh;
   background: gray;
+  box-shadow: inset 0 0 10px #000000;
+  z-index: -1;
 `
 const MapContainer = styled.div`
   margin: 15px;
@@ -237,8 +240,8 @@ export default class Search extends Component {
               <Col xs={24} md={17} lg={18}>
                 <MapContainer>
                   <MapHeader>
-                  <Row>
-                    <Col span={8}>
+                  <Row gutter={[16, 12]}>
+                    <Col span={9}>
                       <Select
                         showSearch
                         onChange={id => {
@@ -265,7 +268,7 @@ export default class Search extends Component {
                         }
                       </Select>
                     </Col>
-                    <Col span={8}>
+                    <Col span={9}>
                       <Select
                         showSearch
                         onChange={selectedTypes => this.setState({ selectedTypes }, this.filterProvince)}
@@ -283,7 +286,7 @@ export default class Search extends Component {
                         }
                       </Select>
                     </Col>
-                    <Col xs={8} offset={1}>
+                    <Col xs={9}>
                       <Select
                         mode="multiple"
                         maxTagCount="responsive"
@@ -311,7 +314,7 @@ export default class Search extends Component {
                         }
                       </Select>
                     </Col>
-                    <Col xs={8} offset={1}>
+                    <Col xs={9}>
                       <Select
                         mode="multiple"
                         allowClear
@@ -344,6 +347,7 @@ export default class Search extends Component {
                         }
                       </Select>
                     </Col>
+                    <SearchOutlined className="searchBox-icon" />
                   </Row>
                   </MapHeader>
                   <Map id="map" />

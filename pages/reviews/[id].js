@@ -197,11 +197,11 @@ img{
 }
 .ant-card-body {
   text-align: center;
-  height: auto;
+  /* height: auto; */
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.9vw;
+    padding: 4vw 1.9vw;
 }
 .ant-card-meta-title {
   font-family: maitree;
@@ -211,7 +211,7 @@ img{
 .ant-card {
   width: 95%;
   height: 100%;
-  display: inline-table;
+  /* display: inline-table; */
   border: solid 2px #d0c7be;
   border-radius: 20px;
 }
@@ -234,6 +234,12 @@ img{
       border: solid 3px #1e315c;
   }
 }
+.ant-card-meta-title {
+    font-size: 14px;
+}
+.ant-card-meta-description {
+    font-size: 17px;
+}
 @media (min-width: 768px) {
   margin-top: 20px;
   .ant-card {
@@ -243,7 +249,13 @@ img{
     padding-top: 66%;
   }
   .ant-card-body {
-    padding: 2.3vw;
+    padding: 1.5vw 2.4vw;
+  }
+  .ant-card-meta-title {
+      font-size: 1.4em;
+  }
+  .ant-card-meta-description {
+      font-size: 1.5em;
   }
 }
 `

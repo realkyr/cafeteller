@@ -20,6 +20,10 @@ body {
   font-family: "Confidante";
   src: url(/assets/font/Confidante.ttf) format("truetype");
 }
+@font-face {
+  font-family: "Thaisans";
+  src: url(/assets/font/thaisanslite_r1.ttf) format("truetype");
+}
 
 a {
   color: inherit;
@@ -102,7 +106,7 @@ a {
   position: fixed;
   top: 0;
   background-color: rgb(253, 253, 253);
-  z-index: 5;
+  z-index: 1112;
   transform: translateY(-210px);
   transition-duration: .1s;
   text-align: center;
@@ -113,12 +117,46 @@ a {
 
 .navbar-scroll .border-left {
   border-left: 1px solid #a29b93;
+  transition-duration: .3s;
 }
 .scrolled {
   transform: translateY(0px) !important;
 }
 .ant-dropdown-menu {
   background-color: #1e315c;
+  margin-top: -4px;
+}
+.ant-card-meta-description {
+  font-family: 'Worksans', 'Thaisans';
+  color: #353535;
+  
+  /* position: absolute;
+  bottom: 0px;
+  margin: auto;
+  left: 0;
+  right: 0;
+  text-align: center; */
+}
+.ant-card-meta-title {
+  white-space: normal;
+  font-family: maitree;
+  font-weight: bold;
+}
+.ant-card-body {
+  height: 100%;
+}
+.ant-card{
+  display: flex;
+  flex-flow: column;
+}
+.searchBox-icon {
+  color: #dac099;
+  font-size: 2.5em;
+  position: absolute;
+  right: 0.8em;
+}
+.not-active {
+  display: none;
 }
 /* // Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
@@ -167,6 +205,12 @@ a {
 
 /* // Extra large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
+}
+
+@media (max-width: 992px) {
+  .ant-card-meta-detail > div:not(:last-child) {
+    margin-bottom: 2px;
+  }
 }
 
 
