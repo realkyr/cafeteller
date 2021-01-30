@@ -361,27 +361,33 @@ export default function Home ({ reviews }) {
   useEffect(() => {
     const didMount = async () => {
       const raw = []
-      console.log(reviews[id])
       if (!reviews[id]) return ''
       const blocks = [...reviews[id].review.blocks]
       let consecImage = 0
       blocks.forEach((block) => {
-        console.log(block)
         switch (block.type) {
           case 'header': {
             const fullCafeName = block.data.text
             const cafeArea = fullCafeName.split('—').pop()
             const cafeName = fullCafeName.substring(0, fullCafeName.indexOf('—'))
-            raw.push(<Title level={block.data.level} className="article-header">{cafeName}</Title>)
-            raw.push(<TitleBox><TitlePattern img={'/assets/Images/pattern4.jpg'} /><Title level={block.data.level +
-              2} className="article-header">{cafeArea}</Title><TitlePattern img={'/assets/Images/pattern4.jpg'} /></TitleBox>)
+            raw.push(<Title level={block.data.level} className="article-header"><span dangerouslySetInnerHTML={{ __html: cafeName }}></span></Title>)
+            raw.push(
+              <TitleBox>
+                <TitlePattern img={'/assets/Images/pattern4.jpg'} />
+                <Title level={block.data.level + 2} className="article-header">
+                  <span dangerouslySetInnerHTML={{ __html: cafeArea }}></span>
+                </Title>
+                <TitlePattern img={'/assets/Images/pattern4.jpg'} />
+              </TitleBox>
+            )
             consecImage = 0
             break
           }
-          case 'paragraph':
-            raw.push(<p>{block.data.text}</p>)
+          case 'paragraph': {
+            raw.push(<p dangerouslySetInnerHTML={{ __html: block.data.text }}></p>)
             consecImage = 0
             break
+          }
           case 'image': {
             const image = <Image height={'100%'} width={'100%'} className="res-img"
               onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} src={block.data.file.url}
@@ -395,7 +401,7 @@ export default function Home ({ reviews }) {
             // />
             let caption = ''
             if (block.data.caption) {
-              caption = <div className="caption">{block.data.caption}</div>
+              caption = <div className="caption" dangerouslySetInnerHTML={{ __html: block.data.caption }}></div>
             }
             consecImage++
             if (consecImage < 2) {
