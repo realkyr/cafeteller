@@ -117,7 +117,7 @@ a {
 
 .navbar-scroll .border-left {
   border-left: 1px solid #a29b93;
-  transition-duration: .3s;
+  transition-duration: .2s;
 }
 .scrolled {
   transform: translateY(0px) !important;
@@ -157,6 +157,12 @@ a {
 }
 .not-active {
   display: none;
+}
+a:hover {
+  color: black;
+}
+.nav-brown-bgcolor {
+  background-color: #dfceaf;
 }
 /* // Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {

@@ -12,7 +12,7 @@ const { Meta } = Card
 
 const Banner = styled.div`
   // height: 200px;
-  padding-top: 66%;
+  padding-top: 50%;
   position: relative;
   overflow: hidden;
   height: 0;

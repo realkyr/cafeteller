@@ -131,23 +131,37 @@ const ReviewBarIn = styled.div`
     padding-left: 8%;
   }
 `
-const ReviewBarInScroll = styled.div`
-  background-image: url(${props => props.img});
-  background-size: 20%;
-  background-position-y: center;
-  background-repeat: no-repeat;
+
+const HoverableScroll = styled.div`
+  /* background-color: #dfceaf; */
+  height: 43px;
+  font-family: Georgia;
+  font-size: 1.4em;
   align-items: center;
   justify-content: center;
   display: flex;
+  @media(min-width: 768px) {
+    height: 52px;
+  }
+  @media(min-width: 992px) {
+    height: 65px;
+  }
+`
+const HoverableInnerScroll = styled.div`
+  /* background-image: url(${props => props.img});
+  background-size: 20%;
+  background-position-y: center;
+  background-repeat: no-repeat; */
+  align-items: center;
+  justify-content: center;
+  display: inline-flex;
+  gap: 10px;
   padding: 0%;
-  padding-left: 14%;
   font-size: 1.5rem;
   @media(min-width: 600px) {
-    padding-left: 8%;
   }
   @media(min-width: 768px) {
     padding: 1%;
-    padding-left: 8%;
   }
 `
 const SearchBar = styled.a`
@@ -271,26 +285,38 @@ export default function Navbar () {
   // const [isActive, setIsActive] = useState(false)
 
   const [scrolled, setScrolled] = useState(false)
+  const [navCol, setNavCol] = useState([9, 2])
+  const [buttonText, setbuttonText] = useState(['Reviews', ''])
+  const [navBgColor, setNavBgColor] = useState(['nav-brown-bgcolor', ''])
 
   const handleScroll = () => {
     const offset = window.scrollY
-    if (offset > 200) {
+    if (offset > 300) {
       setScrolled(true)
     } else {
       setScrolled(false)
     }
   }
+  const changeCol = () => {
+    setNavCol([2, 9])
+    setbuttonText(['', 'Search'])
+    // setNavBgColor(['', 'nav-brown-bgcolor'])
+  }
+  const revertCol = () => {
+    setNavCol([9, 2])
+    setbuttonText(['Reviews', ''])
+    // setNavBgColor(['nav-brown-bgcolor', ''])
+  }
   useEffect(() => {
+    const searchButton = document.getElementById('search-hover')
     window.addEventListener('scroll', handleScroll)
+    searchButton.addEventListener('mouseenter', changeCol)
+    searchButton.addEventListener('mouseleave', revertCol)
   }, [])
 
   const x = ['navbar-scroll']
-  const dropD = ['']
   if (scrolled) {
     x.push('scrolled')
-  } else if (!scrolled) {
-    // document.getElementsByClassName('ant-dropdown')[0].classList.add('ant-dropdown-hidden')
-    dropD.push('ant-dropdown-hidden')
   }
 
   return (
@@ -383,14 +409,37 @@ export default function Navbar () {
             <h1>CAFETELLER</h1>
           </N2Scroll>
         </Col>
-        <Col xs={11} lg={9} className='border-left'>
-          <ReviewBar style={{ height: '100%' }}><ReviewBarInScroll img={'/assets/Images/icon/Review-blue.png'}>Reviews</ReviewBarInScroll></ReviewBar>
-
+        <Col xs={11} lg={navCol[0]} className='border-left'>
+          <Link href={'/'}>
+            <a>
+              <HoverableScroll style={{ height: '100%' }} className={navBgColor[0]}>
+                <HoverableInnerScroll>
+                  <Image
+                    src="/assets/Images/icon/Review-blue.png"
+                    preview={false}
+                    height={'1.3em'}
+                    width={'1.3em'}
+                  />
+                  <span>{buttonText[0]}</span>
+                </HoverableInnerScroll>
+              </HoverableScroll>
+            </a>
+          </Link>
         </Col>
-        <Col xs={3} lg={2} className='flex-center search-scroll border-left'>
+        <Col xs={3} lg={navCol[1]} id='search-hover' className='border-left'>
           <Link href={'/search'}>
-            <a className='flex-center'>
-              <SearchOutlined style={{ color: '#dac099', fontSize: '2.3em' }} />
+            <a>
+              <HoverableScroll style={{ height: '100%' }} className={navBgColor[1]}>
+                <HoverableInnerScroll>
+                  <Image
+                    src="/assets/Images/icon/Search.png"
+                    preview={false}
+                    height={'1.3em'}
+                    width={'1.3em'}
+                  />
+                  <span>{buttonText[1]}</span>
+                </HoverableInnerScroll>
+              </HoverableScroll>
             </a>
           </Link>
         </Col>
@@ -424,8 +473,8 @@ export default function Navbar () {
         </Col>
         <Col xs={4} lg={0}>
           <Dropdown overlay={SocialBarMenu}
-            className={dropD.join(' ')}
-            // getPopupContainer={() => document.getElementById('scrollBut')}
+            getPopupContainer={ () => document.getElementById('scrollBut') }
+            // visible={scrolled}
             trigger="click"
             placement="bottomCenter"
           >

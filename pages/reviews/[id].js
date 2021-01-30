@@ -65,6 +65,7 @@ const TitleBox = styled.div`
   height: 40px;
   align-items: center;
   place-content: space-between;
+  margin: 0 0 30px 0;
 `
 
 const ContactInfo = styled.div`
@@ -273,10 +274,10 @@ const Content = styled.div`
     text-align: center;
     font-weight: 400;
     font-family: 'Work Sans', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.2em;
   }
   h2.article-header{
-    font-size: 1.8rem;
+    font-size: 1.7em;
     margin-top: 10px;
     padding: 20px;
     padding-bottom: 0;
