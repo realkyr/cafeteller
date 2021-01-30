@@ -20,10 +20,10 @@ const { Option } = Select
 
 const Map = styled.div`
   width: 100%;
-  height: 60vh;
+  height: 80vh;
   background: gray;
   box-shadow: inset 0 0 10px #000000;
-  z-index: -1;
+  /* z-index: -1; */
 `
 const MapContainer = styled.div`
   margin: 15px;
