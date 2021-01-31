@@ -1,14 +1,176 @@
-import firebase from 'plugins/firebase'
+import admin from 'plugins/firebase'
 import PropTypes from 'prop-types'
 
-import React from 'react'
+import firebase from 'plugins/firebaseclient'
+import 'firebase/auth'
+
+import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import { Row, Col, Image, Card } from 'antd'
+import { Row, Col, Image, Card, Button, Space } from 'antd'
 
 import styled from 'styled-components'
 
 const { Meta } = Card
+
+export default function Home ({ reviews }) {
+  const [user, setUser] = useState(null)
+  const [isAdmin, setAdmin] = useState(false)
+
+  const verifyToken = () => {
+    // TODO: verify if token still valid
+    return true
+  }
+
+  useEffect(() => {
+    const unsub = firebase.auth().onAuthStateChanged(async user => {
+      if (user) {
+        const isTokenValid = verifyToken()
+        if (!isTokenValid) firebase.auth().signOut()
+        setUser(user)
+        const idtoken = await user.getIdTokenResult()
+        setAdmin(idtoken.claims.isAdmin)
+      } else {
+        setUser(undefined)
+        setAdmin(false)
+      }
+    })
+
+    return () => { unsub && unsub() }
+  }, [])
+
+  return (
+    <>
+      <Head>
+        <title>Cafeteller</title>
+      </Head>
+      {/* <Container> */}
+      <Row justify="center">
+        <Col xs={24} xxl={18}>
+          <Banner>
+            <Image style={{ objectFit: 'cover' }} src="/assets/Images/COVER1.png" preview={false}></Image>
+          </Banner>
+          <Pattern1 img={'/assets/Images/pattern4.jpg'}></Pattern1>
+          <RecentReview>
+            <h2><span>Recent</span> Review</h2>
+            <Underline />
+            <Row>
+            {
+              user && isAdmin
+                ? (
+                <Space size="small">
+                  <Button>Add Review</Button>
+                  <Button danger>Log Out</Button>
+                </Space>
+                  )
+                : null
+            }
+            {
+              Object.keys(reviews).map((r, i) => {
+                // <Link href={`/reviews/${r}`}>
+                // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
+                if (i < 2) {
+                  return (
+                  <Col key={r + '-link'} xs={24} md={12}>
+                    <RecentReviewCard key={r}>
+                      <Link href={`/reviews/${r}`}>
+                        <a className='flex-center'>
+                          <Card
+                            bordered={false}
+                            cover={<Image height={'100%'}
+                              onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
+                              alt={reviews[r].cafe.name}
+                              src={reviews[r].cafe.banner.url}
+                              fallback="/assets/Images/placeholder.png"
+                              preview={false} />}
+                          >
+                            <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
+                          </Card>
+                        </a>
+                      </Link>
+                    </RecentReviewCard>
+                  </Col>
+                  // </Link>
+                  )
+                }
+                return null
+              })
+            }
+            </Row>
+          </RecentReview>
+          <Pattern2 img={'/assets/Images/pattern2.jpg'}></Pattern2>
+          <AllReview>
+            <h2><span>All</span> Review</h2>
+            <Underline style={{ marginBottom: 12 }} />
+
+            <Row>
+            {
+              Object.keys(reviews).map(r => (
+                // <Link href={`/reviews/${r}`}>
+                // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
+                <Col key={r + '-link'} xs={12} md={8}>
+                  <AllReviewCard key={r}>
+                    <Link href={`/reviews/${r}`}>
+                      <a className='flex-center'>
+                        <Card
+                          bordered={false}
+                          cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
+                        >
+                          <Meta className="cafeCardDesc" title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
+                        </Card>
+                      </a>
+                    </Link>
+                  </AllReviewCard>
+                </Col>
+                // </Link>
+              ))
+            }
+            </Row>
+          </AllReview>
+        </Col>
+      </Row>
+      {/* </Container> */}
+    </>
+  )
+}
+
+Home.propTypes = {
+  // ...prop type definitions here
+  reviews: PropTypes.object
+}
+
+// This function gets called at build time
+export async function getServerSideProps () {
+  // Call an external API endpoint to get posts
+  const db = admin.firestore()
+  const reviewsDoc = await db.collection('reviews').get()
+  const reviews = {}
+  reviewsDoc.forEach(r => {
+    reviews[r.id] = r.data()
+  })
+
+  const cafes = []
+  for (const c in reviews) {
+    cafes.push(reviews[c].cafe.get())
+  }
+
+  const result = await Promise.all(cafes)
+  Object.keys(reviews).forEach((id, index) => {
+    reviews[id].cafe = result[index].data()
+
+    // convert all timestamp to date
+    reviews[id].createDate = reviews[id].createDate.toString()
+    reviews[id].updateDate = reviews[id].updateDate.toString()
+  })
+
+  // By returning { props: { posts } }, the Blog component
+  // will receive `posts` as a prop at build time
+  return {
+    props: {
+      reviews
+    }
+  }
+}
 
 const Banner = styled.div`
   // height: 200px;
@@ -280,126 +442,3 @@ const Underline = styled.div`
   margin: auto;
   border-radius: 26%;
 `
-
-export default function Home ({ reviews }) {
-  return (
-    <>
-      <Head>
-        <title>Cafeteller</title>
-      </Head>
-      {/* <Container> */}
-      <Row justify="center">
-        <Col xs={24} xxl={18}>
-          <Banner>
-            <Image style={{ objectFit: 'cover' }} src="/assets/Images/COVER1.png" preview={false}></Image>
-          </Banner>
-          <Pattern1 img={'/assets/Images/pattern4.jpg'}></Pattern1>
-          <RecentReview>
-            <h2><span>Recent</span> Review</h2>
-            <Underline />
-            <Row>
-            {
-              Object.keys(reviews).map((r, i) => {
-                // <Link href={`/reviews/${r}`}>
-                // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
-                if (i < 2) {
-                  return (
-                  <Col key={r + '-link'} xs={24} md={12}>
-                    <RecentReviewCard key={r}>
-                      <Link href={`/reviews/${r}`}>
-                        <a className='flex-center'>
-                          <Card
-                            bordered={false}
-                            cover={<Image height={'100%'}
-                              onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
-                              alt={reviews[r].cafe.name}
-                              src={reviews[r].cafe.banner.url}
-                              fallback="/assets/Images/placeholder.png"
-                              preview={false} />}
-                          >
-                            <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
-                          </Card>
-                        </a>
-                      </Link>
-                    </RecentReviewCard>
-                  </Col>
-                  // </Link>
-                  )
-                }
-                return null
-              })
-            }
-            </Row>
-          </RecentReview>
-          <Pattern2 img={'/assets/Images/pattern2.jpg'}></Pattern2>
-          <AllReview>
-            <h2><span>All</span> Review</h2>
-            <Underline style={{ marginBottom: 12 }} />
-            <Row>
-            {
-              Object.keys(reviews).map(r => (
-                // <Link href={`/reviews/${r}`}>
-                // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
-                <Col key={r + '-link'} xs={12} md={8}>
-                  <AllReviewCard key={r}>
-                    <Link href={`/reviews/${r}`}>
-                      <a className='flex-center'>
-                        <Card
-                          bordered={false}
-                          cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
-                        >
-                          <Meta className="cafeCardDesc" title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
-                        </Card>
-                      </a>
-                    </Link>
-                  </AllReviewCard>
-                </Col>
-                // </Link>
-              ))
-            }
-            </Row>
-          </AllReview>
-        </Col>
-      </Row>
-      {/* </Container> */}
-    </>
-  )
-}
-
-Home.propTypes = {
-  // ...prop type definitions here
-  reviews: PropTypes.object
-}
-
-// This function gets called at build time
-export async function getServerSideProps () {
-  // Call an external API endpoint to get posts
-  const db = firebase.firestore()
-  const reviewsDoc = await db.collection('reviews').get()
-  const reviews = {}
-  reviewsDoc.forEach(r => {
-    reviews[r.id] = r.data()
-  })
-
-  const cafes = []
-  for (const c in reviews) {
-    cafes.push(reviews[c].cafe.get())
-  }
-
-  const result = await Promise.all(cafes)
-  Object.keys(reviews).forEach((id, index) => {
-    reviews[id].cafe = result[index].data()
-
-    // convert all timestamp to date
-    reviews[id].createDate = reviews[id].createDate.toString()
-    reviews[id].updateDate = reviews[id].updateDate.toString()
-  })
-
-  // By returning { props: { posts } }, the Blog component
-  // will receive `posts` as a prop at build time
-  return {
-    props: {
-      reviews
-    }
-  }
-}
