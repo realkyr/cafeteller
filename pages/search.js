@@ -23,7 +23,7 @@ const Map = styled.div`
   height: 80vh;
   background: gray;
   box-shadow: inset 0 0 10px #000000;
-  /* z-index: -1; */
+  position: relative;
 `
 const MapContainer = styled.div`
   margin: 15px;
@@ -34,6 +34,8 @@ const MapHeader = styled.div`
   box-shadow: 0 2px 6px 0 rgb(0 0 0 / 20%);
   padding: 15px;
   background: #F5F1EB;
+  z-index: 1;
+  position: relative;
 `
 
 const SearchReview = styled.div`
