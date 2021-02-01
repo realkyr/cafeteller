@@ -5,6 +5,7 @@ import firebase from 'plugins/firebaseclient'
 import 'firebase/auth'
 
 import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Link from 'next/link'
 import { Row, Col, Image, Card, Button, Space } from 'antd'
@@ -14,6 +15,7 @@ import styled from 'styled-components'
 const { Meta } = Card
 
 export default function Home ({ reviews }) {
+  const router = useRouter()
   const [user, setUser] = useState(null)
   const [isAdmin, setAdmin] = useState(false)
 
@@ -54,17 +56,17 @@ export default function Home ({ reviews }) {
           <RecentReview>
             <h2><span>Recent</span> Review</h2>
             <Underline />
-            <Row>
             {
               user && isAdmin
                 ? (
                 <Space size="small">
-                  <Button>Add Review</Button>
-                  <Button danger>Log Out</Button>
+                  <Button onClick={() => { router.push('/reviews/add') }}>Add Review</Button>
+                  <Button onClick={() => { firebase.auth().signOut() }} danger>Log Out</Button>
                 </Space>
                   )
                 : null
             }
+            <Row>
             {
               Object.keys(reviews).map((r, i) => {
                 // <Link href={`/reviews/${r}`}>
