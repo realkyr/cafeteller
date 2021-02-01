@@ -86,6 +86,7 @@ export default function Home ({ reviews }) {
                           >
                             <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
                           </Card>
+                          <CardHover style={{ marginTop: 30 }}></CardHover>
                         </a>
                       </Link>
                     </RecentReviewCard>
@@ -102,8 +103,7 @@ export default function Home ({ reviews }) {
           <AllReview>
             <h2><span>All</span> Review</h2>
             <Underline style={{ marginBottom: 12 }} />
-
-            <Row>
+            <Row gutter={{ xs: 0, md: 20 }}>
             {
               Object.keys(reviews).map(r => (
                 // <Link href={`/reviews/${r}`}>
@@ -118,6 +118,7 @@ export default function Home ({ reviews }) {
                         >
                           <Meta className="cafeCardDesc" title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
                         </Card>
+                        <CardHover></CardHover>
                       </a>
                     </Link>
                   </AllReviewCard>
@@ -189,7 +190,20 @@ const Banner = styled.div`
     }
   }
 `
-
+const CardHover = styled.div`
+  display: flex;
+  position: absolute;
+  /* margin-top: 30px; */
+  border-radius: 20px;
+  border: solid 3px transparent;
+    &:hover {
+        cursor: pointer;
+        transition: 0.1s;
+        border-radius: 20px;
+        box-shadow: 8px 8px #dfceaf;
+        border: solid 3px #1e315c;
+    }
+`
 const RecentReview = styled.div`
   margin: auto;
   background-color: #f5f1eb;
@@ -221,18 +235,12 @@ const RecentReview = styled.div`
   }
 `
 const RecentReviewCard = styled.div`
-  
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100vw;
   img{
     object-fit: cover;
-  }
-
-  .ant-card {
-    border: solid 2px #d0c7be;
-    border-radius: 20px;
   }
   .ant-card-cover {
     padding-top: 66%;
@@ -247,19 +255,23 @@ const RecentReviewCard = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 3.7vw;
   }
   .ant-card {
+    border: solid 1px #d0c7be;
+    border-radius: 20px;
+    box-sizing: border-box;
     width: 100%;
     height: auto;
     margin-top: 30px; 
     /* display: inline-table; */
-    &:hover {
+    /* &:hover {
       cursor: pointer;
       transition: 0.1s;
       border-radius: 20px;
-      box-shadow: 5px 5px #dfceaf;
+      box-shadow: 8px 8px #dfceaf;
       border: solid 3px #1e315c;
-    }
+    } */
   }
   .ant-image {
     top: 0;
@@ -276,6 +288,10 @@ const RecentReviewCard = styled.div`
   .ant-card-meta-description {
       font-size: 21px;
   }
+  div${CardHover} {
+    height: 93%;
+    width: 100%;
+  }
   @media (min-width: 768px) {
     width: 100%;
     .ant-card {
@@ -291,7 +307,7 @@ const RecentReviewCard = styled.div`
     .ant-card-cover {
     }
     .ant-card-body {
-      padding: 2vw 2.4vw;
+      padding: 1.8vw 2.4vw;
     }
     .ant-card-meta-title {
         font-size: 1.4em;
@@ -300,8 +316,32 @@ const RecentReviewCard = styled.div`
         font-size: 1.5em;
     }
   }
-  
-  
+  div${CardHover} {
+    @media (min-width: 300px) {
+        height: 93.5%;
+        width: 100%;
+    }
+    @media (min-width: 768px) {
+        height: 91%;
+        width: 95%;
+    }
+    @media (min-width: 930px) {
+        height: 92%;
+        width: 95%;
+    }
+    @media (min-width: 1020px) {
+        height: 93%;
+        width: 95%;
+    }
+    @media (min-width: 1200px) {
+        height: 94%;
+        width: 95%;
+    }
+    @media (min-width: 1600px) {
+        height: 94%;
+        width: 95.5%;
+    }
+  }
 `
 const AllReview = styled.div`
   width: 99%;
@@ -363,8 +403,19 @@ const AllReviewCard = styled.div`
     width: 95%;
     height: 100%;
     /* display: inline-table; */
-    border: solid 2px #d0c7be;
+    border: solid 1px #d0c7be;
     border-radius: 20px;
+    box-sizing: border-box;
+    /* &:hover {
+        cursor: pointer;
+        transition: 0.1s;
+        border-radius: 20px;
+        box-shadow: 8px 8px #dfceaf;
+        border: solid 3px #1e315c;
+    }
+    &:after, &:before {
+      box-sizing: border-box;
+    } */
   }
   .ant-image {
     top: 0;
@@ -375,16 +426,6 @@ const AllReviewCard = styled.div`
     border-top-left-radius: 18px;
     border-top-right-radius: 18px;
   }
-  .ant-card {
-    border: solid 2px #d0c7be;
-    &:hover {
-        cursor: pointer;
-        transition: 0.1s;
-        border-radius: 20px;
-        box-shadow: 8px 8px #dfceaf;
-        border: solid 3px #1e315c;
-    }
-  }
   .ant-card-meta-title {
       font-size: 14px;
   }
@@ -394,7 +435,7 @@ const AllReviewCard = styled.div`
   @media (min-width: 768px) {
     margin-top: 20px;
     .ant-card {
-      width: 96%;
+      width: 100%;
     }
     .ant-card-cover {
       padding-top: 66%;
@@ -407,6 +448,35 @@ const AllReviewCard = styled.div`
     }
     .ant-card-meta-description {
         font-size: 1.5em;
+    }
+  }
+  div${CardHover} {
+      border-radius: 22px;
+      height: 96%;
+      width: 95%;
+    @media (min-width: 300px) {
+        height: 95.5%;
+        width: 96%;
+    }
+    @media (min-width: 768px) {
+        height: 94%;
+        width: 94%;
+    }
+    @media (min-width: 1020px) {
+        height: 95%;
+        width: 94%;
+    }
+    @media (min-width: 1200px) {
+        height: 96%;
+        width: 96%;
+    }
+    @media (min-width: 1600px) {
+        height: 96%;
+        width: 96%;
+    }
+    @media (min-width: 2200px) {
+        height: 96%;
+        width: 96.5%;
     }
   }
 `
