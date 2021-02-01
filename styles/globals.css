@@ -225,6 +225,9 @@ a:hover {
   }
 }
 
+.ant-card-meta-detail > div:not(:last-child) {
+  margin-bottom: 4px;
+}
 
 /* Mess */
 
