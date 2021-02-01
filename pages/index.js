@@ -61,7 +61,10 @@ export default function Home ({ reviews }) {
                 ? (
                 <Space size="small">
                   <Button onClick={() => { router.push('/reviews/add') }}>Add Review</Button>
-                  <Button onClick={() => { firebase.auth().signOut() }} danger>Log Out</Button>
+                  <Button onClick={() => {
+                    localStorage.setItem('access_token', '')
+                    firebase.auth().signOut()
+                  }} danger>Log Out</Button>
                 </Space>
                   )
                 : null
