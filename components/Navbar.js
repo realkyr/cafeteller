@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import { Row, Col, Image, Menu, Dropdown } from 'antd'
-import { AlignLeftOutlined, SearchOutlined } from '@ant-design/icons'
+import { AlignLeftOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
-// import Image from 'next/image'
 import Link from 'next/link'
 
 const Container = styled.div`
@@ -99,7 +99,11 @@ const SocialBarMenu = (
   </Menu>
 )
 const ReviewBar = styled.div`
-  background-color: #dfceaf;
+  transition-timing-function: cubic-bezier(0.11, 0.59, 0.46, 0.9);
+  transition-duration: .3s;
+  background-color: ${props => props.bgColor};
+  /* background-color: #dfceaf; */
+  cursor: pointer;
   height: 43px;
   font-family: Georgia;
   font-size: 1.4em;
@@ -113,27 +117,27 @@ const ReviewBar = styled.div`
     height: 65px;
   }
 `
-const ReviewBarIn = styled.div`
-  background-image: url(${props => props.img});
-  background-size: 20%;
-  background-position-y: center;
-  background-repeat: no-repeat;
-  align-items: center;
-  justify-content: center;
+const ReviewBarText = styled.div`
+  padding-left: 15px;
+  height: 100%;
   display: flex;
-  padding: 0%;
-  padding-left: 10%;
-  @media(min-width: 600px) {
-    padding-left: 8%;
-  }
+  justify-content: center;
+  align-items: center;
+  font-family: Georgia;
   @media(min-width: 768px) {
-    padding: 5%;
-    padding-left: 8%;
+    // height: auto;
+    font-size: 1.1em;
+  }
+  @media(min-width: 1200px) {
+    font-size: 1.4em;
   }
 `
 
 const HoverableScroll = styled.div`
   /* background-color: #dfceaf; */
+  transition-timing-function: cubic-bezier(0.18, 0.89, 0.29, 0.96);
+  transition-duration: .3s;
+  background-color: ${props => props.bgColor};
   height: 43px;
   font-family: Georgia;
   font-size: 1.4em;
@@ -164,8 +168,10 @@ const HoverableInnerScroll = styled.div`
     padding: 1%;
   }
 `
-const SearchBar = styled.a`
-
+const SearchBar = styled.div`
+  transition-timing-function: cubic-bezier(0.11, 0.59, 0.46, 0.9);
+  transition-duration: .3s;
+  background-color: ${props => props.bgColor};
   height: 100%;
   margin: auto;
   display: flex;
@@ -182,7 +188,7 @@ const SearchBar = styled.a`
   }
 `
 const SearchText = styled.div`
-
+  padding-left: 15px;
   height: 100%;
   display: none;
   @media(min-width: 768px) {
@@ -284,11 +290,20 @@ const N2Scroll = styled.div`
 export default function Navbar () {
   // const [isActive, setIsActive] = useState(false)
 
+  const pathName = useRouter().pathname
   const [scrolled, setScrolled] = useState(false)
-  const [navCol, setNavCol] = useState([9, 2])
-  const [buttonText, setbuttonText] = useState(['Reviews', ''])
-  const [navBgColor, setNavBgColor] = useState(['nav-brown-bgcolor', ''])
+  const [navCol, setNavCol] = useState([0, 0])
+  const [buttonText, setbuttonText] = useState(['', ''])
+  const [navBgColor, setNavBgColor] = useState(['', ''])
+  // const [navBgColor, setNavBgColor] = useState(['', ''])
 
+  const CheckPath = () => {
+    if (pathName === '/search') {
+      searchHover()
+    } else {
+      reviewHover()
+    }
+  }
   const handleScroll = () => {
     const offset = window.scrollY
     if (offset > 300) {
@@ -297,28 +312,34 @@ export default function Navbar () {
       setScrolled(false)
     }
   }
-  const changeCol = () => {
+  const searchHover = () => {
     setNavCol([2, 9])
     setbuttonText(['', 'Search'])
-    // setNavBgColor(['', 'nav-brown-bgcolor'])
+    setNavBgColor(['', 'nav-brown-bgcolor'])
   }
-  const revertCol = () => {
+  const reviewHover = () => {
     setNavCol([9, 2])
     setbuttonText(['Reviews', ''])
-    // setNavBgColor(['nav-brown-bgcolor', ''])
+    setNavBgColor(['nav-brown-bgcolor', ''])
   }
   useEffect(() => {
-    const searchButton = document.getElementById('search-hover')
+    window.addEventListener('load', CheckPath)
+    const searchButton = Object.values(document.getElementsByClassName('search-hover'))
+    const reviewButton = Object.values(document.getElementsByClassName('review-hover'))
     window.addEventListener('scroll', handleScroll)
-    searchButton.addEventListener('mouseenter', changeCol)
-    searchButton.addEventListener('mouseleave', revertCol)
+    searchButton.forEach(element => { element.addEventListener('mouseenter', searchHover) })
+    reviewButton.forEach(element => { element.addEventListener('mouseenter', reviewHover) })
+    if (pathName === '/search') {
+      reviewButton.forEach(element => { element.addEventListener('mouseleave', searchHover) })
+    } else {
+      searchButton.forEach(element => { element.addEventListener('mouseleave', reviewHover) })
+    }
   }, [])
 
   const x = ['navbar-scroll']
-  if (scrolled) {
+  if (scrolled && pathName !== '/reviews/[id]') {
     x.push('scrolled')
   }
-
   return (
     <>
       <Row justify="center">
@@ -369,7 +390,7 @@ export default function Navbar () {
                   </Col>
                   <Col xs={24} md={0}>
                     <Dropdown overlay={SocialBarMenu} trigger="click" placement="bottomCenter">
-                      <SocialButton className="nav-social-button">
+                      <SocialButton className="nav-social-button ">
                         <AlignLeftOutlined style={{ color: 'white', fontSize: '3em' }} />
                       </SocialButton>
                     </Dropdown>
@@ -379,15 +400,34 @@ export default function Navbar () {
               </Col>
             </Row>
             <Row className="nav-row n2">
-              <Col xs={19} md={12} className="nav-box n4">
-                <ReviewBar><ReviewBarIn img={'/assets/Images/icon/Review-blue.png'}>Reviews</ReviewBarIn></ReviewBar>
+              <Col xs={19} md={12} className="nav-box n4 review-hover">
+                <Link href={'/'}>
+                  <a>
+                    <ReviewBar className={navBgColor[0]}>
+                    <Image
+                      src="/assets/Images/icon/Review.png"
+                      preview={false}
+                      height={'1.4em'}
+                      width={'1.4em'}
+                    />
+                      <ReviewBarText>Reviews</ReviewBarText>
+                    </ReviewBar>
+                  </a>
+                </Link>
               </Col>
-              <Col xs={5} md={12} className="nav-box n5">
+              <Col xs={5} md={12} className="nav-box n5 search-hover">
                 <Link href={'/search'}>
-                  <SearchBar>
-                    <SearchOutlined style={{ color: '#dac099', fontSize: '1.5em' }} />
-                    <SearchText>Search</SearchText>
-                  </SearchBar>
+                  <a>
+                    <SearchBar className={navBgColor[1]}>
+                    <Image
+                      src="/assets/Images/icon/search.png"
+                      preview={false}
+                      height={'1.4em'}
+                      width={'1.4em'}
+                    />
+                      <SearchText>Search</SearchText>
+                    </SearchBar>
+                  </a>
                 </Link>
               </Col>
             </Row>
@@ -409,13 +449,13 @@ export default function Navbar () {
             <h1>CAFETELLER</h1>
           </N2Scroll>
         </Col>
-        <Col xs={11} lg={navCol[0]} className='border-left'>
+        <Col xs={11} lg={navCol[0]} id='review-hover' className='review-hover border-left'>
           <Link href={'/'}>
             <a>
               <HoverableScroll style={{ height: '100%' }} className={navBgColor[0]}>
                 <HoverableInnerScroll>
                   <Image
-                    src="/assets/Images/icon/Review-blue.png"
+                    src="/assets/Images/icon/Review.png"
                     preview={false}
                     height={'1.3em'}
                     width={'1.3em'}
@@ -426,7 +466,7 @@ export default function Navbar () {
             </a>
           </Link>
         </Col>
-        <Col xs={3} lg={navCol[1]} id='search-hover' className='border-left'>
+        <Col xs={3} lg={navCol[1]} id='search-hover' className='search-hover border-left'>
           <Link href={'/search'}>
             <a>
               <HoverableScroll style={{ height: '100%' }} className={navBgColor[1]}>
