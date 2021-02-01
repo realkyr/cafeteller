@@ -9,9 +9,329 @@ import styled from 'styled-components'
 import { loader } from '../../plugins/gmap'
 
 import { Typography, Row, Col, Image, Card } from 'antd'
+import Banner from 'components/reviews/Banner'
 
 const { Meta } = Card
 const { Title } = Typography
+
+export default function Home ({ reviews }) {
+  const router = useRouter()
+  const { id } = router.query
+  const [content, setContent] = useState([])
+
+  let map
+  let marker
+
+  useEffect(() => {
+    const didMount = async () => {
+      const raw = []
+      if (!reviews[id]) return ''
+      const blocks = [...reviews[id].review.blocks]
+      let consecImage = 0
+      blocks.forEach((block) => {
+        switch (block.type) {
+          case 'header': {
+            const fullCafeName = block.data.text
+            const cafeArea = fullCafeName.split('—').pop()
+            const cafeName = fullCafeName.substring(0, fullCafeName.indexOf('—'))
+            raw.push(<Title level={block.data.level} className="article-header"><span dangerouslySetInnerHTML={{ __html: cafeName }}></span></Title>)
+            raw.push(
+              <TitleBox>
+                <TitlePattern img={'/assets/Images/pattern4.jpg'} />
+                <Title level={block.data.level + 2} className="article-header">
+                  <span dangerouslySetInnerHTML={{ __html: cafeArea }}></span>
+                </Title>
+                <TitlePattern img={'/assets/Images/pattern4.jpg'} />
+              </TitleBox>
+            )
+            consecImage = 0
+            break
+          }
+          case 'paragraph': {
+            raw.push(<p dangerouslySetInnerHTML={{ __html: block.data.text }}></p>)
+            consecImage = 0
+            break
+          }
+          case 'image': {
+            const image = <Image height={'100%'} width={'100%'} className="res-img"
+              onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} src={block.data.file.url}
+              fallback="/assets/Images/placeholder.png" preview={false} />
+            // <img style={{
+            //   display: 'inline',
+            //   width: '100%',
+            //   objectFit: 'cover'
+            // }}
+            //   src={block.data.file.url} className="res-img"
+            // />
+            let caption = ''
+            if (block.data.caption) {
+              caption = <div className="caption" dangerouslySetInnerHTML={{ __html: block.data.caption }}></div>
+            }
+            consecImage++
+            if (consecImage < 2) {
+              raw.push(
+                <div className="image-container">
+                  <div className="image-container-img">
+                    <div className="caption-border">
+                      {
+                        [image, caption]
+                      }
+                    </div>
+                  </div>
+                </div>)
+            } else {
+              raw[raw.length - 1] = (
+                <div className="image-container">
+                  {raw[raw.length - 1].props.children}
+                  <div className="divide-image"></div>
+                  <div className="image-container-img">
+                    <div className="caption-border">
+                      {[image, caption]}
+                    </div>
+                  </div>
+                </div>
+              )
+              consecImage = 0
+            }
+            break
+          }
+          default:
+            // code block
+            raw.push(<p>{block.data.text}</p>)
+            consecImage = 0
+        }
+      })
+      setContent(raw)
+
+      if (!window.google) await loader.load()
+
+      const google = window.google
+      const location = {
+        lng: reviews[id].cafe.location.lon,
+        lat: reviews[id].cafe.location.lat
+      }
+      // eslint-disable-next-line no-unused-vars
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: location,
+        zoom: 15
+      })
+      // eslint-disable-next-line no-unused-vars
+      marker = new google.maps.Marker({
+        position: location,
+        icon: '/assets/Images/pin.png',
+        map
+      })
+    }
+    didMount()
+  }, [])
+
+  return (
+    <>
+      <Head>
+        <title>Cafeteller || {reviews[id].cafe.name}</title>
+      </Head>
+      <Row align="middle" justify="center">
+        <Col xs={24} xxl={18}>
+          <Banner>
+            <Image height={'100%'} width={'100%'} style={{ objectFit: 'cover' }} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
+              alt={reviews[id].cafe.banner.url} src={reviews[id].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false}
+            />
+          </Banner>
+          <Row justify="space-around">
+            <Col xs={24} md={19} lg={15} xxl={16}>
+              {/* <Title>{reviews[id].cafe.name}</Title> */}
+              <Content>{content}</Content>
+            </Col>
+            <Col xs={24} md={19} lg={8} xxl={7}>
+              <ContactInfo>
+                {(() => {
+                  const contactBox = []
+                  if (typeof reviews[id].cafe.openhour !== 'undefined') {
+                    contactBox.push(
+                      <Row>
+                        <Col span={4}>
+                          <Image src="/assets/Images/icon/Open hours.png" preview={false} height={30} width={30} />
+                        </Col>
+                        <Col span={20}>{reviews[id].cafe.openhour}</Col>
+                      </Row>
+                    )
+                  }
+                  if (typeof reviews[id].cafe.parking !== 'undefined') {
+                    contactBox.push(
+                      <Row>
+                        <Col span={4}>
+                          <Image src="/assets/Images/icon/parking.png" preview={false} height={35} width={35} />
+                        </Col>
+                        <Col span={20}>{reviews[id].cafe.parking}</Col>
+                      </Row>
+                    )
+                  }
+                  if (typeof reviews[id].cafe.phone !== 'undefined') {
+                    contactBox.push(
+                      <Row>
+                        <Col span={4}>
+                          <Image src="/assets/Images/icon/call.png" preview={false} height={30} width={30} />
+                        </Col>
+                        <Col span={20}>{reviews[id].cafe.phone}</Col>
+                      </Row>
+                    )
+                  }
+                  if (typeof reviews[id].cafe.details !== 'undefined') {
+                    contactBox.push(
+                      <Row>
+                        <Col span={4}>
+                          <Image src="/assets/Images/icon/address.png" preview={false} height={30} width={30} />
+                        </Col>
+                        <Col span={20}>{reviews[id].cafe.details}</Col>
+                      </Row>
+                    )
+                  }
+                  if (typeof reviews[id].cafe.landmark !== 'undefined') {
+                    contactBox.push(
+                      <Row>
+                        <Col span={4}>
+                          <Image src="/assets/Images/icon/location.png" preview={false} height={30} width={30} />
+                        </Col>
+                        <Col span={20}>{reviews[id].cafe.landmark}</Col>
+                      </Row>
+                    )
+                  }
+                  return (
+                    contactBox
+                  )
+                })()
+                }
+                <Map id="map"></Map>
+              </ContactInfo>
+              <ShareBox>
+                <Row>
+                  <Col xs={7} md={8}>
+                    <ShareLeft><span>Share</span></ShareLeft>
+                  </Col>
+                  <Col xs={17} md={14}>
+                    <ShareRight>
+                      {(() => {
+                        const shareBox = []
+                        if (typeof reviews[id].cafe.ig !== 'undefined') {
+                          shareBox.push(
+                            <a href={reviews[id].cafe.ig}>
+                              <Image src="/assets/Images/icon/Social/IG.png" preview={false} height={30} width={30} />
+                            </a>
+                          )
+                        }
+                        if (typeof reviews[id].cafe.fb !== 'undefined') {
+                          shareBox.push(
+                            <a href={reviews[id].cafe.fb}>
+                              <Image src="/assets/Images/icon/Social/FB.png" preview={false} height={30} width={30} />
+                            </a>
+                          )
+                        }
+                        if (typeof reviews[id].cafe.tw !== 'undefined') {
+                          shareBox.push(
+                            <a href={reviews[id].cafe.tw}>
+                              <Image src="/assets/Images/icon/Social/Twitter.png" preview={false} height={30} width={30} />
+                            </a>
+                          )
+                        }
+                        return (
+                          shareBox
+                        )
+                      })()
+                      }
+                    </ShareRight>
+                  </Col>
+                  <Col xs={0} md={12} lg={0}>
+                    <PatternShare img={'/assets/Images/pattern2.jpg'} />
+                  </Col>
+                </Row>
+              </ShareBox>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={24}>
+          <Pattern img={'/assets/Images/pattern5.jpg'}></Pattern>
+        </Col>
+      </Row>
+      <Row justify="center">
+        <Col xs={24} md={22} xxl={18}>
+          <MoreReview>
+            <h2><span>More</span> Like This</h2>
+            <Row gutter={{ xs: 0, md: 20 }}>
+              {
+                Object.keys(reviews).map((r, i) => {
+                  if (i < 2) {
+                    return (
+                      // <Link href={`/reviews/${r}`}>
+                      // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
+                      <Col key={r + '-link'} xs={12} md={8}>
+                        <MoreReviewCard key={r}>
+                          <Link href={`/reviews/${r}`}>
+                            <a className="flex-center">
+                              <Card
+                                bordered={false}
+                                cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
+                              >
+                                <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
+                              </Card>
+                              <CardHover></CardHover>
+                            </a>
+                          </Link>
+                        </MoreReviewCard>
+                      </Col>
+                      // </Link>
+                    )
+                  }
+                  return null
+                })
+              }
+            </Row>
+          </MoreReview>
+        </Col>
+      </Row>
+    </>
+  )
+}
+
+Home.propTypes = {
+  // ...prop type definitions here
+  reviews: PropTypes.object
+}
+
+// This function gets called at build time
+export async function getServerSideProps () {
+  // Call an external API endpoint to get posts
+  const db = firebase.firestore()
+  const reviewsDoc = await db.collection('reviews').get()
+  const reviews = {}
+  reviewsDoc.forEach(r => {
+    reviews[r.id] = r.data()
+  })
+
+  const cafes = []
+  for (const c in reviews) {
+    cafes.push(reviews[c].cafe.get())
+  }
+
+  const result = await Promise.all(cafes)
+  Object.keys(reviews).forEach((id, index) => {
+    reviews[id].cafe = result[index].data()
+
+    // convert all timestamp to date
+    reviews[id].createDate = reviews[id].createDate.toString()
+    reviews[id].updateDate = reviews[id].updateDate.toString()
+  })
+
+  // By returning { props: { posts } }, the Blog component
+  // will receive `posts` as a prop at build time
+  return {
+    props: {
+      reviews
+    }
+  }
+}
+
 const Map = styled.div`
   width: 100%;
   height: 400px;
@@ -33,22 +353,7 @@ const Pattern = styled.div`
     background-size: 17%;
   }
 `
-const Banner = styled.div`
-  height: 0;
-  padding-bottom: 66.66%;
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-  .ant-image{
-    height: 100%;
-    position: absolute;
-    top: 0;
-    display: inline-block;
-  }
-  @media (min-width: 768px) {
-    margin-bottom: 30px;
-  }
-`
+
 const TitlePattern = styled.div`
   border-bottom: 0;
   height: 100px;
@@ -399,321 +704,3 @@ const Content = styled.div`
     }
   }
 `
-
-export default function Home ({ reviews }) {
-  const router = useRouter()
-  const { id } = router.query
-  const [content, setContent] = useState([])
-
-  let map
-  let marker
-
-  useEffect(() => {
-    const didMount = async () => {
-      const raw = []
-      if (!reviews[id]) return ''
-      const blocks = [...reviews[id].review.blocks]
-      let consecImage = 0
-      blocks.forEach((block) => {
-        switch (block.type) {
-          case 'header': {
-            const fullCafeName = block.data.text
-            const cafeArea = fullCafeName.split('—').pop()
-            const cafeName = fullCafeName.substring(0, fullCafeName.indexOf('—'))
-            raw.push(<Title level={block.data.level} className="article-header"><span dangerouslySetInnerHTML={{ __html: cafeName }}></span></Title>)
-            raw.push(
-              <TitleBox>
-                <TitlePattern img={'/assets/Images/pattern4.jpg'} />
-                <Title level={block.data.level + 2} className="article-header">
-                  <span dangerouslySetInnerHTML={{ __html: cafeArea }}></span>
-                </Title>
-                <TitlePattern img={'/assets/Images/pattern4.jpg'} />
-              </TitleBox>
-            )
-            consecImage = 0
-            break
-          }
-          case 'paragraph': {
-            raw.push(<p dangerouslySetInnerHTML={{ __html: block.data.text }}></p>)
-            consecImage = 0
-            break
-          }
-          case 'image': {
-            const image = <Image height={'100%'} width={'100%'} className="res-img"
-              onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} src={block.data.file.url}
-              fallback="/assets/Images/placeholder.png" preview={false} />
-            // <img style={{
-            //   display: 'inline',
-            //   width: '100%',
-            //   objectFit: 'cover'
-            // }}
-            //   src={block.data.file.url} className="res-img"
-            // />
-            let caption = ''
-            if (block.data.caption) {
-              caption = <div className="caption" dangerouslySetInnerHTML={{ __html: block.data.caption }}></div>
-            }
-            consecImage++
-            if (consecImage < 2) {
-              raw.push(
-                <div className="image-container">
-                  <div className="image-container-img">
-                    <div className="caption-border">
-                      {
-                        [image, caption]
-                      }
-                    </div>
-                  </div>
-                </div>)
-            } else {
-              raw[raw.length - 1] = (
-                <div className="image-container">
-                  {raw[raw.length - 1].props.children}
-                  <div className="divide-image"></div>
-                  <div className="image-container-img">
-                    <div className="caption-border">
-                      {[image, caption]}
-                    </div>
-                  </div>
-                </div>
-              )
-              consecImage = 0
-            }
-            break
-          }
-          default:
-            // code block
-            raw.push(<p>{block.data.text}</p>)
-            consecImage = 0
-        }
-      })
-      setContent(raw)
-
-      if (!window.google) await loader.load()
-
-      const google = window.google
-      const location = {
-        lng: reviews[id].cafe.location.lon,
-        lat: reviews[id].cafe.location.lat
-      }
-      // eslint-disable-next-line no-unused-vars
-      map = new google.maps.Map(document.getElementById('map'), {
-        center: location,
-        zoom: 15
-      })
-      // eslint-disable-next-line no-unused-vars
-      marker = new google.maps.Marker({
-        position: location,
-        icon: '/assets/Images/pin.png',
-        map
-      })
-    }
-    didMount()
-  }, [])
-
-  return (
-    <>
-      <Head>
-        <title>Cafeteller || {reviews[id].cafe.name}</title>
-      </Head>
-      <Row align="middle" justify="center">
-        <Col xs={24} xxl={18}>
-          <Banner>
-            <Image height={'100%'} width={'100%'} style={{ objectFit: 'cover' }} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
-              alt={reviews[id].cafe.banner.url} src={reviews[id].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false}
-            />
-          </Banner>
-          <Row justify="space-around">
-            <Col xs={24} md={19} lg={15} xxl={16}>
-              {/* <Title>{reviews[id].cafe.name}</Title> */}
-              <Content>{content}</Content>
-            </Col>
-            <Col xs={24} md={19} lg={8} xxl={7}>
-              <ContactInfo>
-                {(() => {
-                  const contactBox = []
-                  if (typeof reviews[id].cafe.openhour !== 'undefined') {
-                    contactBox.push(
-                      <Row>
-                        <Col span={4}>
-                          <Image src="/assets/Images/icon/Open hours.png" preview={false} height={30} width={30} />
-                        </Col>
-                        <Col span={20}>{reviews[id].cafe.openhour}</Col>
-                      </Row>
-                    )
-                  }
-                  if (typeof reviews[id].cafe.parking !== 'undefined') {
-                    contactBox.push(
-                      <Row>
-                        <Col span={4}>
-                          <Image src="/assets/Images/icon/parking.png" preview={false} height={35} width={35} />
-                        </Col>
-                        <Col span={20}>{reviews[id].cafe.parking}</Col>
-                      </Row>
-                    )
-                  }
-                  if (typeof reviews[id].cafe.phone !== 'undefined') {
-                    contactBox.push(
-                      <Row>
-                        <Col span={4}>
-                          <Image src="/assets/Images/icon/call.png" preview={false} height={30} width={30} />
-                        </Col>
-                        <Col span={20}>{reviews[id].cafe.phone}</Col>
-                      </Row>
-                    )
-                  }
-                  if (typeof reviews[id].cafe.details !== 'undefined') {
-                    contactBox.push(
-                      <Row>
-                        <Col span={4}>
-                          <Image src="/assets/Images/icon/address.png" preview={false} height={30} width={30} />
-                        </Col>
-                        <Col span={20}>{reviews[id].cafe.details}</Col>
-                      </Row>
-                    )
-                  }
-                  if (typeof reviews[id].cafe.landmark !== 'undefined') {
-                    contactBox.push(
-                      <Row>
-                        <Col span={4}>
-                          <Image src="/assets/Images/icon/location.png" preview={false} height={30} width={30} />
-                        </Col>
-                        <Col span={20}>{reviews[id].cafe.landmark}</Col>
-                      </Row>
-                    )
-                  }
-                  return (
-                    contactBox
-                  )
-                })()
-                }
-                <Map id="map"></Map>
-              </ContactInfo>
-              <ShareBox>
-                <Row>
-                  <Col xs={7} md={8}>
-                    <ShareLeft><span>Share</span></ShareLeft>
-                  </Col>
-                  <Col xs={17} md={14}>
-                    <ShareRight>
-                      {(() => {
-                        const shareBox = []
-                        if (typeof reviews[id].cafe.ig !== 'undefined') {
-                          shareBox.push(
-                            <a href={reviews[id].cafe.ig}>
-                              <Image src="/assets/Images/icon/Social/IG.png" preview={false} height={30} width={30} />
-                            </a>
-                          )
-                        }
-                        if (typeof reviews[id].cafe.fb !== 'undefined') {
-                          shareBox.push(
-                            <a href={reviews[id].cafe.fb}>
-                              <Image src="/assets/Images/icon/Social/FB.png" preview={false} height={30} width={30} />
-                            </a>
-                          )
-                        }
-                        if (typeof reviews[id].cafe.tw !== 'undefined') {
-                          shareBox.push(
-                            <a href={reviews[id].cafe.tw}>
-                              <Image src="/assets/Images/icon/Social/Twitter.png" preview={false} height={30} width={30} />
-                            </a>
-                          )
-                        }
-                        return (
-                          shareBox
-                        )
-                      })()
-                      }
-                    </ShareRight>
-                  </Col>
-                  <Col xs={0} md={12} lg={0}>
-                    <PatternShare img={'/assets/Images/pattern2.jpg'} />
-                  </Col>
-                </Row>
-              </ShareBox>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={24}>
-          <Pattern img={'/assets/Images/pattern5.jpg'}></Pattern>
-        </Col>
-      </Row>
-      <Row justify="center">
-        <Col xs={24} md={22} xxl={18}>
-          <MoreReview>
-            <h2><span>More</span> Like This</h2>
-            <Row gutter={{ xs: 0, md: 20 }}>
-              {
-                Object.keys(reviews).map((r, i) => {
-                  if (i < 2) {
-                    return (
-                      // <Link href={`/reviews/${r}`}>
-                      // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
-                      <Col key={r + '-link'} xs={12} md={8}>
-                        <MoreReviewCard key={r}>
-                          <Link href={`/reviews/${r}`}>
-                            <a className="flex-center">
-                              <Card
-                                bordered={false}
-                                cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
-                              >
-                                <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
-                              </Card>
-                              <CardHover></CardHover>
-                            </a>
-                          </Link>
-                        </MoreReviewCard>
-                      </Col>
-                      // </Link>
-                    )
-                  }
-                  return null
-                })
-              }
-            </Row>
-          </MoreReview>
-        </Col>
-      </Row>
-    </>
-  )
-}
-
-Home.propTypes = {
-  // ...prop type definitions here
-  reviews: PropTypes.object
-}
-
-// This function gets called at build time
-export async function getServerSideProps () {
-  // Call an external API endpoint to get posts
-  const db = firebase.firestore()
-  const reviewsDoc = await db.collection('reviews').get()
-  const reviews = {}
-  reviewsDoc.forEach(r => {
-    reviews[r.id] = r.data()
-  })
-
-  const cafes = []
-  for (const c in reviews) {
-    cafes.push(reviews[c].cafe.get())
-  }
-
-  const result = await Promise.all(cafes)
-  Object.keys(reviews).forEach((id, index) => {
-    reviews[id].cafe = result[index].data()
-
-    // convert all timestamp to date
-    reviews[id].createDate = reviews[id].createDate.toString()
-    reviews[id].updateDate = reviews[id].updateDate.toString()
-  })
-
-  // By returning { props: { posts } }, the Blog component
-  // will receive `posts` as a prop at build time
-  return {
-    props: {
-      reviews
-    }
-  }
-}
