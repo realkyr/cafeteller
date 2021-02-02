@@ -47,7 +47,7 @@ export default function Home ({ reviews }) {
         <title>Cafeteller</title>
       </Head>
       {/* <Container> */}
-      <Row justify="center">
+      <Row justify="center" style={{ overflowX: 'hidden' }}>
         <Col xs={24} xxl={18}>
           <Banner>
             <Image style={{ objectFit: 'cover' }} src="/assets/Images/COVER1.png" preview={false}></Image>
@@ -322,10 +322,10 @@ const RecentReviewCard = styled.div`
       padding: 2vw 2.4vw;
     }
     .ant-card-meta-title {
-        font-size: 1.4em;
+        font-size: 1.6em;
     }
     .ant-card-meta-description {
-        font-size: 1.8em;
+        font-size: 2em;
     }
   }
   div${CardHover} {
@@ -460,10 +460,10 @@ const AllReviewCard = styled.div`
       padding: 1.5vw 2.4vw;
     }
     .ant-card-meta-title {
-        font-size: 1.4em;
+        font-size: 1.5em;
     }
     .ant-card-meta-description {
-        font-size: 1.7em;
+        font-size: 1.9em;
     }
   }
   div${CardHover} {

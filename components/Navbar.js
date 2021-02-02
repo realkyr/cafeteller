@@ -159,13 +159,14 @@ const HoverableInnerScroll = styled.div`
   align-items: center;
   justify-content: center;
   display: inline-flex;
-  gap: 10px;
+  gap: 0px;
   padding: 0%;
   font-size: 1.5rem;
   @media(min-width: 600px) {
   }
   @media(min-width: 768px) {
     padding: 1%;
+    gap: 10px;
   }
 `
 const SearchBar = styled.div`
@@ -292,7 +293,8 @@ export default function Navbar () {
 
   const pathName = useRouter().pathname
   const [scrolled, setScrolled] = useState(false)
-  const [navCol, setNavCol] = useState([0, 0])
+  const [navCollg, setNavCollg] = useState([0, 0])
+  const [navColxs, setNavColxs] = useState([0, 0])
   const [buttonText, setbuttonText] = useState(['', ''])
   const [navBgColor, setNavBgColor] = useState(['', ''])
   // const [navBgColor, setNavBgColor] = useState(['', ''])
@@ -313,12 +315,14 @@ export default function Navbar () {
     }
   }
   const searchHover = () => {
-    setNavCol([2, 9])
+    setNavColxs([3, 11])
+    setNavCollg([2, 9])
     setbuttonText(['', 'Search'])
     setNavBgColor(['', 'nav-brown-bgcolor'])
   }
   const reviewHover = () => {
-    setNavCol([9, 2])
+    setNavColxs([11, 3])
+    setNavCollg([9, 2])
     setbuttonText(['Reviews', ''])
     setNavBgColor(['nav-brown-bgcolor', ''])
   }
@@ -336,13 +340,18 @@ export default function Navbar () {
     }
   }, [])
 
-  const x = ['navbar-scroll']
-  if (scrolled && pathName !== '/reviews/[id]') {
-    x.push('scrolled')
+  const defaultNavClass = ['']
+  const scrollNavClass = ['navbar-scroll']
+  if (scrolled) {
+    scrollNavClass.push('scrolled')
+  }
+  if (pathName === '/reviews/[id]') {
+    scrollNavClass.push('scrolled-from-start')
+    defaultNavClass.push('nav-hide')
   }
   return (
     <>
-      <Row justify="center">
+      <Row justify="center" className={defaultNavClass.join(' ')}>
         <Col xs={24} lg={22} xxl={18}>
           <Container>
             <Row className="nav-row">
@@ -435,7 +444,7 @@ export default function Navbar () {
         </Col>
       </Row>
 
-      <Row justify="center" className={x.join(' ')}>
+      <Row justify="center" className={scrollNavClass.join(' ')}>
         <Col xs={0} lg={3}>
           <Link href={'/'}>
             <a>
@@ -449,7 +458,7 @@ export default function Navbar () {
             <h1>CAFETELLER</h1>
           </N2Scroll>
         </Col>
-        <Col xs={11} lg={navCol[0]} id='review-hover' className='review-hover border-left'>
+        <Col xs={navColxs[0]} lg={navCollg[0]} id='review-hover' className='review-hover border-left'>
           <Link href={'/'}>
             <a>
               <HoverableScroll style={{ height: '100%' }} className={navBgColor[0]}>
@@ -466,7 +475,7 @@ export default function Navbar () {
             </a>
           </Link>
         </Col>
-        <Col xs={3} lg={navCol[1]} id='search-hover' className='search-hover border-left'>
+        <Col xs={navColxs[1]} lg={navCollg[1]} id='search-hover' className='search-hover border-left'>
           <Link href={'/search'}>
             <a>
               <HoverableScroll style={{ height: '100%' }} className={navBgColor[1]}>
