@@ -1,15 +1,30 @@
-import React, { useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
 import { InboxOutlined, LoadingOutlined, LeftOutlined, SaveOutlined } from '@ant-design/icons'
 import Banner from './Banner'
 
 import SimpleVideo from 'plugins/Video/index'
+import { loader } from 'plugins/gmap'
 import upload from 'plugins/Video/upload'
 import { igToBlock } from 'plugins/customfunc'
 
-const { Row, Col, Upload, message, Image, Spin, Button, Space } = require('antd')
+const {
+  Row,
+  Col,
+  Upload,
+  message,
+  Image,
+  Spin,
+  Button,
+  Space,
+  Input,
+  Typography
+} = require('antd')
 const { Dragger } = Upload
+const { Title } = Typography
+const { TextArea } = Input
 
 const componentForm = {
   street_number: 'short_name',
@@ -90,7 +105,8 @@ export default function Editor (props) {
     return content
   }
 
-  let editor
+  const autoInput = useRef()
+  let editor, map, autocomplete
   useEffect(() => {
     const didMount = async () => {
       setLoading(true)
@@ -138,8 +154,26 @@ export default function Editor (props) {
             data
           })
         }
+        if (!window.google) await loader.load()
+        const { google } = window
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: { lat: -34.397, lng: 150.644 },
+          zoom: 8
+        })
+        console.log(autoInput.current)
+        // Create the autocomplete object, restricting the search predictions to
+        autocomplete = new google.maps.places.Autocomplete(
+          autoInput.current.input,
+          {
+            types: ['establishment'],
+            componentRestrictions: restrictCountry,
+            fields: ['address_component', 'formatted_address', 'name', 'geometry']
+          }
+        )
+
         setLoading(false)
       } catch (error) {
+        console.log(error)
         message.error('load ไม่สำเร็จ')
       }
     }
@@ -213,7 +247,48 @@ export default function Editor (props) {
     }
   }
   const antIcon = <LoadingOutlined style={{ fontSize: 30 }} spin />
-
+  const contact = [
+    {
+      name: 'Open Hour',
+      icon: '/assets/Images/icon/Open hours.png',
+      input: (<Input />)
+    },
+    {
+      name: 'parking',
+      icon: '/assets/Images/icon/parking.png',
+      input: (<TextArea />)
+    },
+    {
+      name: 'call',
+      icon: '/assets/Images/icon/call.png',
+      input: (<Input />)
+    },
+    {
+      name: 'address detail',
+      icon: '/assets/Images/icon/address.png',
+      input: (<TextArea />)
+    },
+    {
+      name: 'landmark',
+      icon: '/assets/Images/icon/location.png',
+      input: (<Input />)
+    },
+    {
+      name: 'ig',
+      icon: '/assets/Images/icon/Social/IG.png',
+      input: (<Input />)
+    },
+    {
+      name: 'fb',
+      icon: '/assets/Images/icon/Social/FB.png',
+      input: (<Input />)
+    },
+    {
+      name: 'tw',
+      icon: '/assets/Images/icon/Social/Twitter.png',
+      input: (<Input />)
+    }
+  ]
   return (
     <>
       <Col xs={24}>
@@ -255,7 +330,51 @@ export default function Editor (props) {
                 : null
             }
           </Col>
-          <Col xs={24} lg={12}></Col>
+          <Col className="th" style={{ marginTop: 20 }} xs={24} lg={12}>
+            <Row gutter={[0, 16]}>
+              <Col xs={6} md={6} lg={4}>
+                <Title level={5}>
+                  ชื่อคาเฟ่
+                </Title>
+              </Col>
+              <Col xs={18} md={18} lg={20}>
+                <Input
+                  ref={autoInput}
+                  onChange={(e) => {
+                    setCafe({
+                      ...cafe,
+                      placeData: {
+                        ...cafe.placeData,
+                        name: e.target.value
+                      }
+                    })
+                  }}
+                  placeholder="Cafe Name"
+                  type="text"
+                />
+              </Col>
+            </Row>
+            {/* contact box */}
+            <Row>
+              <Col span={24}>
+                <ContactInfo>
+                  {
+                    contact.map(block => (
+                      <Row key={block.name}>
+                        <Col span={4}>
+                          <Image src={block.icon} preview={false} height={30} width={30} />
+                        </Col>
+                        <Col span={20}>
+                          {block.input}
+                        </Col>
+                      </Row>
+                    ))
+                  }
+                  <Map id="map" />
+                </ContactInfo>
+              </Col>
+            </Row>
+          </Col>
         </Row>
       </Col>
     </>
@@ -269,3 +388,48 @@ Editor.propTypes = {
   prev: PropTypes.func,
   save: PropTypes.func
 }
+
+const ContactInfo = styled.div`
+  font-size: 1rem;
+  border-top: 2px solid #d2c5b8;
+  background-color: #f5f1eb;
+  font-family: 'Maitree', serif;
+  .ant-row {
+    border-bottom: 2px solid #d2c5b8;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin: 0;
+    align-items: center;
+  }
+  .ant-image {
+    display: block;
+  }
+  @media (min-width: 768px) {
+    border: 2px solid #d2c5b8;
+    border-bottom:0;
+    margin-bottom: 0px;
+    font-size: 1.1rem;
+    .ant-row {
+      padding-top: 17px;
+      padding-bottom: 17px;
+      padding-left: 20px;
+      padding-right: 20px;
+      margin: 0;
+      align-items: center;
+    }
+  }
+  @media (min-width: 992px) {
+    border: 2px solid #d2c5b8;
+    margin-bottom: 20px;
+    border-bottom: 0;
+  }
+
+`
+const Map = styled.div`
+  width: 100%;
+  height: 400px;
+  background: grey;
+  border-bottom: 2px solid #d2c5b8;
+`
