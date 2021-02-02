@@ -312,13 +312,13 @@ const RecentReviewCard = styled.div`
     .ant-card-cover {
     }
     .ant-card-body {
-      padding: 1.8vw 2.4vw;
+      padding: 2vw 2.4vw;
     }
     .ant-card-meta-title {
         font-size: 1.4em;
     }
     .ant-card-meta-description {
-        font-size: 1.5em;
+        font-size: 1.8em;
     }
   }
   div${CardHover} {
@@ -452,7 +452,7 @@ const AllReviewCard = styled.div`
         font-size: 1.4em;
     }
     .ant-card-meta-description {
-        font-size: 1.5em;
+        font-size: 1.7em;
     }
   }
   div${CardHover} {
