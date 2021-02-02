@@ -52,7 +52,12 @@ export default function Home ({ reviews }) {
           <Banner>
             <Image style={{ objectFit: 'cover' }} src="/assets/Images/COVER1.png" preview={false}></Image>
           </Banner>
-          <Pattern1 img={'/assets/Images/pattern4.jpg'}></Pattern1>
+          <Pattern1 img={'/assets/Images/pattern4.jpg'}>
+            <div>
+            <BgIcon img={'/assets/Images/Star.png'}></BgIcon>
+            <BgIcon2 img={'/assets/Images/Thumbsup.png'}></BgIcon2>
+            </div>
+          </Pattern1>
           <RecentReview>
             <h2><span>Recent</span> Review</h2>
             <Underline />
@@ -91,7 +96,7 @@ export default function Home ({ reviews }) {
                           >
                             <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
                           </Card>
-                          <CardHover style={{ marginTop: 30 }}></CardHover>
+                          <CardHover></CardHover>
                         </a>
                       </Link>
                     </RecentReviewCard>
@@ -104,7 +109,12 @@ export default function Home ({ reviews }) {
             }
             </Row>
           </RecentReview>
-          <Pattern2 img={'/assets/Images/pattern2.jpg'}></Pattern2>
+          <Pattern2 img={'/assets/Images/pattern2.jpg'}>
+            <div>
+            <BgIcon3 img={'/assets/Images/Tag.png'}></BgIcon3>
+            <BgIcon4 img={'/assets/Images/Hexagon.png'}></BgIcon4>
+            </div>
+          </Pattern2>
           <AllReview>
             <h2><span>All</span> Review</h2>
             <Underline style={{ marginBottom: 12 }} />
@@ -268,7 +278,7 @@ const RecentReviewCard = styled.div`
     box-sizing: border-box;
     width: 100%;
     height: auto;
-    margin-top: 30px; 
+    margin-top: 20px; 
     /* display: inline-table; */
     /* &:hover {
       cursor: pointer;
@@ -293,16 +303,13 @@ const RecentReviewCard = styled.div`
   .ant-card-meta-description {
       font-size: 21px;
   }
-  div${CardHover} {
-    height: 93%;
-    width: 100%;
-  }
   @media (min-width: 768px) {
     width: 100%;
     .ant-card {
       /* max-height: 464px; */
       height: auto;
       width: 95%;
+      margin-top: 30px;
     }
     .ant-image {
       top: 0;
@@ -322,11 +329,15 @@ const RecentReviewCard = styled.div`
     }
   }
   div${CardHover} {
+    margin-top: 20px;
+    height: 93%;
+    width: 100%;
     @media (min-width: 300px) {
         height: 93.5%;
         width: 100%;
     }
     @media (min-width: 768px) {
+        margin-top: 30px;
         height: 91%;
         width: 95%;
     }
@@ -508,7 +519,7 @@ const Pattern2 = styled.div`
 
   @media (min-width: 768px) {
     background-size: 20%;
-  height: 77px;
+    height: 77px;
   }
 `
 const Underline = styled.div`
@@ -516,4 +527,86 @@ const Underline = styled.div`
   width: 25px;
   margin: auto;
   border-radius: 26%;
+`
+const BgIcon = styled.div`
+  position: absolute;
+  background-image: url(${props => props.img});
+  margin: 0 auto;
+  background-repeat: no-repeat;
+  background-position-y: bottom;
+  background-position-x: left;
+  left: -3%;
+  right: 0;
+  width: 100%;
+  background-size: 28%;
+  height: calc(77px + 3%);
+    padding-top: calc(149px + 5%);
+  @media (min-width: 768px) {
+    width: 75%;
+    background-size: 28%;
+    height: calc(77px + 3%);
+    padding-top: calc(172px + 5%);
+  }
+`
+const BgIcon2 = styled.div`
+  position: absolute;
+  background-image: url(${props => props.img});
+  margin: 0 auto;
+  left: 7%;
+  right: 0;
+  background-repeat: no-repeat;
+  background-position-x: right;
+  background-position-y: 23%;
+  background-size: 25%;
+  width: 100%;
+  height: calc(77px + 3%);
+  padding-top: calc(172px + 5%);
+  @media (min-width: 768px) {
+    background-position-y: 23%;
+    background-size: 20%;
+    width: 70%;
+    height: calc(77px + 3%);
+    padding-top: calc(172px + 5%);
+  }
+`
+const BgIcon3 = styled.div`
+  position: absolute;
+  background-image: url(${props => props.img});
+  margin: 0 auto;
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-position-x: left;
+    left: 6%;
+    right: 0;
+    background-size: 36%;
+    height: calc(38px + 3%);
+    padding-top: calc(17px + 0%);
+    width: 100%;
+  @media (min-width: 768px) {
+    background-size: 27%;
+    height: calc(107px + 3%);
+    padding-top: calc(116px + 5%);
+    width: 80%;
+  }
+`
+const BgIcon4 = styled.div`
+  position: absolute;
+  background-image: url(${props => props.img});
+  margin: 0 auto;
+    left: -8%;
+    right: 0;
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y: 13%;
+    background-size: 25%;
+    height: calc(77px + 3%);
+    padding-top: calc(172px + 5%);
+  width: 100%;
+  @media (min-width: 768px) {
+    background-position-y: 30%;
+    background-size: 17%;
+    height: calc(77px + 3%);
+    padding-top: calc(172px + 5%);
+  width: 62%;
+  }
 `
