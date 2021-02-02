@@ -7,6 +7,10 @@ body {
   overflow-x: hidden;
 }
 
+html {
+  height: auto !important;
+}
+
 @import url('https://fonts.googleapis.com/css?family=Maitree:100,200,300,400,600,700&display=swap&subset=latin-ext,thai');
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400&display=swap');
 @font-face {

@@ -4,6 +4,7 @@
 
 .cx-video video {
   max-width: 600px;
+  width: 100%;
 }
 
 .editor-section {
