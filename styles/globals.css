@@ -4,7 +4,6 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  overflow-x: hidden;
 }
 
 html {
@@ -128,6 +127,9 @@ a {
 .scrolled {
   transform: translateY(0px) !important;
 }
+.scrolled-from-start {
+  transform: translateY(0px);
+}
 .ant-dropdown-menu {
   background-color: #1e315c;
   margin-top: -4px;
@@ -175,6 +177,12 @@ a:hover {
     198deg
     ) saturate(106.5) grayscale(0.7);
 }
+.nav-hide {
+  padding-top: 55px;
+}
+.nav-hide .ant-row {
+  display: none;
+}
 /* // Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
   
@@ -182,6 +190,15 @@ a:hover {
 
 /* // Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
+  .scrolled-from-start {
+    transform: translateY(-210px);
+  }
+  .nav-hide {
+    padding-top: 0px;
+  }
+  .nav-hide .ant-row {
+    display: flex;
+  }
   .nav-row{
     height: 115px;
   }
