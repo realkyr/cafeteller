@@ -297,9 +297,11 @@ export default function Navbar () {
   const [navColxs, setNavColxs] = useState([0, 0])
   const [buttonText, setbuttonText] = useState(['', ''])
   const [navBgColor, setNavBgColor] = useState(['', ''])
-  // const [navBgColor, setNavBgColor] = useState(['', ''])
+  const [defalutHover, setdefalutHover] = useState(['search'])
+  const [refreshKey, setRefreshKey] = useState(0)
 
   const CheckPath = () => {
+    console.log('check path')
     if (pathName === '/search') {
       searchHover()
     } else {
@@ -314,6 +316,14 @@ export default function Navbar () {
       setScrolled(false)
     }
   }
+  const searchClick = () => {
+    setdefalutHover('search')
+    setRefreshKey(oldKey => oldKey + 1)
+  }
+  const reviewClick = () => {
+    setdefalutHover('review')
+    setRefreshKey(oldKey => oldKey + 1)
+  }
   const searchHover = () => {
     setNavColxs([3, 11])
     setNavCollg([2, 9])
@@ -326,20 +336,6 @@ export default function Navbar () {
     setbuttonText(['Reviews', ''])
     setNavBgColor(['nav-brown-bgcolor', ''])
   }
-  useEffect(() => {
-    window.addEventListener('load', CheckPath)
-    const searchButton = Object.values(document.getElementsByClassName('search-hover'))
-    const reviewButton = Object.values(document.getElementsByClassName('review-hover'))
-    window.addEventListener('scroll', handleScroll)
-    searchButton.forEach(element => { element.addEventListener('mouseenter', searchHover) })
-    reviewButton.forEach(element => { element.addEventListener('mouseenter', reviewHover) })
-    if (pathName === '/search') {
-      reviewButton.forEach(element => { element.addEventListener('mouseleave', searchHover) })
-    } else {
-      searchButton.forEach(element => { element.addEventListener('mouseleave', reviewHover) })
-    }
-  }, [])
-
   const defaultNavClass = ['']
   const scrollNavClass = ['navbar-scroll']
   if (scrolled) {
@@ -349,6 +345,43 @@ export default function Navbar () {
     scrollNavClass.push('scrolled-from-start')
     defaultNavClass.push('nav-hide')
   }
+  useEffect(() => {
+    console.log('s')
+    const searchButton = Object.values(document.getElementsByClassName('search-hover'))
+    const reviewButton = Object.values(document.getElementsByClassName('review-hover'))
+    window.addEventListener('load', CheckPath)
+    window.addEventListener('scroll', handleScroll)
+    searchButton.forEach(element => {
+      element.addEventListener('mouseenter', searchHover)
+      element.addEventListener('click', searchClick)
+    })
+    reviewButton.forEach(element => {
+      element.addEventListener('mouseenter', reviewHover)
+      element.addEventListener('click', reviewClick)
+    })
+    if (defalutHover === 'search') {
+      reviewButton.forEach(element => { element.addEventListener('mouseleave', searchHover) })
+    } else {
+      searchButton.forEach(element => { element.addEventListener('mouseleave', reviewHover) })
+    }
+
+    return () => {
+      console.log('ss')
+      window.removeEventListener('load', CheckPath)
+      window.removeEventListener('scroll', handleScroll)
+      searchButton.forEach(element => {
+        element.removeEventListener('mouseenter', searchHover)
+        element.removeEventListener('click', searchClick)
+      })
+      reviewButton.forEach(element => {
+        element.removeEventListener('mouseenter', reviewHover)
+        element.removeEventListener('click', reviewClick)
+      })
+      reviewButton.forEach(element => { element.removeEventListener('mouseleave', searchHover) })
+      searchButton.forEach(element => { element.removeEventListener('mouseleave', reviewHover) })
+    }
+  }, [refreshKey])
+
   return (
     <>
       <Row justify="center" className={defaultNavClass.join(' ')}>
