@@ -10,6 +10,9 @@ import { loader } from 'plugins/gmap'
 import upload from 'plugins/Video/upload'
 import { igToBlock } from 'plugins/customfunc'
 
+import amphoes from '../../public/assets/json/amphoes.json'
+import changwats from '../../public/assets/json/changwats.json'
+
 const {
   Row,
   Col,
@@ -20,8 +23,11 @@ const {
   Button,
   Space,
   Input,
-  Typography
+  Typography,
+  Select
 } = require('antd')
+
+const { Option } = Select
 const { Dragger } = Upload
 const { Title } = Typography
 const { TextArea } = Input
@@ -53,6 +59,59 @@ export default function Editor (props) {
     subdistrict: '',
     selectedTags: []
   })
+
+  let editor, map, autocomplete, marker
+  const fillInAddress = () => {
+    // Get the place details from the autocomplete object.
+    const place = autocomplete.getPlace()
+    const placeData = {}
+    placeData.name = place.name
+    placeData.location = {
+      lat: place.geometry.location.lat(),
+      lon: place.geometry.location.lng()
+    }
+    placeData.details = place.formatted_address
+    console.log(place.geometry.location)
+
+    const { google } = window
+    if (marker) marker.setMap(null)
+    marker = new google.maps.Marker({
+      position: place.geometry.location,
+      map,
+      icon: '/assets/Images/pin.png',
+      title: place.name
+    })
+
+    map.panTo(place.geometry.location)
+    map.setZoom(20)
+    // Get each component of the address from the place details,
+    // and then fill-in the corresponding field on the form.
+    for (let i = 0; i < place.address_components.length; i++) {
+      let addressType = place.address_components[i].types[0]
+      if (componentForm[addressType]) {
+        // eslint-disable-next-line prefer-const
+        let val = place.address_components[i][componentForm[addressType]]
+        if (addressType === 'locality') {
+          addressType = 'sublocality_level_2'
+        } else if (addressType === 'administrative_area_level_2') {
+          addressType = 'sublocality_level_1'
+        }
+        val = val.replace('อำเภอ', '')
+        val = val.replace('อ.', '')
+        val = val.replace('เขต', '')
+        val = val.replace('แขวง', '')
+        val = val.replace('ตำบล', '')
+        val = val.replace('จังหวัด', '')
+        val = val.replace('จ.', '')
+        val = val.trim()
+        placeData[addressType] = val
+      }
+    }
+    setCafe({
+      ...cafe,
+      placeData
+    })
+  }
 
   const content = async (post) => {
     const content = {}
@@ -106,7 +165,6 @@ export default function Editor (props) {
   }
 
   const autoInput = useRef()
-  let editor, map, autocomplete
   useEffect(() => {
     const didMount = async () => {
       setLoading(true)
@@ -170,7 +228,9 @@ export default function Editor (props) {
             fields: ['address_component', 'formatted_address', 'name', 'geometry']
           }
         )
-
+        // When the user selects an address from the drop-down, populate the
+        // address fields in the form.
+        autocomplete.addListener('place_changed', fillInAddress)
         setLoading(false)
       } catch (error) {
         console.log(error)
@@ -247,46 +307,110 @@ export default function Editor (props) {
     }
   }
   const antIcon = <LoadingOutlined style={{ fontSize: 30 }} spin />
+  const setPlaceData = (val) => {
+    setCafe({
+      ...cafe,
+      placeData: {
+        ...cafe.placeData,
+        ...val
+      }
+    })
+  }
   const contact = [
     {
       name: 'Open Hour',
       icon: '/assets/Images/icon/Open hours.png',
-      input: (<Input />)
+      input: (
+        <Input
+          value={cafe.placeData.openhour}
+          onChange={e => {
+            setPlaceData({ openhour: e.target.value })
+          }}
+        />
+      )
     },
     {
       name: 'parking',
       icon: '/assets/Images/icon/parking.png',
-      input: (<TextArea />)
+      input: (
+        <TextArea
+          value={cafe.placeData.parking}
+          onChange={e => {
+            setPlaceData({ parking: e.target.value })
+          }}
+        />
+      )
     },
     {
       name: 'call',
       icon: '/assets/Images/icon/call.png',
-      input: (<Input />)
+      input: (
+        <Input
+          value={cafe.placeData.phone}
+          onChange={e => {
+            setPlaceData({ phone: e.target.value })
+          }}
+        />)
     },
     {
       name: 'address detail',
       icon: '/assets/Images/icon/address.png',
-      input: (<TextArea />)
+      input: (
+        <TextArea
+          value={cafe.placeData.details}
+          onChange={e => {
+            setPlaceData({ details: e.target.value })
+          }}
+        />
+      )
     },
     {
       name: 'landmark',
       icon: '/assets/Images/icon/location.png',
-      input: (<Input />)
+      input: (
+        <Input
+          value={cafe.placeData.landmark}
+          onChange={e => {
+            setPlaceData({ landmark: e.target.value })
+          }}
+        />
+      )
     },
     {
       name: 'ig',
       icon: '/assets/Images/icon/Social/IG.png',
-      input: (<Input />)
+      input: (
+        <Input
+          value={cafe.placeData.ig}
+          onChange={e => {
+            setPlaceData({ ig: e.target.value })
+          }}
+        />
+      )
     },
     {
       name: 'fb',
       icon: '/assets/Images/icon/Social/FB.png',
-      input: (<Input />)
+      input: (
+        <Input
+          value={cafe.placeData.fb}
+          onChange={e => {
+            setPlaceData({ fb: e.target.value })
+          }}
+        />
+      )
     },
     {
       name: 'tw',
       icon: '/assets/Images/icon/Social/Twitter.png',
-      input: (<Input />)
+      input: (
+        <Input
+          value={cafe.placeData.tw}
+          onChange={e => {
+            setPlaceData({ tw: e.target.value })
+          }}
+        />
+      )
     }
   ]
   return (
@@ -332,26 +456,122 @@ export default function Editor (props) {
           </Col>
           <Col className="th" style={{ marginTop: 20 }} xs={24} lg={12}>
             <Row gutter={[0, 16]}>
-              <Col xs={6} md={6} lg={4}>
-                <Title level={5}>
+              <Col xs={4} sm={6} md={4} lg={2}>
+                <Title style={{ textAlign: 'center' }} level={5}>
                   ชื่อคาเฟ่
                 </Title>
               </Col>
-              <Col xs={18} md={18} lg={20}>
+              <Col xs={20} sm={18} md={20} lg={22}>
                 <Input
                   ref={autoInput}
+                  value={cafe.placeData.name}
                   onChange={(e) => {
-                    setCafe({
-                      ...cafe,
-                      placeData: {
-                        ...cafe.placeData,
-                        name: e.target.value
-                      }
+                    setPlaceData({
+                      name: e.target.value
                     })
                   }}
                   placeholder="Cafe Name"
                   type="text"
                 />
+              </Col>
+              <Col xs={6} md={4} lg={2}>
+                <Title style={{ textAlign: 'center' }} level={5}>
+                  เลขที่
+                </Title>
+              </Col>
+              <Col xs={18} md={18} lg={10}>
+                <Input
+                  value={cafe.placeData.street_number}
+                  onChange={(e) => {
+                    setPlaceData({
+                      street_number: e.target.value
+                    })
+                  }}
+                  placeholder="Cafe Name"
+                  type="text"
+                />
+              </Col>
+              <Col xs={6} md={4} lg={2}>
+                <Title style={{ textAlign: 'center' }} level={5}>
+                  รหัสไปรษณีย์
+                </Title>
+              </Col>
+              <Col xs={18} md={18} lg={10}>
+                <Input
+                  value={cafe.placeData.postal_code}
+                  onChange={(e) => {
+                    setPlaceData({
+                      postal_code: e.target.value
+                    })
+                  }}
+                  placeholder="Cafe Name"
+                  type="text"
+                />
+              </Col>
+              <Col xs={6} md={4} lg={2}>
+                <Title style={{ textAlign: 'center' }} level={5}>
+                  เขต/อำเภอ
+                </Title>
+              </Col>
+              <Col xs={18} md={18} lg={10}>
+                <Select
+                  showSearch
+                  value={cafe.placeData.sublocality_level_1}
+                  style={{ width: '100%' }}
+                  onChange={(id) => {
+                    setPlaceData({
+                      administrative_area_level_1: changwats[id.slice(0, 2)].name.th,
+                      sublocality_level_1: amphoes[id].name.th
+                    })
+                  }}
+                  optionFilterProp="children"
+                  placeholder="ค้นหาอำเภอ/เขต"
+                  optionLabelProp="label"
+                >
+                  {
+                    Object.keys(amphoes)
+                      .map(amphoe => (
+                        <Option key={amphoe} value={amphoe} label={amphoes[amphoe].name.th}>
+                          {
+                            changwats[amphoes[amphoe].changwat_id].name.th +
+                            ' -> ' +
+                            amphoes[amphoe].name.th
+                          }
+                        </Option>
+                      ))
+                  }
+                </Select>
+              </Col>
+              <Col xs={6} md={4} lg={2}>
+                <Title style={{ textAlign: 'center' }} level={5}>
+                  จังหวัด
+                </Title>
+              </Col>
+              <Col xs={18} md={18} lg={10}>
+                <Select
+                  showSearch
+                  value={cafe.placeData.administrative_area_level_1}
+                  style={{ width: '100%' }}
+                  onChange={(id) => {
+                    setPlaceData({
+                      administrative_area_level_1: changwats[id].name.th
+                    })
+                  }}
+                  optionFilterProp="children"
+                  placeholder="จังหวัด"
+                  optionLabelProp="label"
+                >
+                  {
+                    Object.keys(changwats)
+                      .map(changwat => (
+                        <Option key={changwat} value={changwat} label={changwats[changwat].name.th}>
+                          {
+                            changwats[changwat].name.th
+                          }
+                        </Option>
+                      ))
+                  }
+                </Select>
               </Col>
             </Row>
             {/* contact box */}
