@@ -254,11 +254,12 @@ export default function Home ({ reviews }) {
           <Pattern img={'/assets/Images/pattern5.jpg'}></Pattern>
         </Col>
       </Row>
-      <Row justify="center">
+      <Row justify="center" style={{ paddingBottom: '1.4em' }}>
         <Col xs={24} md={22} xxl={18}>
           <MoreReview>
             <h2><span>More</span> Like This</h2>
-            <Row gutter={{ xs: 0, md: 20 }}>
+            <Underline style={{ marginBottom: 12 }} />
+            <Row gutter={{ xs: 10, md: 20 }}>
               {
                 Object.keys(reviews).map((r, i) => {
                   if (i < 2) {
@@ -268,14 +269,13 @@ export default function Home ({ reviews }) {
                       <Col key={r + '-link'} xs={12} md={8}>
                         <MoreReviewCard key={r}>
                           <Link href={`/reviews/${r}`}>
-                            <a className="flex-center">
+                            <a className="flex-center card-shadow">
                               <Card
                                 bordered={false}
                                 cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
                               >
                                 <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
                               </Card>
-                              <CardHover></CardHover>
                             </a>
                           </Link>
                         </MoreReviewCard>
@@ -457,19 +457,12 @@ const PatternShare = styled.div`
   height: 70px;
   background-image: url(${props => props.img});
 `
-const CardHover = styled.div`
-  display: flex;
-  position: absolute;
-  /* margin-top: 30px; */
-  border-radius: 20px;
-  border: solid 3px transparent;
-    &:hover {
-        cursor: pointer;
-        transition: 0.1s;
-        border-radius: 20px;
-        box-shadow: 8px 8px #dfceaf;
-        border: solid 3px #1e315c;
-    }
+
+const Underline = styled.div`
+  border-bottom: solid 3px #555555;
+  width: 25px;
+  margin: auto;
+  border-radius: 26%;
 `
 const MoreReview = styled.div`
   width: 96%;
@@ -528,19 +521,22 @@ img{
   font-weight: bold;
   white-space: normal;
 }
-.ant-card {
-  width: 95%;
-  height: 100%;
-  /* display: inline-table; */
-  border: solid 1px #d0c7be;
+.card-shadow {
   border-radius: 20px;
-  /* &:hover {
-      cursor: pointer;
-      transition: 0.1s;
-      border-radius: 20px;
-      box-shadow: 8px 8px #dfceaf;
-      border: solid 3px #1e315c;
-  } */
+  &:hover {
+    box-shadow: 8px 8px 1px 2px #dfceaf;
+    .ant-card {
+      box-shadow: 0px 0px 0px 3px #1e315c;
+    }
+  }
+}
+.ant-card {
+  transition-timing-function: cubic-bezier(0.1, 0.85, 0.31, 0.99);
+  transition-duration: .1s;
+  border-radius: 18.5px;
+  box-shadow: 0px 0px 0px 1px #d0c7be;
+  width: 100%;
+  height: 100%;
 }
 .ant-image {
   top: 0;
@@ -555,64 +551,23 @@ img{
     font-size: 14px;
 }
 .ant-card-meta-description {
-    font-size: 17px;
+    font-size: 20px;
 }
 @media (min-width: 768px) {
   margin-top: 20px;
   .ant-card {
-    width: 96%;
+    width: 100%;
   }
   .ant-card-body {
     padding: 1.5vw 2.4vw;
   }
   .ant-card-meta-title {
-      font-size: 1.4em;
-  }
-  .ant-card-meta-description {
       font-size: 1.5em;
   }
-}
-  div${CardHover} {
-      border-radius: 22px;
-      height: 96%;
-      width: 95%;
-    @media (min-width: 300px) {
-        height: 97%;
-        width: 95.5%;
-    }
-    /* @media (min-width: 600px) {
-        height: 97%;
-        width: 89%;
-    } */
-    @media (min-width: 768px) {
-        height: 94%;
-        width: 89%;
-    }
-    @media (min-width: 900px) {
-        height: 94%;
-        width: 90%;
-    }
-    @media (min-width: 1020px) {
-        height: 94%;
-        width: 90%;
-    }
-    @media (min-width: 1200px) {
-        height: 95%;
-        width: 91.5%;
-    }
-    @media (min-width: 1400px) {
-        height: 95.5%;
-        width: 92%;
-    }
-    @media (min-width: 1600px) {
-        height: 95%;
-        width: 92%;
-    }
-    @media (min-width: 2200px) {
-        height: 96.5%;
-        width: 93.3%;
-    }
+  .ant-card-meta-description {
+      font-size: 1.9em;
   }
+}
 `
 const Content = styled.div`
   p {
