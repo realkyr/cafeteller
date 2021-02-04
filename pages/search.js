@@ -83,7 +83,6 @@ img{
 }
 .ant-card-body {
   text-align: center;
-  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -96,12 +95,25 @@ img{
   font-size: 14px;
   margin-bottom: 4px
 }
-.ant-card {
-  width: 95%;
-  height: 100%;
-  display: inline-table;
-  border: solid 2px #d0c7be;
+.ant-card-meta-description {
+    font-size: 23px;
+}
+.card-shadow {
   border-radius: 20px;
+  &:hover {
+    box-shadow: 8px 8px 1px 2px #dfceaf;
+    .ant-card {
+      box-shadow: 0px 0px 0px 3px #1e315c;
+    }
+  }
+}
+.ant-card {
+  transition-timing-function: cubic-bezier(0.1, 0.85, 0.31, 0.99);
+  transition-duration: .1s;
+  box-shadow: 0px 0px 0px 1px #d0c7be;
+  border-radius: 18.5px;
+  width: 100%;
+  height: 100%;
 }
 .ant-image {
   top: 0;
@@ -112,20 +124,9 @@ img{
   border-top-left-radius: 18px;
   border-top-right-radius: 18px;
 }
-.ant-card {
-  border: solid 2px #d0c7be;
-  &:hover {
-      cursor: pointer;
-      transition: 0.1s;
-      border-radius: 20px;
-      box-shadow: 8px 8px #dfceaf;
-      border: solid 3px #1e315c;
-  }
-}
 @media (min-width: 768px) {
   margin-top: 20px;
   .ant-card {
-    width: 96%;
   }
   .ant-card-cover {
     padding-top: 66%;
@@ -133,9 +134,14 @@ img{
   .ant-card-body {
     padding: 1vw;
   }
+  .ant-card-meta-title {
+      font-size: 1.3em;
+  }
+  .ant-card-meta-description {
+      font-size: 1.8em;
+  }
 }
 `
-
 export default class Search extends Component {
   constructor (props) {
     super(props)
@@ -239,7 +245,7 @@ export default class Search extends Component {
         <Row justify="center">
           <Col xs={24} xxl={18}>
             <Row>
-              <Col xs={24} md={17} lg={18}>
+              <Col xs={24} md={17} xxl={18}>
                 <MapContainer>
                   <MapHeader>
                   <Row gutter={[16, 12]}>
@@ -355,35 +361,32 @@ export default class Search extends Component {
                   <Map id="map" />
                 </MapContainer>
               </Col>
-              <Col xs={24} md={{ span: 7 }} lg={{ span: 5, offset: 1 }}>
+              <Col xs={24} md={{ span: 7 }} xxl={{ span: 5, offset: 1 }}>
                 <SearchReview>
-                  <h2><span>num</span> Reviews</h2>
-                  <Row>
+                  <h2 style={{ marginBottom: 0 }}><span>num</span> Reviews</h2>
+                  <Row style={{ overflowY: 'scroll', padding: 13, height: '87vh' }}>
                   {
-                    // Object.keys(reviews).map((r, i) => {
-                    //   if (i < 2) {
-                    //     return (
-                    //     // <Link href={`/reviews/${r}`}>
-                    //     // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
-                    //     <Col key={r + '-link'} xs={24}>
-                    //         <SearchReviewCard key={r}>
-                    //           <Link href={`/reviews/${r}`}>
-                    //             <a>
-                    //               <Card
-                    //                 bordered={false}
-                    //                 cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
-                    //               >
-                    //                 <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
-                    //               </Card>
-                    //               </a>
-                    //           </Link>
-                    //         </SearchReviewCard>
-                    //       </Col>
-                    //       // </Link>
-                    //     )
-                    //   }
-                    //   return null
-                    // })
+                    Object.keys(reviews).map((r) => {
+                      return (
+                      // <Link href={`/reviews/${r}`}>
+                      // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
+                      <Col key={r + '-link'} xs={24}>
+                          <SearchReviewCard key={r}>
+                            <Link href={`/reviews/${r}`}>
+                              <a className="flex-center card-shadow">
+                                <Card
+                                  bordered={false}
+                                  cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
+                                >
+                                  <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
+                                </Card>
+                                </a>
+                            </Link>
+                          </SearchReviewCard>
+                        </Col>
+                        // </Link>
+                      )
+                    })
                   }
                   </Row>
                 </SearchReview>
