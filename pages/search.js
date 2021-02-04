@@ -148,7 +148,7 @@ export default class Search extends Component {
     this.state = {
       map: null,
       markers: [],
-      filteredReviews: []
+      filteredReviews: [...Object.keys(props.reviews)]
     }
   }
 
@@ -241,7 +241,8 @@ export default class Search extends Component {
 
   render () {
     const { amphoes, changwats, reviews } = this.props
-    const { map, markers } = this.state
+    const { map, markers, filteredReviews } = this.state
+    console.log(filteredReviews)
     return (
       <>
         <Head>
@@ -264,9 +265,15 @@ export default class Search extends Component {
                             this.displaySelectedMarkers([selectedMarker])
                             map.panTo(selectedMarker.getPosition())
                             map.setZoom(15)
+                            this.setState({
+                              filteredReviews: [id]
+                            })
                           } else {
                             this.displayAllMarkers(markers, map)
                             this.setMapVisibleToMarker(map, markers)
+                            this.setState({
+                              filteredReviews: [...Object.keys(reviews)]
+                            })
                           }
                         }}
                         allowClear
