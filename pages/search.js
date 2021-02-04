@@ -141,7 +141,8 @@ export default class Search extends Component {
     super(props)
     this.state = {
       map: null,
-      markers: []
+      markers: [],
+      filteredReviews: []
     }
   }
 
@@ -204,15 +205,19 @@ export default class Search extends Component {
     // clear all marker
     this.clearMarkers()
 
-    // filter marker by location
-    const markers = Object.keys(reviews).filter(id => {
+    const filteredReviews = Object.keys(reviews).filter(id => {
       const review = reviews[id]
       let condition = true
       if (isArrayExist(selectedTypes)) condition = condition && isArrayHasDuplicateEl(selectedTypes, review.cafe.tags)
       if (isArrayExist(selectedChangwats)) condition = condition && selectedChangwats.includes(review.cafe.administrative_area_level_1)
       if (isArrayExist(selectedAmphoes)) condition = condition && selectedAmphoes.includes(review.cafe.sublocality_level_1)
       return condition
-    }).map(id => reviews[id].marker)
+    })
+
+    this.setState({ filteredReviews })
+
+    // filter marker by location
+    const markers = filteredReviews.map(id => reviews[id].marker)
 
     if (!isArrayExist(markers)) {
       message.error('ไม่มีคาเฟ่ตามเงื่อนไข')
