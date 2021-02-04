@@ -47,7 +47,7 @@ export default function Home ({ reviews }) {
         <title>Cafeteller</title>
       </Head>
       {/* <Container> */}
-      <Row justify="center" style={{ overflowX: 'hidden' }}>
+      <Row justify="center" style={{ overflow: 'hidden', paddingBottom: '1.4em' }}>
         <Col xs={24} xxl={18}>
           <Banner>
             <Image style={{ objectFit: 'cover' }} src="/assets/Images/COVER1.png" preview={false}></Image>
@@ -60,7 +60,7 @@ export default function Home ({ reviews }) {
           </Pattern1>
           <RecentReview>
             <h2><span>Recent</span> Review</h2>
-            <Underline />
+            <Underline style={{ marginBottom: '1.7rem' }} />
             {
               user && isAdmin
                 ? (
@@ -74,7 +74,7 @@ export default function Home ({ reviews }) {
                   )
                 : null
             }
-            <Row>
+            <Row gutter={{ xs: 4, md: 24 }}>
             {
               Object.keys(reviews).map((r, i) => {
                 // <Link href={`/reviews/${r}`}>
@@ -84,7 +84,7 @@ export default function Home ({ reviews }) {
                   <Col key={r + '-link'} xs={24} md={12}>
                     <RecentReviewCard key={r}>
                       <Link href={`/reviews/${r}`}>
-                        <a className='flex-center'>
+                        <a className='flex-center card-shadow'>
                           <Card
                             bordered={false}
                             cover={<Image height={'100%'}
@@ -96,7 +96,6 @@ export default function Home ({ reviews }) {
                           >
                             <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
                           </Card>
-                          <CardHover></CardHover>
                         </a>
                       </Link>
                     </RecentReviewCard>
@@ -118,7 +117,7 @@ export default function Home ({ reviews }) {
           <AllReview>
             <h2><span>All</span> Review</h2>
             <Underline style={{ marginBottom: 12 }} />
-            <Row gutter={{ xs: 0, md: 20 }}>
+            <Row gutter={{ xs: 10, md: 20 }}>
             {
               Object.keys(reviews).map(r => (
                 // <Link href={`/reviews/${r}`}>
@@ -126,14 +125,13 @@ export default function Home ({ reviews }) {
                 <Col key={r + '-link'} xs={12} md={8}>
                   <AllReviewCard key={r}>
                     <Link href={`/reviews/${r}`}>
-                      <a className='flex-center'>
+                      <a className='flex-center card-shadow'>
                         <Card
                           bordered={false}
                           cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
                         >
                           <Meta className="cafeCardDesc" title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
                         </Card>
-                        <CardHover></CardHover>
                       </a>
                     </Link>
                   </AllReviewCard>
@@ -189,7 +187,6 @@ export async function getServerSideProps () {
 }
 
 const Banner = styled.div`
-  // height: 200px;
   padding-top: 50%;
   position: relative;
   overflow: hidden;
@@ -208,7 +205,6 @@ const Banner = styled.div`
 const CardHover = styled.div`
   display: flex;
   position: absolute;
-  /* margin-top: 30px; */
   border-radius: 20px;
   border: solid 3px transparent;
     &:hover {
@@ -272,21 +268,25 @@ const RecentReviewCard = styled.div`
     justify-content: center;
     padding: 3.7vw;
   }
-  .ant-card {
-    border: solid 1px #d0c7be;
+  .card-shadow {
+    padding-bottom: 20px;
     border-radius: 20px;
+    &:hover {
+      box-shadow: 8px 8px 1px 2px #dfceaf;
+
+      .ant-card {
+        box-shadow: 0px 0px 0px 3px #1e315c;
+      }
+    }
+  }
+  .ant-card {
+    transition-timing-function: cubic-bezier(0.1, 0.85, 0.31, 0.99);
+    transition-duration: .1s;
+    box-shadow: 0px 0px 0px 1px #d0c7be;
+    border-radius: 18.5px;
     box-sizing: border-box;
     width: 100%;
     height: auto;
-    margin-top: 20px; 
-    /* display: inline-table; */
-    /* &:hover {
-      cursor: pointer;
-      transition: 0.1s;
-      border-radius: 20px;
-      box-shadow: 8px 8px #dfceaf;
-      border: solid 3px #1e315c;
-    } */
   }
   .ant-image {
     top: 0;
@@ -301,15 +301,13 @@ const RecentReviewCard = styled.div`
       font-size: 18px;
   }
   .ant-card-meta-description {
-      font-size: 21px;
+      font-size: 23px;
   }
   @media (min-width: 768px) {
     width: 100%;
     .ant-card {
-      /* max-height: 464px; */
       height: auto;
-      width: 95%;
-      margin-top: 30px;
+      width: 100%;
     }
     .ant-image {
       top: 0;
@@ -326,6 +324,9 @@ const RecentReviewCard = styled.div`
     }
     .ant-card-meta-description {
         font-size: 2em;
+    }
+    .card-shadow {
+      padding-bottom: 0px;
     }
   }
   div${CardHover} {
@@ -360,7 +361,7 @@ const RecentReviewCard = styled.div`
   }
 `
 const AllReview = styled.div`
-  width: 99%;
+  width: 95%;
   margin: auto;
   .ant-col {
     display: flex !important;
@@ -415,23 +416,26 @@ const AllReviewCard = styled.div`
     justify-content: center;
     padding: 4vw 1.9vw;
   }
+  .card-shadow {
+    border-radius: 20px;
+    &:hover {
+      box-shadow: 8px 8px 1px 2px #dfceaf;
+
+      .ant-card {
+        box-shadow: 0px 0px 0px 3px #1e315c;
+      }
+    }
+  }
   .ant-card {
-    width: 95%;
+    transition-timing-function: cubic-bezier(0.1, 0.85, 0.31, 0.99);
+    transition-duration: .1s;
+    border-radius: 18.5px;
+    box-shadow: 0px 0px 0px 1px #d0c7be;
+    width: 100%;
     height: 100%;
     /* display: inline-table; */
-    border: solid 1px #d0c7be;
-    border-radius: 20px;
+    /* border: solid 1px #d0c7be; */
     box-sizing: border-box;
-    /* &:hover {
-        cursor: pointer;
-        transition: 0.1s;
-        border-radius: 20px;
-        box-shadow: 8px 8px #dfceaf;
-        border: solid 3px #1e315c;
-    }
-    &:after, &:before {
-      box-sizing: border-box;
-    } */
   }
   .ant-image {
     top: 0;
@@ -446,7 +450,7 @@ const AllReviewCard = styled.div`
       font-size: 14px;
   }
   .ant-card-meta-description {
-      font-size: 17px;
+      font-size: 20px;
   }
   @media (min-width: 768px) {
     margin-top: 20px;

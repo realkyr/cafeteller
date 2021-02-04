@@ -298,7 +298,7 @@ export default class Search extends Component {
                         }}
                         style={{ width: '100%' }}
                         optionFilterProp="children"
-                        placeholder="ค้นหาจังหวัด"
+                        placeholder="ค้นหาด้วยจังหวัด"
                         optionLabelProp="label"
                       >
                         {
@@ -326,7 +326,7 @@ export default class Search extends Component {
                           this.setState({ selectedAmphoes }, this.filterProvince)
                         }}
                         optionFilterProp="children"
-                        placeholder="ค้นหาอำเภอ/เขต"
+                        placeholder="ค้นหาด้วยอำเภอ/เขต"
                         optionLabelProp="label"
                       >
                         {
@@ -349,7 +349,7 @@ export default class Search extends Component {
                         }
                       </Select>
                     </Col>
-                    <SearchOutlined className="searchBox-icon" />
+                    {/* <SearchOutlined className="searchBox-icon" /> */}
                   </Row>
                   </MapHeader>
                   <Map id="map" />
@@ -360,30 +360,30 @@ export default class Search extends Component {
                   <h2><span>num</span> Reviews</h2>
                   <Row>
                   {
-                    Object.keys(reviews).map((r, i) => {
-                      if (i < 2) {
-                        return (
-                        // <Link href={`/reviews/${r}`}>
-                        // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
-                        <Col key={r + '-link'} xs={24}>
-                            <SearchReviewCard key={r}>
-                              <Link href={`/reviews/${r}`}>
-                                <a>
-                                  <Card
-                                    bordered={false}
-                                    cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
-                                  >
-                                    <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
-                                  </Card>
-                                  </a>
-                              </Link>
-                            </SearchReviewCard>
-                          </Col>
-                          // </Link>
-                        )
-                      }
-                      return null
-                    })
+                    // Object.keys(reviews).map((r, i) => {
+                    //   if (i < 2) {
+                    //     return (
+                    //     // <Link href={`/reviews/${r}`}>
+                    //     // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
+                    //     <Col key={r + '-link'} xs={24}>
+                    //         <SearchReviewCard key={r}>
+                    //           <Link href={`/reviews/${r}`}>
+                    //             <a>
+                    //               <Card
+                    //                 bordered={false}
+                    //                 cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
+                    //               >
+                    //                 <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
+                    //               </Card>
+                    //               </a>
+                    //           </Link>
+                    //         </SearchReviewCard>
+                    //       </Col>
+                    //       // </Link>
+                    //     )
+                    //   }
+                    //   return null
+                    // })
                   }
                   </Row>
                 </SearchReview>
