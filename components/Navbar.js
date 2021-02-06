@@ -293,11 +293,11 @@ export default function Navbar () {
 
   const pathName = useRouter().pathname
   const [scrolled, setScrolled] = useState(false)
-  const [navCollg, setNavCollg] = useState([0, 0])
-  const [navColxs, setNavColxs] = useState([0, 0])
+  const [navColxs, setNavColxs] = useState([7, 7])
+  const [navCollg, setNavCollg] = useState([6, 5])
   const [buttonText, setbuttonText] = useState(['', ''])
   const [navBgColor, setNavBgColor] = useState(['', ''])
-  const [defalutHover, setdefalutHover] = useState(['search'])
+  const [defalutHover, setdefalutHover] = useState('search')
   const [refreshKey, setRefreshKey] = useState(0)
 
   const CheckPath = () => {
@@ -310,7 +310,7 @@ export default function Navbar () {
   }
   const handleScroll = () => {
     const offset = window.scrollY
-    if (offset > 300) {
+    if (offset > 200) {
       setScrolled(true)
     } else {
       setScrolled(false)
@@ -341,12 +341,11 @@ export default function Navbar () {
   if (scrolled) {
     scrollNavClass.push('scrolled')
   }
-  if (pathName === '/reviews/[id]') {
+  if (pathName === '/reviews/[id]' || pathName === '/search') {
     scrollNavClass.push('scrolled-from-start')
     defaultNavClass.push('nav-hide')
   }
   useEffect(() => {
-    console.log('s')
     const searchButton = Object.values(document.getElementsByClassName('search-hover'))
     const reviewButton = Object.values(document.getElementsByClassName('review-hover'))
     window.addEventListener('load', CheckPath)
@@ -361,12 +360,13 @@ export default function Navbar () {
     })
     if (defalutHover === 'search') {
       reviewButton.forEach(element => { element.addEventListener('mouseleave', searchHover) })
+      document.body.classList.add('search-page')
     } else {
       searchButton.forEach(element => { element.addEventListener('mouseleave', reviewHover) })
+      document.body.classList.remove('search-page')
     }
 
     return () => {
-      console.log('ss')
       window.removeEventListener('load', CheckPath)
       window.removeEventListener('scroll', handleScroll)
       searchButton.forEach(element => {
@@ -478,7 +478,7 @@ export default function Navbar () {
       </Row>
 
       <Row justify="center" className={scrollNavClass.join(' ')}>
-        <Col xs={0} lg={3}>
+        <Col span={0} xs={0} lg={3}>
           <Link href={'/'}>
             <a>
               <Logo img={'/assets/Images/logo-rotate.png'}></Logo>
@@ -486,12 +486,12 @@ export default function Navbar () {
             </a>
           </Link>
         </Col>
-        <Col xs={6} lg={5} className='flex-center border-left'>
+        <Col span={6} xs={6} lg={5} className='flex-center border-left'>
           <N2Scroll img={'/assets/Images/logo-rotate-05opa.png'}>
             <h1>CAFETELLER</h1>
           </N2Scroll>
         </Col>
-        <Col xs={navColxs[0]} lg={navCollg[0]} id='review-hover' className='review-hover border-left'>
+        <Col span={7} xs={navColxs[0]} lg={navCollg[0]} id='review-hover' className='review-hover border-left'>
           <Link href={'/'}>
             <a>
               <HoverableScroll style={{ height: '100%' }} className={navBgColor[0]}>
@@ -508,7 +508,7 @@ export default function Navbar () {
             </a>
           </Link>
         </Col>
-        <Col xs={navColxs[1]} lg={navCollg[1]} id='search-hover' className='search-hover border-left'>
+        <Col span={7} xs={navColxs[1]} lg={navCollg[1]} id='search-hover' className='search-hover border-left'>
           <Link href={'/search'}>
             <a>
               <HoverableScroll style={{ height: '100%' }} className={navBgColor[1]}>
@@ -553,7 +553,7 @@ export default function Navbar () {
             </a>
           </SocialBar>
         </Col>
-        <Col xs={4} lg={0}>
+        <Col span={4} xs={4} lg={0}>
           <Dropdown overlay={SocialBarMenu}
             getPopupContainer={ () => document.getElementById('scrollBut') }
             // visible={scrolled}
