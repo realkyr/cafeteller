@@ -70,7 +70,7 @@ const S = styled.span`
 export default function Footer () {
   return (
     <>
-    <Row justify='center' style={{ marginTop: 10 }}>
+    <Row justify='center' style={{ marginTop: 10 }} id='footer'>
       <Col xs={24} xl={24} xxl={24}>
         <Row>
           <Col xs={6} md={6} xl={7}>
