@@ -161,12 +161,16 @@ const HoverableInnerScroll = styled.div`
   display: inline-flex;
   gap: 0px;
   padding: 0%;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
+  .ant-image {
+    margin: 0px 5px;
+  }
   @media(min-width: 600px) {
   }
   @media(min-width: 768px) {
     padding: 1%;
     gap: 10px;
+    font-size: 1.7rem;
   }
 `
 const SearchBar = styled.div`
@@ -382,6 +386,9 @@ export default function Navbar () {
       })
       reviewButton.forEach(element => {
         element.removeEventListener('mouseenter', reviewHover)
+        element.removeEventListener('click', reviewClick)
+      })
+      logoButton.forEach(element => {
         element.removeEventListener('click', reviewClick)
       })
       reviewButton.forEach(element => { element.removeEventListener('mouseleave', searchHover) })
