@@ -297,15 +297,17 @@ export default function Navbar () {
   const [navCollg, setNavCollg] = useState([6, 5])
   const [buttonText, setbuttonText] = useState(['', ''])
   const [navBgColor, setNavBgColor] = useState(['', ''])
-  const [defalutHover, setdefalutHover] = useState('search')
+  const [defalutHover, setdefalutHover] = useState('')
   const [refreshKey, setRefreshKey] = useState(0)
 
   const CheckPath = () => {
     console.log('check path')
     if (pathName === '/search') {
       searchHover()
+      searchClick()
     } else {
       reviewHover()
+      reviewClick()
     }
   }
   const handleScroll = () => {
@@ -321,6 +323,7 @@ export default function Navbar () {
     setRefreshKey(oldKey => oldKey + 1)
   }
   const reviewClick = () => {
+    reviewHover()
     setdefalutHover('review')
     setRefreshKey(oldKey => oldKey + 1)
   }
@@ -348,6 +351,7 @@ export default function Navbar () {
   useEffect(() => {
     const searchButton = Object.values(document.getElementsByClassName('search-hover'))
     const reviewButton = Object.values(document.getElementsByClassName('review-hover'))
+    const logoButton = Object.values(document.getElementsByClassName('logo-hover'))
     window.addEventListener('load', CheckPath)
     window.addEventListener('scroll', handleScroll)
     searchButton.forEach(element => {
@@ -356,6 +360,9 @@ export default function Navbar () {
     })
     reviewButton.forEach(element => {
       element.addEventListener('mouseenter', reviewHover)
+      element.addEventListener('click', reviewClick)
+    })
+    logoButton.forEach(element => {
       element.addEventListener('click', reviewClick)
     })
     if (defalutHover === 'search') {
@@ -389,9 +396,11 @@ export default function Navbar () {
           <Container>
             <Row className="nav-row">
               <Col xs={0} md={6} className="nav-box n1">
-                <Link href={'/'}><a>
-                  <Logo img={'/assets/Images/logo-rotate.png'}></Logo>
-                  <Image src="/assets/Images/logo-rotate.png" preview={false} height={150} /></a>
+                <Link href={'/'}>
+                  <a className='logo-hover'>
+                    <Logo img={'/assets/Images/logo-rotate.png'}></Logo>
+                    <Image src="/assets/Images/logo-rotate.png" preview={false} height={150} />
+                  </a>
                 </Link>
               </Col>
               <Col xs={19} md={12} className="nav-box n2">
@@ -404,7 +413,7 @@ export default function Navbar () {
                 <Row>
                   <Col xs={0} md={24}>
                     <SocialBar>
-                      <a href="http://instagram.com/">
+                      <a href="https://www.instagram.com/cafeteller/">
                         <Image
                           src="/assets/Images/icon/Social/IG.png"
                           preview={false}
@@ -412,7 +421,7 @@ export default function Navbar () {
                           width={30}
                         />
                       </a>
-                      <a href="http://instagram.com/">
+                      <a href="https://www.facebook.com/cafeteller/">
                         <Image
                           src="/assets/Images/icon/Social/FB.png"
                           preview={false}
@@ -420,7 +429,7 @@ export default function Navbar () {
                           width={30}
                         />
                       </a>
-                      <a href="http://instagram.com/">
+                      <a href="https://twitter.com/CAFETELLER">
                         <Image
                           src="/assets/Images/icon/Social/Twitter.png"
                           preview={false}
@@ -480,16 +489,20 @@ export default function Navbar () {
       <Row justify="center" className={scrollNavClass.join(' ')}>
         <Col span={0} xs={0} lg={3}>
           <Link href={'/'}>
-            <a>
+            <a className='logo-hover'>
               <Logo img={'/assets/Images/logo-rotate.png'}></Logo>
               <Image src="/assets/Images/logo-rotate.png" preview={false} height={80} width={80} />
             </a>
           </Link>
         </Col>
         <Col span={6} xs={6} lg={5} className='flex-center border-left'>
-          <N2Scroll img={'/assets/Images/logo-rotate-05opa.png'}>
-            <h1>CAFETELLER</h1>
-          </N2Scroll>
+          <Link href={'/'}>
+            <a>
+              <N2Scroll img={'/assets/Images/logo-rotate-05opa.png'}>
+                <h1 className='logo-hover'>CAFETELLER</h1>
+              </N2Scroll>
+            </a>
+          </Link>
         </Col>
         <Col span={7} xs={navColxs[0]} lg={navCollg[0]} id='review-hover' className='review-hover border-left'>
           <Link href={'/'}>
@@ -527,7 +540,7 @@ export default function Navbar () {
         </Col>
         <Col xs={0} lg={5} className='border-left'>
           <SocialBar style={{ height: '100%' }}>
-            <a href="http://instagram.com/">
+            <a href="https://www.instagram.com/cafeteller/">
               <Image
                 src="/assets/Images/icon/Social/IG.png"
                 preview={false}
@@ -535,7 +548,7 @@ export default function Navbar () {
                 width={30}
               />
             </a>
-            <a href="http://instagram.com/">
+            <a href="https://www.facebook.com/cafeteller/">
               <Image
                 src="/assets/Images/icon/Social/FB.png"
                 preview={false}
@@ -543,7 +556,7 @@ export default function Navbar () {
                 width={30}
               />
             </a>
-            <a href="http://instagram.com/">
+            <a href="https://twitter.com/CAFETELLER">
               <Image
                 src="/assets/Images/icon/Social/Twitter.png"
                 preview={false}
@@ -561,7 +574,7 @@ export default function Navbar () {
             placement="bottomCenter"
           >
             <SocialButton className="nav-social-button-scroll" id="scrollBut">
-              <AlignLeftOutlined style={{ color: 'white', fontSize: '3em' }} />
+              <AlignLeftOutlined style={{ color: 'white', fontSize: '2.3em' }} />
             </SocialButton>
           </Dropdown>
         </Col>
