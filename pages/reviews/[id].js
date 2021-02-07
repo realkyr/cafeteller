@@ -141,53 +141,64 @@ export default function Home ({ reviews }) {
           <Row justify="space-around">
             <Col xs={24} md={19} lg={15} xxl={16}>
               {/* <Title>{reviews[id].cafe.name}</Title> */}
-              <Content>{content}</Content>
-              <Row>
-                <Col xs={0} lg={24}>
-              <ShareBox style={{ marginBottom: 50 }}>
-                <Row>
-                  <Col xs={0} lg={4}>
-                    <ShareLeft><span>Share</span></ShareLeft>
-                  </Col>
-                  <Col xs={0} lg={8}>
-                    <ShareRight>
-                      {(() => {
-                        const shareBox = []
-                        if (typeof reviews[id].cafe.ig !== 'undefined') {
-                          shareBox.push(
-                            <a href={reviews[id].cafe.ig}>
-                              <Image src="/assets/Images/icon/Social/IG.png" preview={false} height={30} width={30} />
-                            </a>
-                          )
+              <Content>
+                {content}
+                <ForWork>
+                  <Image src="/assets/Images/icon/Contact.png" preview={false} height={30} width={25} />
+                  <span> For Work please contact <a>&quot;here&quot;</a></span>
+                </ForWork>
+              </Content>
+              <Desktop>
+                        {(() => {
+                          const shareBox = []
+                          let isEmpty = true
+                          if (typeof reviews[id].cafe.ig !== 'undefined') {
+                            isEmpty = false
+                            shareBox.push(
+                              <a href={reviews[id].cafe.ig}>
+                                <Image src="/assets/Images/icon/Social/IG.png" preview={false} height={30} width={30} />
+                              </a>
+                            )
+                          }
+                          if (typeof reviews[id].cafe.fb !== 'undefined') {
+                            isEmpty = false
+                            shareBox.push(
+                              <a href={reviews[id].cafe.fb}>
+                                <Image src="/assets/Images/icon/Social/FB.png" preview={false} height={30} width={30} />
+                              </a>
+                            )
+                          }
+                          if (typeof reviews[id].cafe.tw !== 'undefined') {
+                            isEmpty = false
+                            shareBox.push(
+                              <a href={reviews[id].cafe.tw}>
+                                <Image src="/assets/Images/icon/Social/Twitter.png" preview={false} height={30} width={30} />
+                              </a>
+                            )
+                          }
+                          if (isEmpty === false) {
+                            return (
+                              <ShareBox style={{ marginBottom: 50 }}>
+                                <Row>
+                                  <Col xs={0} lg={4}>
+                                    <ShareLeft><span>Share</span></ShareLeft>
+                                  </Col>
+                                  <Col xs={0} lg={8}>
+                                    <ShareRight>
+                                      {shareBox}
+                                    </ShareRight>
+                                  </Col>
+                                  <Col xs={0} lg={12}>
+                                    <PatternShare img={'/assets/Images/pattern2.jpg'} />
+                                  </Col>
+                                </Row>
+                              </ShareBox>
+                            )
+                          }
+                          return (null)
+                        })()
                         }
-                        if (typeof reviews[id].cafe.fb !== 'undefined') {
-                          shareBox.push(
-                            <a href={reviews[id].cafe.fb}>
-                              <Image src="/assets/Images/icon/Social/FB.png" preview={false} height={30} width={30} />
-                            </a>
-                          )
-                        }
-                        if (typeof reviews[id].cafe.tw !== 'undefined') {
-                          shareBox.push(
-                            <a href={reviews[id].cafe.tw}>
-                              <Image src="/assets/Images/icon/Social/Twitter.png" preview={false} height={30} width={30} />
-                            </a>
-                          )
-                        }
-                        return (
-                          shareBox
-                        )
-                      })()
-                      }
-                    </ShareRight>
-                  </Col>
-                  <Col xs={0} lg={12}>
-                    <PatternShare img={'/assets/Images/pattern2.jpg'} />
-                  </Col>
-                </Row>
-              </ShareBox>
-                  </Col>
-                </Row>
+              </Desktop>
             </Col>
             <Col xs={24} md={19} lg={8} xxl={7}>
               <ContactInfo>
@@ -252,7 +263,7 @@ export default function Home ({ reviews }) {
                 <Desktop>
                 {(() => {
                   const contactBox = []
-                  if (typeof reviews[id].cafe.openhour !== 'undefined') {
+                  if (typeof reviews[id].cafe.fb !== 'undefined') {
                     contactBox.push(
                       <Row>
                         <Col span={4}>
@@ -271,52 +282,57 @@ export default function Home ({ reviews }) {
                 }
                 </Desktop>
               </ContactInfo>
-              <Row>
-                <Col xs={24} lg={24}>
-              <ShareBox>
-                <Row>
-                  <Col xs={7} md={4}>
-                    <ShareLeft><span>Share</span></ShareLeft>
-                  </Col>
-                  <Col xs={17} md={8}>
-                    <ShareRight>
-                      {(() => {
-                        const shareBox = []
-                        if (typeof reviews[id].cafe.ig !== 'undefined') {
-                          shareBox.push(
-                            <a href={reviews[id].cafe.ig}>
-                              <Image src="/assets/Images/icon/Social/IG.png" preview={false} height={30} width={30} />
-                            </a>
-                          )
-                        }
-                        if (typeof reviews[id].cafe.fb !== 'undefined') {
-                          shareBox.push(
-                            <a href={reviews[id].cafe.fb}>
-                              <Image src="/assets/Images/icon/Social/FB.png" preview={false} height={30} width={30} />
-                            </a>
-                          )
-                        }
-                        if (typeof reviews[id].cafe.tw !== 'undefined') {
-                          shareBox.push(
-                            <a href={reviews[id].cafe.tw}>
-                              <Image src="/assets/Images/icon/Social/Twitter.png" preview={false} height={30} width={30} />
-                            </a>
-                          )
-                        }
-                        return (
-                          shareBox
-                        )
-                      })()
-                      }
-                    </ShareRight>
-                  </Col>
-                  <Col xs={0} md={12} lg={0}>
-                    <PatternShare img={'/assets/Images/pattern2.jpg'} />
-                  </Col>
-                </Row>
-              </ShareBox>
-            </Col>
-            </Row>
+              <Mobile>
+              {(() => {
+                const shareBox = []
+                let isEmpty = true
+                if (typeof reviews[id].cafe.ig !== 'undefined') {
+                  isEmpty = false
+                  shareBox.push(
+                    <a href={reviews[id].cafe.ig}>
+                      <Image src="/assets/Images/icon/Social/IG.png" preview={false} height={30} width={30} />
+                    </a>
+                  )
+                }
+                if (typeof reviews[id].cafe.fb !== 'undefined') {
+                  isEmpty = false
+                  shareBox.push(
+                    <a href={reviews[id].cafe.fb}>
+                      <Image src="/assets/Images/icon/Social/FB.png" preview={false} height={30} width={30} />
+                    </a>
+                  )
+                }
+                if (typeof reviews[id].cafe.tw !== 'undefined') {
+                  isEmpty = false
+                  shareBox.push(
+                    <a href={reviews[id].cafe.tw}>
+                      <Image src="/assets/Images/icon/Social/Twitter.png" preview={false} height={30} width={30} />
+                    </a>
+                  )
+                }
+                if (isEmpty === false) {
+                  return (
+                    <ShareBox>
+                      <Row>
+                        <Col xs={7} md={4}>
+                          <ShareLeft><span>Share</span></ShareLeft>
+                        </Col>
+                        <Col xs={17} md={8}>
+                          <ShareRight>
+                            {shareBox}
+                          </ShareRight>
+                        </Col>
+                        <Col xs={0} md={12} lg={0}>
+                          <PatternShare img={'/assets/Images/pattern2.jpg'} />
+                        </Col>
+                      </Row>
+                    </ShareBox>
+                  )
+                }
+                return (null)
+              })()
+              }
+              </Mobile>
             </Col>
           </Row>
         </Col>
@@ -406,6 +422,10 @@ export async function getServerSideProps () {
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 992 })
   return isDesktop ? children : null
+}
+const Mobile = ({ children }) => {
+  const isMobile = useMediaQuery({ maxWidth: 991.9 })
+  return isMobile ? children : null
 }
 const Map = styled.div`
   width: 100%;
@@ -537,7 +557,24 @@ const PatternShare = styled.div`
     border-right: 0;
   }
 `
-
+const ForWork = styled.p`
+  margin-bottom: 4% !important;
+  display: flex;
+  /* background-color: #f5f1eb;
+  border: 2px solid #d2c5b8; */
+  font-family: 'Maitree',serif;
+  margin: 0;
+  align-items: center;
+  a {
+    color: #1890ff;
+  }
+  span {
+    padding-left: 10px;
+  }
+  @media(max-width: 992px){
+    padding-bottom: 4% !important;
+  }
+`
 const Underline = styled.div`
   border-bottom: solid 3px #555555;
   width: 25px;
