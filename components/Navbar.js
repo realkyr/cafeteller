@@ -11,7 +11,7 @@ const Container = styled.div`
     margin-top: 0px;
     margin-bottom: 0px;
   }
-  @media(min-width: 968px) {
+  @media(min-width: 1025px) {
     margin-top: 20px;
     margin-bottom: 20px;
   }

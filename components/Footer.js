@@ -2,6 +2,18 @@ import React from 'react'
 import { Row, Col, Image } from 'antd'
 import styled from 'styled-components'
 
+const Container = styled.div`
+  // max-width: 1440px;
+  @media(min-width: 768px) {
+    margin-top: 0px;
+  }
+  @media(min-width: 1025px) {
+    margin-top: 20px;
+  }
+  @media(min-width: 1200px) {
+    margin-top: 30px;
+  }
+`
 const Pattern = styled.div`
   border: solid 1px #988a7b;
   border-bottom: 0;
@@ -70,43 +82,45 @@ const S = styled.span`
 export default function Footer () {
   return (
     <>
-    <Row justify='center' style={{ marginTop: 10 }} id='footer'>
+    <Row justify='center' id='footer'>
       <Col xs={24} xl={24} xxl={24}>
-        <Row>
-          <Col xs={6} md={6} xl={7}>
-            <Pattern img={'/assets/Images/pattern3.jpg'}></Pattern>
-          </Col>
-          <Col xs={12} md={12} xl={10}>
-            <FooterCenterTop>
-              Cafe<S>&nbsp;</S>Teller
-            </FooterCenterTop>
-            <FooterCenterBot>
-              Find Us At
-            </FooterCenterBot>
-          </Col>
-          <Col xs={6} md={6} xl={7}>
-            <Pattern img={'/assets/Images/pattern3.jpg'}></Pattern>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24} style={{ backgroundColor: '#1e315c' }}>
-            <Row justify='center'>
-              <Col xs={16} md={8}>
-                <SocialBar>
-                  <a href='http://instagram.com/'>
-                    <Image src='/assets/Images/icon/Social/FB.png' preview={false} height={25} width={25}/>
-                  </a>
-                  <a href='http://instagram.com/'>
-                    <Image src='/assets/Images/icon/Social/IG.png' preview={false} height={25} width={25} />
-                  </a>
-                  <a href='http://instagram.com/'>
-                    <Image src='/assets/Images/icon/Social/Twitter.png' preview={false} height={25} width={25} />
-                  </a>
-                </SocialBar>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
+        <Container>
+          <Row>
+            <Col xs={6} md={6} xl={7}>
+              <Pattern img={'/assets/Images/pattern3.jpg'}></Pattern>
+            </Col>
+            <Col xs={12} md={12} xl={10}>
+              <FooterCenterTop>
+                Cafe<S>&nbsp;</S>Teller
+              </FooterCenterTop>
+              <FooterCenterBot>
+                Find Us At
+              </FooterCenterBot>
+            </Col>
+            <Col xs={6} md={6} xl={7}>
+              <Pattern img={'/assets/Images/pattern3.jpg'}></Pattern>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24} style={{ backgroundColor: '#1e315c' }}>
+              <Row justify='center'>
+                <Col xs={16} md={8}>
+                  <SocialBar>
+                    <a href='http://instagram.com/'>
+                      <Image src='/assets/Images/icon/Social/FB.png' preview={false} height={25} width={25}/>
+                    </a>
+                    <a href='http://instagram.com/'>
+                      <Image src='/assets/Images/icon/Social/IG.png' preview={false} height={25} width={25} />
+                    </a>
+                    <a href='http://instagram.com/'>
+                      <Image src='/assets/Images/icon/Social/Twitter.png' preview={false} height={25} width={25} />
+                    </a>
+                  </SocialBar>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Container>
       </Col>
     </Row>
     </>
