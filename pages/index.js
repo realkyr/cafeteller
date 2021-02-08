@@ -130,7 +130,7 @@ export default function Home ({ reviews }) {
                 </Affix>
                 : null
             }
-            <Row gutter={{ xs: 10, sm: 11, md: 14, lg: 20 }}>
+            <Row gutter={{ xs: 10, sm: 13, md: 14, lg: 20 }}>
             {
               Object.keys(reviews).map(r => (
                 // <Link href={`/reviews/${r}`}>
@@ -141,7 +141,8 @@ export default function Home ({ reviews }) {
                       <a className='flex-center card-shadow'>
                         <Card
                           bordered={false}
-                          cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
+                          cover={
+                          <Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} data-fallback-image="/assets/Images/placeholder.png" />}
                         >
                           <Meta className="cafeCardDesc" title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
                         </Card>
@@ -281,7 +282,7 @@ const RecentReviewCard = styled.div`
     transition-duration: .2s;
     box-shadow: 0px 0px 0px 0px #dfceaf;
     &:hover {
-      box-shadow: 8px 8px 1px 2px #dfceaf;
+      box-shadow: 8px 8px 1px .2rem #dfceaf;
 
       .ant-card {
         box-shadow: 0px 0px 0px 3px #1e315c;
@@ -389,7 +390,7 @@ const AllReviewCard = styled.div`
   align-items: center;
   margin-top: 10px;
   width: 100%;
-    transition-timing-function: cubic-bezier(0.19, 0.65, 0.4, 0.91);
+    transition-timing-function: cubic-bezier(0.46, 1.13, 0.4, 0.91);
     transition-duration: .2s;
   img{
     object-fit: cover;
@@ -411,11 +412,11 @@ const AllReviewCard = styled.div`
   }
   .card-shadow {
     border-radius: 20px;
-    transition-timing-function: cubic-bezier(0.19, 0.65, 0.4, 0.91);
+    transition-timing-function: cubic-bezier(0.46, 1.13, 0.4, 0.91);
     transition-duration: .2s;
     box-shadow: 0px 0px 0px 1px #ffffff00;
     &:hover {
-      box-shadow: 6px 6px 1px 2px #dfceaf;
+      box-shadow: 6px 6px 1px 1px #dfceaf;
 
       .ant-card {
         box-shadow: 0px 0px 0px 3px #1e315c;
@@ -423,7 +424,7 @@ const AllReviewCard = styled.div`
     }
   }
   .ant-card {
-    transition-timing-function: cubic-bezier(0.19, 0.65, 0.4, 0.91);
+    transition-timing-function: cubic-bezier(0.46, 1.13, 0.4, 0.91);
     transition-duration: .2s;
     border-radius: 18.5px;
     box-shadow: 0px 0px 0px 1px #d0c7be;
@@ -467,6 +468,11 @@ const AllReviewCard = styled.div`
     }
     .ant-card-meta-description {
         font-size: 1.5em;
+    }
+    .card-shadow {
+      &:hover {
+        box-shadow: 6px 6px 1px .2rem #dfceaf;
+      }
     }
   }
   @media (min-width: 992px) {
