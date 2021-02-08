@@ -13,6 +13,7 @@ import { loader } from '../../plugins/gmap'
 
 import { Typography, Space, Button, Row, Col, Image, Card } from 'antd'
 import Banner from 'components/reviews/Banner'
+import { useMediaQuery } from 'react-responsive'
 
 const { Meta } = Card
 const { Title } = Typography
@@ -178,7 +179,64 @@ export default function Home ({ reviews }) {
           <Row justify="space-around">
             <Col xs={24} md={19} lg={15} xxl={16}>
               {/* <Title>{reviews[id].cafe.name}</Title> */}
-              <Content>{content}</Content>
+              <Content>
+                {content}
+                <ForWork>
+                  <Image src="/assets/Images/icon/Contact.png" preview={false} height={30} width={25} />
+                  <span> For Work please contact <a>&quot;here&quot;</a></span>
+                </ForWork>
+              </Content>
+              <Desktop>
+                        {(() => {
+                          const shareBox = []
+                          let isEmpty = true
+                          if (typeof reviews[id].cafe.ig !== 'undefined') {
+                            isEmpty = false
+                            shareBox.push(
+                              <a href={reviews[id].cafe.ig}>
+                                <Image src="/assets/Images/icon/Social/IG.png" preview={false} height={30} width={30} />
+                              </a>
+                            )
+                          }
+                          if (typeof reviews[id].cafe.fb !== 'undefined') {
+                            isEmpty = false
+                            shareBox.push(
+                              <a href={reviews[id].cafe.fb}>
+                                <Image src="/assets/Images/icon/Social/FB.png" preview={false} height={30} width={30} />
+                              </a>
+                            )
+                          }
+                          if (typeof reviews[id].cafe.tw !== 'undefined') {
+                            isEmpty = false
+                            shareBox.push(
+                              <a href={reviews[id].cafe.tw}>
+                                <Image src="/assets/Images/icon/Social/Twitter.png" preview={false} height={30} width={30} />
+                              </a>
+                            )
+                          }
+                          if (isEmpty === false) {
+                            return (
+                              <ShareBox style={{ marginBottom: 50 }}>
+                                <Row>
+                                  <Col xs={0} lg={4}>
+                                    <ShareLeft><span>Share</span></ShareLeft>
+                                  </Col>
+                                  <Col xs={0} lg={8}>
+                                    <ShareRight>
+                                      {shareBox}
+                                    </ShareRight>
+                                  </Col>
+                                  <Col xs={0} lg={12}>
+                                    <PatternShare img={'/assets/Images/pattern2.jpg'} />
+                                  </Col>
+                                </Row>
+                              </ShareBox>
+                            )
+                          }
+                          return (null)
+                        })()
+                        }
+              </Desktop>
             </Col>
             <Col xs={24} md={19} lg={8} xxl={7}>
               <ContactInfo>
@@ -240,49 +298,79 @@ export default function Home ({ reviews }) {
                 })()
                 }
                 <Map id="map"></Map>
+                <Desktop>
+                {(() => {
+                  const contactBox = []
+                  if (typeof reviews[id].cafe.fb !== 'undefined') {
+                    contactBox.push(
+                      <Row>
+                        <Col span={4}>
+                          <Image src="/assets/Images/icon/Social/fb.png" preview={false} height={30} width={30} />
+                        </Col>
+                        <Col span={20}>
+                          Visit <a href={reviews[id].cafe.fb}>{reviews[id].cafe.name}</a>&apos;s page
+                        </Col>
+                      </Row>
+                    )
+                  }
+                  return (
+                    contactBox
+                  )
+                })()
+                }
+                </Desktop>
               </ContactInfo>
-              <ShareBox>
-                <Row>
-                  <Col xs={7} md={8}>
-                    <ShareLeft><span>Share</span></ShareLeft>
-                  </Col>
-                  <Col xs={17} md={14}>
-                    <ShareRight>
-                      {(() => {
-                        const shareBox = []
-                        if (typeof reviews[id].cafe.ig !== 'undefined') {
-                          shareBox.push(
-                            <a href={reviews[id].cafe.ig}>
-                              <Image src="/assets/Images/icon/Social/IG.png" preview={false} height={30} width={30} />
-                            </a>
-                          )
-                        }
-                        if (typeof reviews[id].cafe.fb !== 'undefined') {
-                          shareBox.push(
-                            <a href={reviews[id].cafe.fb}>
-                              <Image src="/assets/Images/icon/Social/FB.png" preview={false} height={30} width={30} />
-                            </a>
-                          )
-                        }
-                        if (typeof reviews[id].cafe.tw !== 'undefined') {
-                          shareBox.push(
-                            <a href={reviews[id].cafe.tw}>
-                              <Image src="/assets/Images/icon/Social/Twitter.png" preview={false} height={30} width={30} />
-                            </a>
-                          )
-                        }
-                        return (
-                          shareBox
-                        )
-                      })()
-                      }
-                    </ShareRight>
-                  </Col>
-                  <Col xs={0} md={12} lg={0}>
-                    <PatternShare img={'/assets/Images/pattern2.jpg'} />
-                  </Col>
-                </Row>
-              </ShareBox>
+              <Mobile>
+              {(() => {
+                const shareBox = []
+                let isEmpty = true
+                if (typeof reviews[id].cafe.ig !== 'undefined') {
+                  isEmpty = false
+                  shareBox.push(
+                    <a href={reviews[id].cafe.ig}>
+                      <Image src="/assets/Images/icon/Social/IG.png" preview={false} height={30} width={30} />
+                    </a>
+                  )
+                }
+                if (typeof reviews[id].cafe.fb !== 'undefined') {
+                  isEmpty = false
+                  shareBox.push(
+                    <a href={reviews[id].cafe.fb}>
+                      <Image src="/assets/Images/icon/Social/FB.png" preview={false} height={30} width={30} />
+                    </a>
+                  )
+                }
+                if (typeof reviews[id].cafe.tw !== 'undefined') {
+                  isEmpty = false
+                  shareBox.push(
+                    <a href={reviews[id].cafe.tw}>
+                      <Image src="/assets/Images/icon/Social/Twitter.png" preview={false} height={30} width={30} />
+                    </a>
+                  )
+                }
+                if (isEmpty === false) {
+                  return (
+                    <ShareBox>
+                      <Row>
+                        <Col xs={7} md={4}>
+                          <ShareLeft><span>Share</span></ShareLeft>
+                        </Col>
+                        <Col xs={17} md={8}>
+                          <ShareRight>
+                            {shareBox}
+                          </ShareRight>
+                        </Col>
+                        <Col xs={0} md={12} lg={0}>
+                          <PatternShare img={'/assets/Images/pattern2.jpg'} />
+                        </Col>
+                      </Row>
+                    </ShareBox>
+                  )
+                }
+                return (null)
+              })()
+              }
+              </Mobile>
             </Col>
           </Row>
         </Col>
@@ -370,7 +458,14 @@ export async function getServerSideProps () {
     }
   }
 }
-
+const Desktop = ({ children }) => {
+  const isDesktop = useMediaQuery({ minWidth: 992 })
+  return isDesktop ? children : null
+}
+const Mobile = ({ children }) => {
+  const isMobile = useMediaQuery({ maxWidth: 991.9 })
+  return isMobile ? children : null
+}
 const Map = styled.div`
   width: 100%;
   height: 400px;
@@ -378,7 +473,7 @@ const Map = styled.div`
   border-bottom: 2px solid #d2c5b8;
 `
 const Pattern = styled.div`
-  background-size: 100%;
+  background-size: 75%;
   border-bottom: 2px solid #d2c5b8;
   height: 70px;
   background-image: url(${props => props.img});
@@ -429,6 +524,9 @@ const ContactInfo = styled.div`
   .ant-image {
     display: block;
   }
+  a {
+    color: #1890ff;
+  }
   @media (min-width: 768px) {
     border: 2px solid #d2c5b8;
     border-bottom:0;
@@ -459,7 +557,6 @@ const ShareBox = styled.div`
     margin-bottom: 50px;
   }
   @media (min-width: 992px) {
-    margin-bottom: 0px;
     border: 2px solid #d2c5b8;
   }
 `
@@ -495,8 +592,28 @@ const PatternShare = styled.div`
   border-top:0;
   height: 70px;
   background-image: url(${props => props.img});
+  @media (min-width: 992px) {
+    border-right: 0;
+  }
 `
-
+const ForWork = styled.p`
+  margin-bottom: 4% !important;
+  display: flex;
+  /* background-color: #f5f1eb;
+  border: 2px solid #d2c5b8; */
+  font-family: 'Maitree',serif;
+  margin: 0;
+  align-items: center;
+  a {
+    color: #1890ff;
+  }
+  span {
+    padding-left: 10px;
+  }
+  @media(max-width: 992px){
+    padding-bottom: 4% !important;
+  }
+`
 const Underline = styled.div`
   border-bottom: solid 3px #555555;
   width: 25px;
