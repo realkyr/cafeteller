@@ -33,9 +33,12 @@ const MapContainer = styled.div`
   height: calc(100vh - 200px);
   /* margin-top: 25px; */
   @media (min-width: 768px) {
-    margin-right: 1em;
+    margin-right: 0px;
     height: 100%;
-    border: 2px #bcbcbc solid;
+    border: 1px #bcbcbc solid;
+  }
+  @media (min-width: 1025px) {
+    margin-right: 1em;
   }
 `
 const MapHeader = styled.div`
@@ -71,10 +74,11 @@ const SearchReview = styled.div`
     }
   }
   @media (min-width: 768px) {
+    margin-left: -1px;
     display: block;
-    width: 100%;
+    width: 101%;
     margin-top:  0px;
-    border: 2px solid #bcbcbc;
+    border: 1px solid #bcbcbc;
     /* background-color: #f5f1eb; */
     h2 {
       font-family: "Georgia";
@@ -85,6 +89,10 @@ const SearchReview = styled.div`
       span{
       }
     }
+  }
+  @media (min-width: 1024px) {
+    margin-left: 0px;
+    width: 100%;
   }
 `
 const SearchReviewCard = styled.div`
@@ -119,6 +127,8 @@ img{
 }
 .ant-card-meta-description {
     font-size: 23px;
+    line-height: 23px;
+    padding-bottom: 8px;
 }
 .card-shadow {
   border-radius: 20px;
@@ -162,6 +172,8 @@ img{
   }
   .ant-card-meta-description {
       font-size: 1.8em;
+      line-height: unset;
+      padding-bottom: 0px;
   }
 }
 `
@@ -249,7 +261,7 @@ const MapSearchMenuContainer = styled.div`
   z-index: 20;
   overflow-y: scroll;
   height: 142px;
-  @media (min-width: 786px) {
+  @media (min-width: 768px) {
     display: none;
   }
   h2 {
@@ -426,8 +438,8 @@ export default class Search extends Component {
         <Head>
           <title>Cafeteller || Search</title>
         </Head>
-        <Row justify="center" className='vh-100-md wrap'>
-          <Col xs={24} xxl={18}>
+        <Row justify="center" className='search-wrap'>
+          <Col xs={24} lg={22} xxl={18}>
             <Row>
               <Col xs={24} md={17} xxl={18}>
                 <MapContainer>

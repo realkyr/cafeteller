@@ -8,7 +8,8 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Link from 'next/link'
-import { Row, Col, Image, Card, Button, Space } from 'antd'
+import { Row, Col, Image, Card, Button, Space, BackTop } from 'antd'
+import { UpOutlined } from '@ant-design/icons'
 
 import styled from 'styled-components'
 
@@ -47,8 +48,8 @@ export default function Home ({ reviews }) {
         <title>Cafeteller</title>
       </Head>
       {/* <Container> */}
-      <Row justify="center" style={{ overflow: 'hidden', paddingBottom: '1.4em' }}>
-        <Col xs={24} xxl={18}>
+      <Row justify="center" style={{ overflow: 'hidden', paddingBottom: '1.4em' }} id='container'>
+        <Col xs={24} xxl={24}>
           <Banner>
             <Image style={{ objectFit: 'cover' }} src="/assets/Images/COVER1.png" preview={false}></Image>
           </Banner>
@@ -74,39 +75,39 @@ export default function Home ({ reviews }) {
                   )
                 : null
             }
-            <Row gutter={{ xs: 4, md: 24 }}>
-            {
-              Object.keys(reviews).map((r, i) => {
-                // <Link href={`/reviews/${r}`}>
-                // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
-                if (i < 2) {
-                  return (
-                  <Col key={r + '-link'} xs={24} md={12}>
-                    <RecentReviewCard key={r}>
-                      <Link href={`/reviews/${r}`}>
-                        <a className='flex-center card-shadow'>
-                          <Card
-                            bordered={false}
-                            cover={<Image height={'100%'}
-                              onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
-                              alt={reviews[r].cafe.name}
-                              src={reviews[r].cafe.banner.url}
-                              fallback="/assets/Images/placeholder.png"
-                              preview={false} />}
-                          >
-                            <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
-                          </Card>
-                        </a>
-                      </Link>
-                    </RecentReviewCard>
-                  </Col>
-                  // </Link>
-                  )
-                }
-                return null
-              })
-            }
-            </Row>
+              <Row gutter={{ xs: 4, md: 24 }}>
+              {
+                Object.keys(reviews).map((r, i) => {
+                  // <Link href={`/reviews/${r}`}>
+                  // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
+                  if (i < 2) {
+                    return (
+                    <Col key={r + '-link'} xs={24} md={12}>
+                      <RecentReviewCard key={r}>
+                        <Link href={`/reviews/${r}`}>
+                          <a className='flex-center card-shadow'>
+                            <Card
+                              bordered={false}
+                              cover={<Image height={'100%'}
+                                onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
+                                alt={reviews[r].cafe.name}
+                                src={reviews[r].cafe.banner.url}
+                                fallback="/assets/Images/placeholder.png"
+                                preview={false} />}
+                            >
+                              <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
+                            </Card>
+                          </a>
+                        </Link>
+                      </RecentReviewCard>
+                    </Col>
+                    // </Link>
+                    )
+                  }
+                  return null
+                })
+              }
+              </Row>
           </RecentReview>
           <Pattern2 img={'/assets/Images/pattern2.jpg'}>
             <div>
@@ -117,7 +118,7 @@ export default function Home ({ reviews }) {
           <AllReview>
             <h2><span>All</span> Review</h2>
             <Underline style={{ marginBottom: 12 }} />
-            <Row gutter={{ xs: 10, md: 20 }}>
+            <Row gutter={{ xs: 4, md: 14, lg: 20 }}>
             {
               Object.keys(reviews).map(r => (
                 // <Link href={`/reviews/${r}`}>
@@ -141,6 +142,9 @@ export default function Home ({ reviews }) {
             }
             </Row>
           </AllReview>
+          <BackTop target={ () => document.getElementById('container') }>
+            <BackTopIcon><UpOutlined /></BackTopIcon>
+          </BackTop>
         </Col>
       </Row>
       {/* </Container> */}
@@ -187,7 +191,7 @@ export async function getServerSideProps () {
 }
 
 const Banner = styled.div`
-  padding-top: 50%;
+  padding-top: 40%;
   position: relative;
   overflow: hidden;
   height: 0;
@@ -202,19 +206,6 @@ const Banner = styled.div`
     }
   }
 `
-const CardHover = styled.div`
-  display: flex;
-  position: absolute;
-  border-radius: 20px;
-  border: solid 3px transparent;
-    &:hover {
-        cursor: pointer;
-        transition: 0.1s;
-        border-radius: 20px;
-        box-shadow: 8px 8px #dfceaf;
-        border: solid 3px #1e315c;
-    }
-`
 const RecentReview = styled.div`
   margin: auto;
   background-color: #f5f1eb;
@@ -222,9 +213,7 @@ const RecentReview = styled.div`
     display: flex !important;
     justify-content: center;
   }
-  padding: 3%;
-  padding-left: 7%;
-  padding-right: 7%;
+  padding: 3% 6%;
   h2 {
     font-size: 1.5rem;
     text-align: center;
@@ -243,6 +232,13 @@ const RecentReview = styled.div`
       span{
       }
     }
+    padding: 3% 6%;
+  }
+  @media (min-width: 1200px) {
+    padding: 3% 10%;
+  }
+  @media (min-width: 1600px) {
+    padding: 3% 13%;
   }
 `
 const RecentReviewCard = styled.div`
@@ -317,59 +313,32 @@ const RecentReviewCard = styled.div`
     .ant-card-cover {
     }
     .ant-card-body {
-      padding: 2vw 2.4vw;
+      padding: 2vw 1.4vw;
     }
     .ant-card-meta-title {
-        font-size: 1.6em;
+        font-size: 1.3em;
     }
     .ant-card-meta-description {
-        font-size: 2em;
+        font-size: 1.5em;
     }
     .card-shadow {
       padding-bottom: 0px;
     }
   }
-  div${CardHover} {
-    margin-top: 20px;
-    height: 93%;
-    width: 100%;
-    @media (min-width: 300px) {
-        height: 93.5%;
-        width: 100%;
+  @media (min-width: 992px) {
+    .ant-card-meta-title {
+        font-size: 1.6em;
     }
-    @media (min-width: 768px) {
-        margin-top: 30px;
-        height: 91%;
-        width: 95%;
-    }
-    @media (min-width: 930px) {
-        height: 92%;
-        width: 95%;
-    }
-    @media (min-width: 1020px) {
-        height: 93%;
-        width: 95%;
-    }
-    @media (min-width: 1200px) {
-        height: 94%;
-        width: 95%;
-    }
-    @media (min-width: 1600px) {
-        height: 94%;
-        width: 95.5%;
-    }
-  }
+    .ant-card-meta-description {
+        font-size: 2em;
+    }}
 `
 const AllReview = styled.div`
   width: 95%;
-  margin: auto;
+  margin: 0px auto;
   .ant-col {
     display: flex !important;
     justify-content: center;
-  }
-  margin-top: 20px;
-  @media (min-width: 768px) {
-    width: 95%;
   }
   h2 {
     font-size: 1.5rem;
@@ -382,14 +351,23 @@ const AllReview = styled.div`
       font-weight: normal;
     }
   }
+  @media (min-width: 768px) {
+    margin: 20px auto 0;
+    padding: 0 3%;
+    width: 95%;
+  }
   @media (min-width: 1200px) {
     width: 98%;
     margin-top: 20px;
+    padding: 0 10%;
     h2 {
       font-size: 2.2rem;
       span{
       }
     }
+  }
+  @media (min-width: 1600px) {
+    padding: 0% 13%;
   }
 `
 const AllReviewCard = styled.div`
@@ -453,7 +431,7 @@ const AllReviewCard = styled.div`
       font-size: 20px;
   }
   @media (min-width: 768px) {
-    margin-top: 20px;
+    margin-top: 14px;
     .ant-card {
       width: 100%;
     }
@@ -461,42 +439,22 @@ const AllReviewCard = styled.div`
       padding-top: 66%;
     }
     .ant-card-body {
-      padding: 1.5vw 2.4vw;
+      padding: 1.5vw 1.4vw;
     }
+    .ant-card-meta-title {
+        font-size: 1.1em;
+    }
+    .ant-card-meta-description {
+        font-size: 1.5em;
+    }
+  }
+  @media (min-width: 992px) {
+    margin-top: 20px;
     .ant-card-meta-title {
         font-size: 1.5em;
     }
     .ant-card-meta-description {
         font-size: 1.9em;
-    }
-  }
-  div${CardHover} {
-      border-radius: 22px;
-      height: 96%;
-      width: 95%;
-    @media (min-width: 300px) {
-        height: 95.5%;
-        width: 96%;
-    }
-    @media (min-width: 768px) {
-        height: 94%;
-        width: 94%;
-    }
-    @media (min-width: 1020px) {
-        height: 95%;
-        width: 94%;
-    }
-    @media (min-width: 1200px) {
-        height: 96%;
-        width: 96%;
-    }
-    @media (min-width: 1600px) {
-        height: 96%;
-        width: 96%;
-    }
-    @media (min-width: 2200px) {
-        height: 96%;
-        width: 96.5%;
     }
   }
 `
@@ -613,4 +571,7 @@ const BgIcon4 = styled.div`
     padding-top: calc(172px + 5%);
   width: 62%;
   }
+`
+const BackTopIcon = styled.div`
+
 `
