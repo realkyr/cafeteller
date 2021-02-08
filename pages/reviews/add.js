@@ -5,6 +5,7 @@ import axios from 'axios'
 import { RightOutlined, LeftOutlined, PlusOutlined } from '@ant-design/icons'
 
 import Reviews from 'components/reviews/Editor'
+import { useRouter } from 'next/router'
 
 let {
   Row,
@@ -14,7 +15,8 @@ let {
   Skeleton,
   Image,
   Button,
-  Card
+  Card,
+  Result
 } = require('antd')
 const { Meta } = Card
 const { Title } = Typography
@@ -39,12 +41,25 @@ export default function add () {
   const [step, setStep] = useState(0)
   const [posts, setPosts] = useState(null)
   const [selected, setSelected] = useState(undefined)
-
+  const [path, setPath] = useState('')
   const getIGPosts = async path => {
     setPosts(null)
     const posts = await axios.get(path)
     console.log(posts.data)
     setPosts(posts.data)
+  }
+
+  const router = useRouter()
+
+  const save = async path => {
+    setPath(path)
+    setStep(2)
+    window.scrollTo(0, 0)
+  }
+
+  const finishAddReview = (to) => {
+    if (to === 'review') router.push(path)
+    else router.push('/')
   }
 
   useEffect(() => {
@@ -112,12 +127,27 @@ export default function add () {
       case 1:
         return (
           <Reviews
+            save={save}
             posts={posts}
             selected={selected}
             prev={() => {
               setStep(0)
               setSelected(undefined)
             }}
+          />
+        )
+      case 2:
+        return (
+          <Result
+            status="success"
+            title="ทำการเพิ่มรีวิวสำเร็จ"
+            // subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
+            extra={[
+              <Button onClick={() => finishAddReview('review')} type="primary" key="console">
+                ไปยังหน้ารีวิว
+              </Button>,
+              <Button onClick={finishAddReview} key="buy">กลับสู่หน้าหลัก</Button>
+            ]}
           />
         )
       default:

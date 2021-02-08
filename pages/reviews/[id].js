@@ -57,7 +57,7 @@ export default function Home ({ reviews }) {
             const fullCafeName = block.data.text
             const cafeArea = fullCafeName.split('—').pop()
             const cafeName = fullCafeName.substring(0, fullCafeName.indexOf('—'))
-            raw.push(<Title level={block.data.level} className="article-header"><span dangerouslySetInnerHTML={{ __html: cafeName }}></span></Title>)
+            raw.push(<Title level={parseInt(block.data.level)} className="article-header"><span dangerouslySetInnerHTML={{ __html: cafeName }}></span></Title>)
             raw.push(
               <TitleBox>
                 <TitlePattern img={'/assets/Images/pattern4.jpg'} />

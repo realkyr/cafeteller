@@ -51,21 +51,18 @@ const componentForm = {
 const restrictCountry = { country: ['th', 'au', 'jp'] }
 
 export default function Editor (props) {
-  const [banner, setBanner] = useState(null)
+  const [banner, setBanner] = useState(props.edit.cafe.banner)
   const [loading, setLoading] = useState(true)
   const [cafe, setCafe] = useState({
-    location_data: {
-      province: {},
-      district: {}
-    },
-    placeData: {},
-    tags: [],
-    district: '',
-    subdistrict: '',
-    selectedTags: []
+    placeData: props.edit.cafe || {},
+    tags: props.edit.cafe.tags || []
   })
 
-  let map, autocomplete, marker, reviewID, cafeID
+  let map, autocomplete, marker
+
+  const reviewID = props.edit.review.id
+  const cafeID = props.edit.cafe.id
+
   const fillInAddress = () => {
     // Get the place details from the autocomplete object.
     const place = autocomplete.getPlace()
@@ -111,9 +108,9 @@ export default function Editor (props) {
         placeData[addressType] = val
       }
     }
-    setCafe({
-      ...cafe,
-      placeData
+    setPlaceData({
+      ...cafe.placeData,
+      ...placeData
     })
   }
 
@@ -175,7 +172,11 @@ export default function Editor (props) {
     const didMount = async () => {
       setLoading(true)
       try {
-        const data = props.selected === undefined ? {} : await content(props.posts.data[props.selected])
+        const data =
+          props.edit.review.review ||
+            !props.selected
+            ? {}
+            : await content(props.posts.data[props.selected])
         if (document.getElementById('codex-editor') && !editor) {
           console.log('in case')
           const EditorJS = require('@editorjs/editorjs')
@@ -230,7 +231,17 @@ export default function Editor (props) {
           center: { lat: -34.397, lng: 150.644 },
           zoom: 8
         })
-        console.log(autoInput.current)
+        if (props.edit.cafe.location) {
+          const location = props.edit.cafe.location
+          const latLng = new google.maps.LatLng(location.lat, location.lon)
+          marker = new google.maps.Marker({
+            position: latLng,
+            map,
+            icon: '/assets/Images/pin.png'
+          })
+          map.panTo(latLng)
+          map.setZoom(12)
+        }
         // Create the autocomplete object, restricting the search predictions to
         autocomplete = new google.maps.places.Autocomplete(
           autoInput.current.input,
@@ -260,8 +271,6 @@ export default function Editor (props) {
 
   const saveReview = async () => {
     // save reviews to database
-    console.log({ autocomplete })
-    console.log({ editor })
     const review = await editor.save()
     const cafeData = cafe.placeData
     cafeData.tags = cafe.tags
@@ -271,14 +280,8 @@ export default function Editor (props) {
         cafeData[key] = cafeData[key].replace(/&#8232;/g, ' ')
       }
     })
-    // TODO: CONVERT EDIT PATH OF NEXT.JS
-    // let path = '/review'
-    // if (this.$route.name === 'review-id-edit') {
-    //   path += '/' + this.$route.params.id
-    // }
 
     cafeData.banner = banner || {}
-    console.log(cafeData)
 
     const db = firebase.firestore()
     const reviewRef = db.collection('reviews').doc(reviewID)
@@ -297,6 +300,7 @@ export default function Editor (props) {
       ]
     )
     message.success('บันทึกสำเร็จ')
+    props.save('/reviews/' + reviewID)
     // const res = await this.$axios.post(
     //   path,
     //   JSON.stringify({
@@ -422,6 +426,7 @@ export default function Editor (props) {
           style={{ width: '100%' }}
           showSearch
           allowClear
+          value={cafe.tags}
           mode="multiple"
           onChange={tags => setCafe({ ...cafe, tags })}
         >
@@ -661,7 +666,16 @@ Editor.propTypes = {
   // ...prop type definitions here
   posts: PropTypes.object,
   selected: PropTypes.number,
-  prev: PropTypes.func
+  prev: PropTypes.func,
+  edit: PropTypes.object,
+  save: PropTypes.func
+}
+
+Editor.defaultProps = {
+  edit: {
+    review: {},
+    cafe: {}
+  }
 }
 
 const ContactInfo = styled.div`
