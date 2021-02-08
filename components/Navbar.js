@@ -67,7 +67,7 @@ const SocialBarBot = styled.div`
 const SocialBarMenu = (
   <Menu>
     <Menu.Item>
-      <a href="http://instagram.com/">
+      <a href="https://www.instagram.com/cafeteller/">
         <Image
           src="/assets/Images/icon/Social/IG.png"
           preview={false}
@@ -77,7 +77,7 @@ const SocialBarMenu = (
       </a>
     </Menu.Item>
     <Menu.Item>
-      <a href="http://instagram.com/">
+      <a href="https://www.facebook.com/cafeteller/">
         <Image
           src="/assets/Images/icon/Social/FB.png"
           preview={false}
@@ -87,7 +87,7 @@ const SocialBarMenu = (
       </a>
     </Menu.Item>
     <Menu.Item>
-      <a href="http://instagram.com/">
+      <a href="https://twitter.com/CAFETELLER">
         <Image
           src="/assets/Images/icon/Social/Twitter.png"
           preview={false}
