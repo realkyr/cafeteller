@@ -5,10 +5,7 @@ export default async (req, res) => {
   if (req.method === 'POST') {
     try {
       // check parameter
-      console.log(req.body)
       const url = req.body.url
-      console.log(req.body.access_token)
-
       // save file from url
 
       const https = require('https')
@@ -49,7 +46,6 @@ export default async (req, res) => {
       console.log(error)
       if (error.message) {
         res.status(400).send({ error_message: error.message })
-        return
       }
       res.status(error.response.status).send({ error_message: error.response.data.error.error_message })
     }

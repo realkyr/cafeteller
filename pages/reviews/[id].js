@@ -1,4 +1,7 @@
-import firebase from 'plugins/firebase'
+import admin from 'plugins/firebase'
+import firebase from 'plugins/firebaseclient'
+import 'firebase/auth'
+import 'firebase/firestore'
 import PropTypes from 'prop-types'
 
 import React, { useState, useEffect } from 'react'
@@ -8,7 +11,7 @@ import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { loader } from '../../plugins/gmap'
 
-import { Typography, Row, Col, Image, Card } from 'antd'
+import { Typography, Space, Button, Row, Col, Image, Card } from 'antd'
 import Banner from 'components/reviews/Banner'
 
 const { Meta } = Card
@@ -18,11 +21,30 @@ export default function Home ({ reviews }) {
   const router = useRouter()
   const { id } = router.query
   const [content, setContent] = useState([])
+  const [user, setUser] = useState(null)
+  const [isAdmin, setAdmin] = useState(false)
+
+  const verifyToken = () => {
+    // TODO: verify if token still valid
+    return true
+  }
 
   let map
   let marker
 
   useEffect(() => {
+    const unsub = firebase.auth().onAuthStateChanged(async user => {
+      if (user) {
+        const isTokenValid = verifyToken()
+        if (!isTokenValid) firebase.auth().signOut()
+        setUser(user)
+        const idtoken = await user.getIdTokenResult()
+        setAdmin(idtoken.claims.isAdmin)
+      } else {
+        setUser(undefined)
+        setAdmin(false)
+      }
+    })
     const didMount = async () => {
       const raw = []
       if (!reviews[id]) return ''
@@ -123,6 +145,7 @@ export default function Home ({ reviews }) {
       })
     }
     didMount()
+    return () => { unsub && unsub() }
   }, [])
 
   return (
@@ -132,6 +155,21 @@ export default function Home ({ reviews }) {
       </Head>
       <Row align="middle" justify="center">
         <Col xs={24} xxl={18}>
+          {
+            user && isAdmin
+              ? (
+              <Space size="small">
+                <Button onClick={() => { router.push('/reviews/edit/' + id) }}>Edit Review</Button>
+                <Button onClick={async () => {
+                  const db = firebase.firestore()
+                  await db.collection('reviews').doc(id).delete()
+                  await db.collection('cafes').doc(reviews[id].cafe.id).delete()
+                  router.push('/')
+                }} danger>Delete</Button>
+              </Space>
+                )
+              : null
+          }
           <Banner>
             <Image height={'100%'} width={'100%'} style={{ objectFit: 'cover' }} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
               alt={reviews[id].cafe.banner.url} src={reviews[id].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false}
@@ -302,7 +340,7 @@ Home.propTypes = {
 // This function gets called at build time
 export async function getServerSideProps () {
   // Call an external API endpoint to get posts
-  const db = firebase.firestore()
+  const db = admin.firestore()
   const reviewsDoc = await db.collection('reviews').get()
   const reviews = {}
   reviewsDoc.forEach(r => {
@@ -317,6 +355,7 @@ export async function getServerSideProps () {
   const result = await Promise.all(cafes)
   Object.keys(reviews).forEach((id, index) => {
     reviews[id].cafe = result[index].data()
+    reviews[id].cafe.id = result[index].id
 
     // convert all timestamp to date
     reviews[id].createDate = reviews[id].createDate.toString()

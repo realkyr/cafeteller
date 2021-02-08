@@ -2,6 +2,9 @@ import React, { useRef, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
+import firebase from 'plugins/firebaseclient'
+import 'firebase/firestore'
+
 import { InboxOutlined, LoadingOutlined, LeftOutlined, SaveOutlined } from '@ant-design/icons'
 import Banner from './Banner'
 
@@ -12,6 +15,7 @@ import { igToBlock } from 'plugins/customfunc'
 
 import amphoes from '../../public/assets/json/amphoes.json'
 import changwats from '../../public/assets/json/changwats.json'
+import types from 'public/assets/json/types'
 
 const {
   Row,
@@ -55,12 +59,13 @@ export default function Editor (props) {
       district: {}
     },
     placeData: {},
+    tags: [],
     district: '',
     subdistrict: '',
     selectedTags: []
   })
 
-  let editor, map, autocomplete, marker
+  let map, autocomplete, marker, reviewID, cafeID
   const fillInAddress = () => {
     // Get the place details from the autocomplete object.
     const place = autocomplete.getPlace()
@@ -71,7 +76,6 @@ export default function Editor (props) {
       lon: place.geometry.location.lng()
     }
     placeData.details = place.formatted_address
-    console.log(place.geometry.location)
 
     const { google } = window
     if (marker) marker.setMap(null)
@@ -165,17 +169,21 @@ export default function Editor (props) {
   }
 
   const autoInput = useRef()
+  const [editor, setEditor] = useState(null)
   useEffect(() => {
+    let tmpEditor
     const didMount = async () => {
       setLoading(true)
-      const EditorJS = require('@editorjs/editorjs')
-      const Header = require('@editorjs/header')
-      const List = require('@editorjs/list')
-      const ImageTool = require('@editorjs/image')
       try {
         const data = props.selected === undefined ? {} : await content(props.posts.data[props.selected])
-        if (document.getElementById('codex-editor')) {
-          editor = new EditorJS({
+        if (document.getElementById('codex-editor') && !editor) {
+          console.log('in case')
+          const EditorJS = require('@editorjs/editorjs')
+          const Header = require('@editorjs/header')
+          const List = require('@editorjs/list')
+          const ImageTool = require('@editorjs/image')
+
+          tmpEditor = new EditorJS({
           /**
            * Id of Element that should contain Editor instance
            */
@@ -209,7 +217,11 @@ export default function Editor (props) {
             placeholder: 'เขียนรีวิวที่นี่!',
             autofocus: true,
             // any ig post selected? empty content, convert caption to content otherwise
-            data
+            data,
+            onReady: () => {
+              console.log({ tmpEditor })
+              setEditor(prev => tmpEditor)
+            }
           })
         }
         if (!window.google) await loader.load()
@@ -238,46 +250,66 @@ export default function Editor (props) {
       }
     }
     didMount()
-    return () => { editor && editor.destroy && editor.destroy() }
+    return () => {
+      console.log('---- unmount ---')
+      console.log(tmpEditor)
+      tmpEditor && tmpEditor.destroy && tmpEditor.destroy()
+      setEditor(null)
+    }
   }, [])
 
-  // eslint-disable-next-line no-unused-vars
   const saveReview = async () => {
     // save reviews to database
-    const config = {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
+    console.log({ autocomplete })
+    console.log({ editor })
     const review = await editor.save()
-    const cafeData = this.$refs.cafe.placeData
-    cafeData.tags = this.$refs.cafe.selectedTags
+    const cafeData = cafe.placeData
+    cafeData.tags = cafe.tags
 
     Object.keys(cafeData).forEach((key) => {
       if (typeof cafeData[key] === 'string') {
         cafeData[key] = cafeData[key].replace(/&#8232;/g, ' ')
       }
     })
+    // TODO: CONVERT EDIT PATH OF NEXT.JS
+    // let path = '/review'
+    // if (this.$route.name === 'review-id-edit') {
+    //   path += '/' + this.$route.params.id
+    // }
 
-    let path = '/review'
-    if (this.$route.name === 'review-id-edit') {
-      path += '/' + this.$route.params.id
-    }
-    cafeData.banner = this.banner ? this.banner : {}
+    cafeData.banner = banner || {}
     console.log(cafeData)
-    const res = await this.$axios.post(
-      path,
-      JSON.stringify({
-        access_token: localStorage.getItem('access_token'),
-        post: {
-          review,
-          cafe: cafeData
-        }
-      }),
-      config
+
+    const db = firebase.firestore()
+    const reviewRef = db.collection('reviews').doc(reviewID)
+    const cafeRef = db.collection('cafes').doc(cafeID)
+    await Promise.all(
+      [
+        reviewRef.set({
+          cafe: cafeRef,
+          createDate: firebase.firestore.FieldValue.serverTimestamp(),
+          updateDate: firebase.firestore.FieldValue.serverTimestamp(),
+          review
+        }, { merge: true }),
+        cafeRef.set({
+          ...cafeData
+        }, { merge: true })
+      ]
     )
-    console.log(res.data)
-    this.$router.push('/review/' + res.data)
+    message.success('บันทึกสำเร็จ')
+    // const res = await this.$axios.post(
+    //   path,
+    //   JSON.stringify({
+    //     access_token: localStorage.getItem('access_token'),
+    //     post: {
+    //       review,
+    //       cafe: cafeData
+    //     }
+    //   }),
+    //   config
+    // )
+    // console.log(res.data)
+    // this.$router.push('/review/' + res.data)
   }
 
   const draggerProps = {
@@ -285,7 +317,8 @@ export default function Editor (props) {
     async customRequest ({ file, onSuccess, onError }) {
       try {
         const res = await upload(file, 'Image')
-        setBanner(res.file.url)
+        console.log(res)
+        setBanner(res.file)
         onSuccess('done')
       } catch (error) {
         onError(() => {
@@ -322,6 +355,7 @@ export default function Editor (props) {
       icon: '/assets/Images/icon/Open hours.png',
       input: (
         <Input
+          placeholder="10.00 - 12.00 น. ทุกวัน"
           value={cafe.placeData.openhour}
           onChange={e => {
             setPlaceData({ openhour: e.target.value })
@@ -335,6 +369,7 @@ export default function Editor (props) {
       input: (
         <TextArea
           value={cafe.placeData.parking}
+          placeholder="จอดรถได้หน้าร้าน 10 คัน"
           onChange={e => {
             setPlaceData({ parking: e.target.value })
           }}
@@ -347,6 +382,7 @@ export default function Editor (props) {
       input: (
         <Input
           value={cafe.placeData.phone}
+          placeholder="0945587588"
           onChange={e => {
             setPlaceData({ phone: e.target.value })
           }}
@@ -358,6 +394,7 @@ export default function Editor (props) {
       input: (
         <TextArea
           value={cafe.placeData.details}
+          placeholder="32/98 หมู่บ้านแกรนด์วิลล์ กรุงเทพ 10250"
           onChange={e => {
             setPlaceData({ details: e.target.value })
           }}
@@ -370,10 +407,26 @@ export default function Editor (props) {
       input: (
         <Input
           value={cafe.placeData.landmark}
+          placeholder="หอนาฬิกาหน้าหมู่บ้าน"
           onChange={e => {
             setPlaceData({ landmark: e.target.value })
           }}
         />
+      )
+    },
+    {
+      name: 'tags',
+      icon: '/assets/Images/icon/tag-info.png',
+      input: (
+        <Select
+          style={{ width: '100%' }}
+          showSearch
+          allowClear
+          mode="multiple"
+          onChange={tags => setCafe({ ...cafe, tags })}
+        >
+          {types.map(type => (<Option key={type.key} value={type.value}>{type.value}</Option>))}
+        </Select>
       )
     },
     {
@@ -382,6 +435,7 @@ export default function Editor (props) {
       input: (
         <Input
           value={cafe.placeData.ig}
+          placeholder="https://www.instagram.com/cafeteller"
           onChange={e => {
             setPlaceData({ ig: e.target.value })
           }}
@@ -394,6 +448,7 @@ export default function Editor (props) {
       input: (
         <Input
           value={cafe.placeData.fb}
+          placeholder="https://www.facebook.com/cafeteller"
           onChange={e => {
             setPlaceData({ fb: e.target.value })
           }}
@@ -406,6 +461,7 @@ export default function Editor (props) {
       input: (
         <Input
           value={cafe.placeData.tw}
+          placeholder="https://twitter.com/CAFETELLER"
           onChange={e => {
             setPlaceData({ tw: e.target.value })
           }}
@@ -420,7 +476,7 @@ export default function Editor (props) {
           banner
             ? <Banner>
                 <Image height={'100%'} width={'100%'} style={{ objectFit: 'cover' }} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
-                  alt={'banner'} src={banner} fallback="/assets/Images/placeholder.png" preview={false}
+                  alt={'banner'} src={banner.url} fallback="/assets/Images/placeholder.png" preview={false}
                 />
               </Banner>
             : null
@@ -439,7 +495,7 @@ export default function Editor (props) {
       <Col xs={24} md={22} style={{ marginTop: 20 }}>
         <Space size="small" style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button onClick={props.prev} icon={<LeftOutlined />} />
-          <Button type="primary" onClick={props.save} icon={<SaveOutlined />}>บันทึก</Button>
+          <Button type="primary" onClick={saveReview} icon={<SaveOutlined />}>บันทึก</Button>
         </Space>
       </Col>
       <Col xs={24} md={22}>
@@ -605,8 +661,7 @@ Editor.propTypes = {
   // ...prop type definitions here
   posts: PropTypes.object,
   selected: PropTypes.number,
-  prev: PropTypes.func,
-  save: PropTypes.func
+  prev: PropTypes.func
 }
 
 const ContactInfo = styled.div`
