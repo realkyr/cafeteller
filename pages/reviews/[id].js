@@ -279,10 +279,23 @@ export default function Home ({ reviews }) {
     return () => { unsub && unsub() }
   }, [])
 
+  const banner = reviews[id].cafe.banner || {}
   return (
     <>
       <Head>
         <title>Cafeteller || {reviews[id].cafe.name}</title>
+        <link rel="icon" href="/favicon.ico" />
+          <meta
+            name="description"
+            content={reviews[id].cafe.description || 'Because good cafés deserve a shout out'}
+          />
+          <meta name="robots" content="all" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+          <meta charSet="UTF-8"></meta>
+
+          <meta property="og:title" content={`Cafeteller || ${reviews[id].cafe.name}`} />
+          <meta property="og:description" content={reviews[id].cafe.description || 'Because good cafés deserve a shout out'} />
+          <meta property="og:image" content={banner.url || '/assets/Images/COVER1.png'}/>
       </Head>
       <Container>
       <Row align="middle" justify="center">

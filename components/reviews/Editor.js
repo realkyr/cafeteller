@@ -473,6 +473,19 @@ export default function Editor (props) {
           }}
         />
       )
+    },
+    {
+      name: 'description',
+      icon: '/assets/Images/icon/description.png',
+      input: (
+        <TextArea
+          value={cafe.placeData.description}
+          placeholder="ไคเชน คาเฟ่ใหม่ ย่านเกษตรนวมินทร์ที่มาพร้อมกับสโลว์แกน Rich & Tasty ซึ่งตัวร้าน การนำเสนอทุกๆอย่างสอดคล้องกับสโลแกนนี้ทั้งหมด ตั้งแต่ก้าวเข้าร้านเลย ต้องบอกว่าร้านสวยมาก ดีไซน์ การเล่นสี ดีเทลยืนหนึ่งเลยจริงๆ"
+          onChange={e => {
+            setPlaceData({ description: e.target.value })
+          }}
+        />
+      )
     }
   ]
   return (

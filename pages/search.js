@@ -469,7 +469,19 @@ export default class Search extends Component {
       <>
         <Head>
           <title>Cafeteller || Search</title>
-        </Head>
+          <link rel="icon" href="/favicon.ico" />
+          <meta
+            name="description"
+            content="Because good cafés deserve a shout out"
+          />
+          <meta name="robots" content="all" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+          <meta charSet="UTF-8"></meta>
+
+          <meta property="og:title" content="Cafeteller" />
+          <meta property="og:description" content="Because good cafés deserve a shout out" />
+          <meta property="og:image" content="/assets/Images/COVER1.png"/>
+      </Head>
         { popup }
         <Row justify="center" className='search-wrap'>
           <Col xs={24} lg={22} xxl={18}>
