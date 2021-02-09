@@ -204,7 +204,7 @@ export default function Home ({ reviews }) {
         contactBoxRaw.push(
           <Row key={1}>
             <Col span={4}>
-              <Image src="/assets/Images/icon/parking.png" preview={false} height={35} width={35} />
+              <Image src="/assets/Images/icon/Parking.png" preview={false} height={35} width={35} />
             </Col>
             <Col span={20}>{reviews[id].cafe.parking}</Col>
           </Row>
@@ -214,7 +214,7 @@ export default function Home ({ reviews }) {
         contactBoxRaw.push(
           <Row key={2}>
             <Col span={4}>
-              <Image src="/assets/Images/icon/call.png" preview={false} height={30} width={30} />
+              <Image src="/assets/Images/icon/Call.png" preview={false} height={30} width={30} />
             </Col>
             <Col span={20}>{reviews[id].cafe.phone}</Col>
           </Row>
@@ -224,7 +224,7 @@ export default function Home ({ reviews }) {
         contactBoxRaw.push(
           <Row key={3}>
             <Col span={4}>
-              <Image src="/assets/Images/icon/address.png" preview={false} height={30} width={30} />
+              <Image src="/assets/Images/icon/Address.png" preview={false} height={30} width={30} />
             </Col>
             <Col span={20}>{reviews[id].cafe.details}</Col>
           </Row>
@@ -234,7 +234,7 @@ export default function Home ({ reviews }) {
         contactBoxRaw.push(
           <Row key={4}>
             <Col span={4}>
-              <Image src="/assets/Images/icon/location.png" preview={false} height={30} width={30} />
+              <Image src="/assets/Images/icon/Location.png" preview={false} height={30} width={30} />
             </Col>
             <Col span={20}>{reviews[id].cafe.landmark}</Col>
           </Row>
@@ -246,7 +246,7 @@ export default function Home ({ reviews }) {
         visitPageRaw.push(
           <Row key={5}>
             <Col span={4}>
-              <Image src="/assets/Images/icon/Social/fb.png" preview={false} height={30} width={30} />
+              <Image src="/assets/Images/icon/Social/FB.png" preview={false} height={30} width={30} />
             </Col>
             <Col span={20}>
               Visit <a href={reviews[id].cafe.fb}>{reviews[id].cafe.name}</a>&apos;s page

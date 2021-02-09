@@ -478,7 +478,7 @@ export default function Navbar () {
                   <a>
                     <SearchBar className={navBgColor[1]}>
                     <Image
-                      src="/assets/Images/icon/search.png"
+                      src="/assets/Images/icon/Search.png"
                       preview={false}
                       height={'1.4em'}
                       width={'1.4em'}
