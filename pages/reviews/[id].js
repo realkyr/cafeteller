@@ -91,7 +91,14 @@ export default function Home ({ reviews }) {
               src={block.data.file.url}
               fallback="/assets/Images/placeholder.png"
               preview={false}
-              placeholder={<Image key={consecImage} height={'100%'} width={'100%'} className="res-img" src={'/assets/Images/placeholder.png'} preview={false} />}
+              placeholder={<Image
+                key={consecImage}
+                height={'100%'}
+                width={'100%'}
+                className="res-img"
+                src={'/assets/Images/placeholder.png'}
+                preview={false}
+              />}
             />
             // <img style={{
             //   display: 'inline',
@@ -377,7 +384,19 @@ export default function Home ({ reviews }) {
                             <a className="flex-center card-shadow">
                               <Card
                                 bordered={false}
-                                cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
+                                cover={<Image
+                                  height={'100%'}
+                                  onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
+                                  alt={reviews[r].cafe.name}
+                                  src={reviews[r].cafe.banner.url}
+                                  fallback="/assets/Images/placeholder.png"
+                                  preview={false}
+                                  placeholder={<Image
+                                    height={'100%'}
+                                    alt={reviews[r].cafe.name}
+                                    src={'/assets/Images/placeholder.png'}
+                                    preview={false} />}
+                                />}
                               >
                                 <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
                               </Card>

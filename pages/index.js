@@ -98,7 +98,14 @@ export default function Home ({ reviews }) {
                                 alt={reviews[r].cafe.name}
                                 src={reviews[r].cafe.banner.url}
                                 fallback="/assets/Images/placeholder.png"
-                                preview={false} />}
+                                preview={false}
+                                placeholder={<Image
+                                  height={'100%'}
+                                  alt={reviews[r].cafe.name}
+                                  src={'/assets/Images/placeholder.png'}
+                                  preview={false}
+                                />}
+                              />}
                             >
                               <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
                             </Card>
@@ -148,7 +155,12 @@ export default function Home ({ reviews }) {
                             src={reviews[r].cafe.banner.url}
                             fallback="/assets/Images/placeholder.png"
                             preview={false}
-                            placeholder={<Image height={'100%'} alt={reviews[r].cafe.name} src={'/assets/Images/placeholder.png'} preview={false} />}
+                            placeholder={<Image
+                              height={'100%'}
+                              alt={reviews[r].cafe.name}
+                              src={'/assets/Images/placeholder.png'}
+                              preview={false}
+                            />}
                           />}
                           >
                           <Meta className="cafeCardDesc" title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
