@@ -115,23 +115,39 @@ export default function Home ({ reviews }) {
             if (consecImage < 2) {
               raw.push(
                 <div className="image-container" key={index}>
-                  <div className="image-container-img">
-                    <div className="caption-border">
-                      {
-                        [image, caption]
-                      }
+                  <div className="content-wrap">
+                    <div className="image-container-img">
+                      <div className="caption-border">
+                        {
+                          [image]
+                        }
+                      </div>
                     </div>
+                        <div className="caption-wrap">
+                        {
+                          [caption]
+                        }
+                        </div>
                   </div>
                 </div>)
             } else {
               raw[raw.length - 1] = (
-                <div className="image-container" key={index}>
+                <div className="image-container-2" key={index}>
                   {raw[raw.length - 1].props.children}
                   <div className="divide-image"></div>
-                  <div className="image-container-img">
-                    <div className="caption-border">
-                      {[image, caption]}
+                  <div className="content-wrap">
+                    <div className="image-container-img">
+                      <div className="caption-border">
+                        {
+                          [image]
+                        }
+                      </div>
                     </div>
+                        <div className="caption-wrap">
+                        {
+                          [caption]
+                        }
+                        </div>
                   </div>
                 </div>
               )
@@ -386,7 +402,7 @@ export default function Home ({ reviews }) {
           <MoreReview>
             <h2><span>More</span> Like This</h2>
             <Underline style={{ marginBottom: 12 }} />
-            <Row gutter={{ xs: 10, md: 20 }}>
+            <Row gutter={{ xs: 10, sm: 12, md: 20 }}>
               {
                 Object.keys(reviews).map((r, i) => {
                   if (i < 2) {
@@ -610,6 +626,7 @@ const PatternShare = styled.div`
 `
 const ForWork = styled.div`
   margin-bottom: 4% !important;
+  padding: 5%;
   display: flex;
   font-family: 'Maitree',serif;
   margin: 0;
@@ -618,11 +635,15 @@ const ForWork = styled.div`
   a {
     color: #1890ff;
   }
+  img {
+    border: 0 !important;
+  }
   span {
     padding-left: 10px;
   }
   @media(min-width: 768px){
     font-size: 20px;
+    padding: 5% 0%;
   }
   @media(max-width: 992px){
     padding-bottom: 4% !important;
@@ -638,6 +659,7 @@ const MoreReview = styled.div`
   width: 96%;
   margin: auto;
   margin-top: 40px;
+  margin-bottom: 30px;
   .ant-col {
     display: flex !important;
     justify-content: center;
@@ -747,6 +769,10 @@ const Content = styled.div`
     font-family: 'Maitree', serif;
     padding :5%;
   }
+  .content-wrap {
+    width: 100%;
+    height: 100%;
+  }
   h4.article-header{
     margin-top: 0 !important;
     margin-bottom: 0 !important;
@@ -766,7 +792,7 @@ const Content = styled.div`
     color: #1E315C;
   }
   .divide-image {
-   width: 30px;
+   width: 10px;
   }
   img {
     // width: 90%;
@@ -774,12 +800,31 @@ const Content = styled.div`
   .image-container {
     display: flex;
     justify-content: space-evenly;
-    margin-bottom: 4px;
     width: 100%;
+    margin: 10px 0;
+    .image-container-img {
+      padding-bottom: 125%;
+      width: 100%;
+      height: 0;
+      position: relative;
+    }
+  }
+  .image-container-2 {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    margin: 10px 0;
+    .image-container-img {
+      padding-bottom: 125%;
+      width: 100%;
+      height: 0;
+      position: relative;
+      /* overflow: hidden; */
+    }
   }
   .caption {
     text-align: center;
-    font-size: 14px;
+    font-size: 12px;
     margin: 5px;
     margin-bottom: 0px;
     font-family: maitree;
@@ -790,6 +835,14 @@ const Content = styled.div`
     height: 100%;
   }
 
+  .caption-wrap { 
+      /* border: 1px solid #9e9e9e; */
+      height: 100%;
+      /* min-height: 100%; */
+  }
+  @media (min-width: 562px) {
+    .divide-image {width: 15px;}
+  }
   @media (min-width: 768px) {
 
     p {
@@ -811,21 +864,33 @@ const Content = styled.div`
       font-size: 15px;
       margin: 8px;
       margin-top: 12px;
-    }
-    .caption-border {    
       border: 1px solid #9e9e9e;
-      margin: 3px;
+      margin: 0;
+      padding: 10px;
+    }
+
+    .caption-border {    
+      /* border: 1px solid #9e9e9e; */
+      /* margin: 3px; */
     }
     .image-container {
       display: flex;
       justify-content: space-evenly;
-      margin-bottom: 5px;
+      margin: 10px 0;
+      padding-top: 20px;
+    }
+    .image-container-2 {
+      display: flex;
+      justify-content: space-evenly;
+      margin: 10px 0;
+      padding-top: 20px;
     }
     .divide-image {
       width: 20px;
     }
     img {
       // width: 90%;
+      border: 1px solid #9e9e9e;
     }
   }
 `
