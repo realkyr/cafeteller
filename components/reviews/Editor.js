@@ -173,10 +173,11 @@ export default function Editor (props) {
       setLoading(true)
       try {
         const data =
-          props.edit.review.review ||
-            !props.selected
-            ? {}
-            : await content(props.posts.data[props.selected])
+          props.edit.review.review
+            ? props.edit.review.review
+            : !props.selected
+                ? {}
+                : await content(props.posts.data[props.selected])
         if (document.getElementById('codex-editor') && !editor) {
           console.log('in case')
           const EditorJS = require('@editorjs/editorjs')
@@ -239,7 +240,7 @@ export default function Editor (props) {
             map,
             icon: '/assets/Images/pin.png'
           })
-          map.panTo(latLng)
+          map.setCenter(latLng)
           map.setZoom(12)
         }
         // Create the autocomplete object, restricting the search predictions to
@@ -369,7 +370,7 @@ export default function Editor (props) {
     },
     {
       name: 'parking',
-      icon: '/assets/Images/icon/parking.png',
+      icon: '/assets/Images/icon/Parking.png',
       input: (
         <TextArea
           value={cafe.placeData.parking}
@@ -382,7 +383,7 @@ export default function Editor (props) {
     },
     {
       name: 'call',
-      icon: '/assets/Images/icon/call.png',
+      icon: '/assets/Images/icon/Call.png',
       input: (
         <Input
           value={cafe.placeData.phone}
@@ -394,7 +395,7 @@ export default function Editor (props) {
     },
     {
       name: 'address detail',
-      icon: '/assets/Images/icon/address.png',
+      icon: '/assets/Images/icon/Address.png',
       input: (
         <TextArea
           value={cafe.placeData.details}
@@ -407,7 +408,7 @@ export default function Editor (props) {
     },
     {
       name: 'landmark',
-      icon: '/assets/Images/icon/location.png',
+      icon: '/assets/Images/icon/Location.png',
       input: (
         <Input
           value={cafe.placeData.landmark}
@@ -420,7 +421,7 @@ export default function Editor (props) {
     },
     {
       name: 'tags',
-      icon: '/assets/Images/icon/tag-info.png',
+      icon: '/assets/Images/icon/Tag-info.png',
       input: (
         <Select
           style={{ width: '100%' }}

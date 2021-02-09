@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start -p 8080",
+    "deploy": "yarn build && gcloud app deploy",
+    "gcp-build": "yarn build"
   },
   "dependencies": {
     "@editorjs/editorjs": "^2.19.1",
