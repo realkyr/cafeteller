@@ -51,6 +51,18 @@ export default function Home ({ reviews }) {
     <>
       <Head>
         <title>Cafeteller</title>
+        <link rel="icon" href="/favicon.ico" />
+          <meta
+            name="description"
+            content="Because good cafés deserve a shout out"
+          />
+          <meta name="robots" content="all" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+          <meta charSet="UTF-8"></meta>
+
+          <meta property="og:title" content="Cafeteller" />
+          <meta property="og:description" content="Because good cafés deserve a shout out" />
+          <meta property="og:image" content="/assets/Images/COVER1.png"/>
       </Head>
       {/* <Container> */}
       <Row justify="center" style={{ overflow: 'hidden', paddingBottom: '1.4em' }} id='container'>
