@@ -8,21 +8,27 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Link from 'next/link'
-import { Row, Col, Image, Card, Button, Space, BackTop } from 'antd'
+import { Row, Col, Image, Card, Button, Space, Affix, Grid } from 'antd'
 import { UpOutlined } from '@ant-design/icons'
 
 import styled from 'styled-components'
 
 const { Meta } = Card
+const { useBreakpoint } = Grid
 
 export default function Home ({ reviews }) {
   const router = useRouter()
   const [user, setUser] = useState(null)
   const [isAdmin, setAdmin] = useState(false)
+  const screens = useBreakpoint()
 
   const verifyToken = () => {
     // TODO: verify if token still valid
     return true
+  }
+
+  const scrollTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   useEffect(() => {
@@ -38,7 +44,6 @@ export default function Home ({ reviews }) {
         setAdmin(false)
       }
     })
-
     return () => { unsub && unsub() }
   }, [])
 
@@ -75,7 +80,7 @@ export default function Home ({ reviews }) {
                   )
                 : null
             }
-              <Row gutter={{ xs: 4, md: 24 }}>
+              <Row gutter={{ xs: 7, md: 24 }}>
               {
                 Object.keys(reviews).map((r, i) => {
                   // <Link href={`/reviews/${r}`}>
@@ -118,7 +123,14 @@ export default function Home ({ reviews }) {
           <AllReview>
             <h2><span>All</span> Review</h2>
             <Underline style={{ marginBottom: 12 }} />
-            <Row gutter={{ xs: 4, md: 14, lg: 20 }}>
+            {
+              screens.md
+                ? <Affix offsetTop={120}>
+                  <BackTopIcon><div onClick={scrollTop}><UpOutlined /></div></BackTopIcon>
+                </Affix>
+                : null
+            }
+            <Row gutter={{ xs: 10, sm: 13, md: 14, lg: 20 }}>
             {
               Object.keys(reviews).map(r => (
                 // <Link href={`/reviews/${r}`}>
@@ -129,7 +141,8 @@ export default function Home ({ reviews }) {
                       <a className='flex-center card-shadow'>
                         <Card
                           bordered={false}
-                          cover={<Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} />}
+                          cover={
+                          <Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} data-fallback-image="/assets/Images/placeholder.png" />}
                         >
                           <Meta className="cafeCardDesc" title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
                         </Card>
@@ -142,9 +155,6 @@ export default function Home ({ reviews }) {
             }
             </Row>
           </AllReview>
-          <BackTop target={ () => document.getElementById('container') }>
-            <BackTopIcon><UpOutlined /></BackTopIcon>
-          </BackTop>
         </Col>
       </Row>
       {/* </Container> */}
@@ -265,10 +275,14 @@ const RecentReviewCard = styled.div`
     padding: 3.7vw;
   }
   .card-shadow {
-    padding-bottom: 20px;
+    height: auto;
+    margin-bottom: 20px;
     border-radius: 20px;
+    transition-timing-function: cubic-bezier(0.19, 0.65, 0.4, 0.91);
+    transition-duration: .2s;
+    box-shadow: 0px 0px 0px 0px #dfceaf;
     &:hover {
-      box-shadow: 8px 8px 1px 2px #dfceaf;
+      box-shadow: 8px 8px 1px .2rem #dfceaf;
 
       .ant-card {
         box-shadow: 0px 0px 0px 3px #1e315c;
@@ -276,8 +290,8 @@ const RecentReviewCard = styled.div`
     }
   }
   .ant-card {
-    transition-timing-function: cubic-bezier(0.1, 0.85, 0.31, 0.99);
-    transition-duration: .1s;
+    transition-timing-function: cubic-bezier(0.19, 0.65, 0.4, 0.91);
+    transition-duration: .2s;
     box-shadow: 0px 0px 0px 1px #d0c7be;
     border-radius: 18.5px;
     box-sizing: border-box;
@@ -335,7 +349,7 @@ const RecentReviewCard = styled.div`
 `
 const AllReview = styled.div`
   width: 95%;
-  margin: 0px auto;
+  margin: 10px auto 0;
   .ant-col {
     display: flex !important;
     justify-content: center;
@@ -376,6 +390,8 @@ const AllReviewCard = styled.div`
   align-items: center;
   margin-top: 10px;
   width: 100%;
+    transition-timing-function: cubic-bezier(0.46, 1.13, 0.4, 0.91);
+    transition-duration: .2s;
   img{
     object-fit: cover;
   }
@@ -396,8 +412,11 @@ const AllReviewCard = styled.div`
   }
   .card-shadow {
     border-radius: 20px;
+    transition-timing-function: cubic-bezier(0.46, 1.13, 0.4, 0.91);
+    transition-duration: .2s;
+    box-shadow: 0px 0px 0px 1px #ffffff00;
     &:hover {
-      box-shadow: 8px 8px 1px 2px #dfceaf;
+      box-shadow: 6px 6px 1px 1px #dfceaf;
 
       .ant-card {
         box-shadow: 0px 0px 0px 3px #1e315c;
@@ -405,8 +424,8 @@ const AllReviewCard = styled.div`
     }
   }
   .ant-card {
-    transition-timing-function: cubic-bezier(0.1, 0.85, 0.31, 0.99);
-    transition-duration: .1s;
+    transition-timing-function: cubic-bezier(0.46, 1.13, 0.4, 0.91);
+    transition-duration: .2s;
     border-radius: 18.5px;
     box-shadow: 0px 0px 0px 1px #d0c7be;
     width: 100%;
@@ -430,6 +449,9 @@ const AllReviewCard = styled.div`
   .ant-card-meta-description {
       font-size: 20px;
   }
+  @media (min-width: 576px) {
+    margin-top: 14px;
+  }
   @media (min-width: 768px) {
     margin-top: 14px;
     .ant-card {
@@ -446,6 +468,11 @@ const AllReviewCard = styled.div`
     }
     .ant-card-meta-description {
         font-size: 1.5em;
+    }
+    .card-shadow {
+      &:hover {
+        box-shadow: 6px 6px 1px .2rem #dfceaf;
+      }
     }
   }
   @media (min-width: 992px) {
@@ -573,5 +600,36 @@ const BgIcon4 = styled.div`
   }
 `
 const BackTopIcon = styled.div`
-
+  color: white;
+  overflow: visible;
+  position: relative;
+  text-align: center;
+  display: flex;
+  justify-content: flex-end;
+  /* padding-left: 109%; */
+  z-index: 10;
+  div {
+    background-color: #d8bc92;
+    cursor: pointer;
+    border-radius: 3px;
+    position: absolute;
+    overflow: visible;
+  }
+  @media (min-width: 768px) {
+    padding-left: 105.5%;
+    span {
+    }
+    div {
+      width: 1.6em;
+      /* height: 2.4em; */
+      font-size: 1.7em;
+      margin-top: 20px;
+    }
+  }
+  @media (min-width: 1200px) {
+    padding-left: 109%;
+    div {
+      font-size: 3.4em;
+    }
+  }
 `
