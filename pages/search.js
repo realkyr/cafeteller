@@ -9,7 +9,7 @@ import types from 'public/assets/json/types'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
-import { Col, Row, Select, Card, Image, message } from 'antd'
+import { Col, Row, Select, Card, Image, message, Typography } from 'antd'
 import Link from 'next/link'
 // import { SearchOutlined } from '@ant-design/icons'
 
@@ -17,6 +17,7 @@ import styled from 'styled-components'
 
 const { Meta } = Card
 const { Option } = Select
+const { Title, Text } = Typography
 
 const Map = styled.div`
   width: 100%;
@@ -333,9 +334,20 @@ border-top-right-radius: 12px;
   /* background-size: 4%; */
 `
 
+const PopupContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
 export default class Search extends Component {
   constructor (props) {
     super(props)
+    this.popup = {}
+    Object.keys(props.reviews).forEach(id => {
+      this.popup[id] = React.createRef()
+    })
     this.state = {
       map: null,
       markers: [],
@@ -369,6 +381,12 @@ export default class Search extends Component {
           icon: '/assets/Images/pin.png',
           animation: google.maps.Animation.DROP,
           position: { lat: r[1].cafe.location.lat, lng: r[1].cafe.location.lon }
+        })
+        const infowindow = new google.maps.InfoWindow({
+          content: this.popup[r[0]].current
+        })
+        marker.addListener('click', () => {
+          infowindow.open(map, marker)
         })
         reviews[r[0]].marker = marker
         return marker
@@ -433,11 +451,26 @@ export default class Search extends Component {
   render () {
     const { amphoes, changwats, reviews } = this.props
     const { map, markers, filteredReviews } = this.state
+    const popup = (
+      <div style={{ display: 'none' }}>
+        {
+          Object.keys(reviews).map(id => {
+            return (
+              <PopupContent key={id} ref={this.popup[id]}>
+                  <Title level={3}>{reviews[id].cafe.name}</Title>
+                  <Text>{reviews[id].cafe.sublocality_level_1} &middot; Cafe</Text>
+              </PopupContent>
+            )
+          })
+        }
+      </div>
+    )
     return (
       <>
         <Head>
           <title>Cafeteller || Search</title>
         </Head>
+        { popup }
         <Row justify="center" className='search-wrap'>
           <Col xs={24} lg={22} xxl={18}>
             <Row>
