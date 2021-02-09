@@ -81,9 +81,18 @@ export default function Home ({ reviews }) {
             break
           }
           case 'image': {
-            const image = <Image key={consecImage} height={'100%'} width={'100%'} className="res-img"
-              onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} src={block.data.file.url}
-              fallback="/assets/Images/placeholder.png" preview={false} />
+            const image =
+            <Image
+              key={consecImage}
+              height={'100%'}
+              width={'100%'}
+              className="res-img"
+              onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
+              src={block.data.file.url}
+              fallback="/assets/Images/placeholder.png"
+              preview={false}
+              placeholder={<Image key={consecImage} height={'100%'} width={'100%'} className="res-img" src={'/assets/Images/placeholder.png'} preview={false} />}
+            />
             // <img style={{
             //   display: 'inline',
             //   width: '100%',
@@ -303,8 +312,24 @@ export default function Home ({ reviews }) {
               : null
           }
           <Banner>
-            <Image height={'100%'} width={'100%'} style={{ objectFit: 'cover' }} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
-              alt={reviews[id].cafe.banner.url} src={reviews[id].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false}
+            <Image
+              height={'100%'}
+              width={'100%'}
+              style={{ objectFit: 'cover' }}
+              onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
+              alt={reviews[id].cafe.name}
+              src={reviews[id].cafe.banner.url}
+              fallback="/assets/Images/placeholder.png"
+              preview={false}
+              placeholder={
+                <Image
+                  height={'100%'}
+                  width={'100%'}
+                  alt={reviews[id].cafe.name}
+                  style={{ objectFit: 'cover' }}
+                  src={'/assets/Images/placeholder.png'}
+                  preview={false}
+                />}
             />
           </Banner>
           <Row justify="space-around">

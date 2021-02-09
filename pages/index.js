@@ -141,9 +141,16 @@ export default function Home ({ reviews }) {
                       <a className='flex-center card-shadow'>
                         <Card
                           bordered={false}
-                          cover={
-                          <Image height={'100%'} onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }} alt={reviews[r].cafe.name} src={reviews[r].cafe.banner.url} fallback="/assets/Images/placeholder.png" preview={false} data-fallback-image="/assets/Images/placeholder.png" />}
-                        >
+                          cover={<Image
+                            height={'100%'}
+                            onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
+                            alt={reviews[r].cafe.name}
+                            src={reviews[r].cafe.banner.url}
+                            fallback="/assets/Images/placeholder.png"
+                            preview={false}
+                            placeholder={<Image height={'100%'} alt={reviews[r].cafe.name} src={'/assets/Images/placeholder.png'} preview={false} />}
+                          />}
+                          >
                           <Meta className="cafeCardDesc" title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
                         </Card>
                       </a>
@@ -280,7 +287,6 @@ const RecentReviewCard = styled.div`
     border-radius: 20px;
     transition-timing-function: cubic-bezier(0.19, 0.65, 0.4, 0.91);
     transition-duration: .2s;
-    box-shadow: 0px 0px 0px 0px #dfceaf;
     &:hover {
       box-shadow: 8px 8px 1px .2rem #dfceaf;
 
