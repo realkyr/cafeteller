@@ -34,5 +34,45 @@
   {
     "key":9,
     "value":"Green Tea"
+  },
+  {
+    "key": 10,
+    "value": "Reading"
+  },
+  {
+    "key": 11,
+    "value": "Relaxing"
+  },
+  {
+    "key": 12,
+    "value": "Nature"
+  },
+  {
+    "key": 13,
+    "value": "Japanese"
+  },
+  {
+    "key": 14,
+    "value": "Taiwanese"
+  },
+  {
+    "key": 15,
+    "value": "Chinese"
+  },
+  {
+    "key": 16,
+    "value": "Boba"
+  },
+  {
+    "key": 17,
+    "value": "All day dining"
+  },
+  {
+    "key": 18,
+    "value": "all day breakfast"
+  },
+  {
+    "key": 19,
+    "value": "Mixology"
   }
 ]

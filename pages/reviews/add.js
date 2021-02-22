@@ -108,7 +108,7 @@ export default function add () {
                         setSelected(i)
                         setStep(1)
                       }}>
-                        <Meta title={post.caption && post.caption.split('\n')[0]} description={ post.caption } />
+                        <Meta title={post.caption && post.caption.split('\n')[0].slice(0, 15)} description={ post.caption.slice(0, 40) } />
                       </Link>
                     </Card>
                   </Col>

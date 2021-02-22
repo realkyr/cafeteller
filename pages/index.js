@@ -1,6 +1,5 @@
 import admin from 'plugins/firebase'
 import PropTypes from 'prop-types'
-
 import firebase from 'plugins/firebaseclient'
 import 'firebase/auth'
 
@@ -32,6 +31,8 @@ export default function Home ({ reviews }) {
   }
 
   useEffect(() => {
+    // firebase.auth().signInWithCustomToken()
+    // localStorage.setItem('access_token', 'IGQVJYcmJUM25SU2NUSmRzMXBBNFFwbFV4SW9wOEFqdHVQUlVRQ2M1a0tFUnBwNU1NbDNpdm1OTll5TXZA0T1ZAuYWZAUdWVfMHRCQVVSYnpqRFhiRnNYYXE5Q0NiSmJFT2d5Nk5DTmZAR')
     const unsub = firebase.auth().onAuthStateChanged(async user => {
       if (user) {
         const isTokenValid = verifyToken()
