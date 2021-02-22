@@ -60,7 +60,7 @@ const igToBlock = async (post) => {
       }
     }
     case 'CAROUSEL_ALBUM': {
-      let album = await this.$axios.get(
+      let album = await axios.get(
         `https://graph.instagram.com/${
           post.id
         }/children?fields=thumbnail_url,id,media_url,media_type,permalink&access_token=${localStorage.getItem(
@@ -69,7 +69,7 @@ const igToBlock = async (post) => {
       )
       album = album.data.data
       for (let index = 0; index < album.length; index++) {
-        album[index] = await this.igToBlock(album[index])
+        album[index] = await igToBlock(album[index])
       }
       return album
     }
