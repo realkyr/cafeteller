@@ -73,11 +73,6 @@ const SocialBar = styled.div`
     height: 75px;
   }
 `
-const S = styled.span`
-  @media(min-width: 768px) {
-    display: none;
-  }
-`
 
 export default function Footer () {
   return (
@@ -91,10 +86,10 @@ export default function Footer () {
             </Col>
             <Col xs={12} md={12} xl={10}>
               <FooterCenterTop>
-                Cafe<S>&nbsp;</S>Teller
+                cafeteller
               </FooterCenterTop>
               <FooterCenterBot>
-                Find Us At
+                find us at
               </FooterCenterBot>
             </Col>
             <Col xs={6} md={6} xl={7}>

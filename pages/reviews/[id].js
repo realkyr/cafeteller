@@ -374,7 +374,7 @@ export default function Home ({ reviews }) {
                 {content}
                 <ForWork>
                   <Image src="/assets/Images/icon/Contact.png" preview={false} height={30} width={25} />
-                  <span> For Work please contact <a>&quot;here&quot;</a></span>
+                  <span> For Work please contact <a href="https://lin.ee/rDKbdQt">&quot;here&quot;</a></span>
                 </ForWork>
               </Content>
               <Desktop>
