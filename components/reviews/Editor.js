@@ -279,6 +279,7 @@ export default function Editor (props) {
     Object.keys(cafeData).forEach((key) => {
       if (typeof cafeData[key] === 'string') {
         cafeData[key] = cafeData[key].replace(/&#8232;/g, ' ')
+        cafeData[key] = cafeData[key].replace(/\u2028/g, '')
       }
     })
 

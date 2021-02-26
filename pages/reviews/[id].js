@@ -164,6 +164,13 @@ export default function Home ({ reviews }) {
       setContent(raw)
       // assign value in sharebox
       const shareBoxRaw = []
+      const cafeData = reviews[id].cafe
+      Object.keys(cafeData).forEach((key) => {
+        if (typeof cafeData[key] === 'string') {
+          cafeData[key] = cafeData[key].replace(/&#8232;/g, ' ')
+          cafeData[key] = cafeData[key].replace(/\u2028/g, '')
+        }
+      })
       if (typeof reviews[id].cafe.ig !== 'undefined') {
         shareBoxRaw.push(
           <a href={reviews[id].cafe.ig} key='ig'>
@@ -268,7 +275,7 @@ export default function Home ({ reviews }) {
             <Col span={4}>
               <Image src="/assets/Images/icon/Location.png" preview={false} height={30} width={30} />
             </Col>
-            <Col span={20}>{reviews[id].cafe.landmark}</Col>
+            <Col span={20}>{reviews[id].cafe.landmark.replace(/&#8232;/g, '')}</Col>
           </Row>
         )
       }
