@@ -1,4 +1,5 @@
 import firebase from 'firebase/app'
+import 'firebase/analytics'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAgW7YOGo43cx2Q6uAJObAnWUbxztTWDHA',
@@ -12,6 +13,7 @@ const firebaseConfig = {
 }
 try {
   firebase.initializeApp(firebaseConfig)
+  firebase.analytics()
 } catch (err) {
   if (!/already exists/.test(err.message)) {
     console.error('Firebase initialization error', err.stack)
