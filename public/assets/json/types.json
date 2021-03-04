@@ -74,5 +74,21 @@
   {
     "key": 19,
     "value": "Mixology"
+  },
+  {
+    "key": 20,
+    "value": "Croissant"
+  },
+  {
+    "key": 21,
+    "value": "Bread"
+  },
+  {
+    "key": 22,
+    "value": "Sandwich"
+  },
+  {
+    "key": 23,
+    "value": "Coffee"
   }
 ]
