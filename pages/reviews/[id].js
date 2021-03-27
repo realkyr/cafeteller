@@ -321,7 +321,6 @@ export default function Home ({ reviews }) {
   const banner = reviews[id].cafe.banner || {}
   const thisTags = reviews[id].cafe.tags || {}
   let moreLikeThisCount = 0
-  let moreLikeThisCountm = 0
   return (
     <>
       <Head>
