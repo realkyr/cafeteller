@@ -64,9 +64,9 @@ export default function Home ({ reviews }) {
             const cafeArea = fullNameSplit[1]
             raw.push(<Title key={index} level={2} className="article-header"><span dangerouslySetInnerHTML={{ __html: cafeName }}></span></Title>)
             raw.push(
-              <TitleBox key='box'>
+              <TitleBox key={index + 'l'}>
                 <TitlePattern key={0} img={'/assets/Images/pattern4.jpg'} />
-                <Title key={4} level={4} className="article-header">
+                <Title level={4} className="article-header">
                   <span dangerouslySetInnerHTML={{ __html: cafeArea }}></span>
                 </Title>
                 <TitlePattern key={1} img={'/assets/Images/pattern4.jpg'} />
@@ -83,7 +83,7 @@ export default function Home ({ reviews }) {
           case 'image': {
             const image =
             <Image
-              key={consecImage}
+              key={consecImage + 'img'}
               height={'100%'}
               width={'100%'}
               className="res-img"
@@ -194,7 +194,7 @@ export default function Home ({ reviews }) {
       }
       if (shareBoxRaw.length) {
         setShareBox(
-          <ShareBox style={{ marginBottom: 50 }}>
+          <ShareBox style={{ marginBottom: 50 }} key='sb1'>
             <Row>
               <Col xs={0} lg={4}>
                 <ShareLeft><span>Share</span></ShareLeft>
@@ -210,7 +210,7 @@ export default function Home ({ reviews }) {
             </Row>
           </ShareBox>)
         setShareBoxMobile(
-          <ShareBox>
+          <ShareBox key='sb2'>
             <Row>
               <Col xs={7} md={4}>
                 <ShareLeft><span>Share</span></ShareLeft>
@@ -319,6 +319,8 @@ export default function Home ({ reviews }) {
   }, [])
 
   const banner = reviews[id].cafe.banner || {}
+  const thisTags = reviews[id].cafe.tags || {}
+  let moreLikeThisCount = 0
   return (
     <>
       <Head>
@@ -412,10 +414,17 @@ export default function Home ({ reviews }) {
             <Row gutter={{ xs: 10, sm: 12, md: 20 }}>
               {
                 Object.keys(reviews).map((r, i) => {
-                  if (i < 2) {
+                  const moreLikeThisAmount = (useMediaQuery({ minWidth: 992 }) ? 2 : 1)
+                  if (moreLikeThisCount > moreLikeThisAmount) {
+                    return null
+                  }
+                  const tags = reviews[r].cafe.tags
+                  const intersection = thisTags.filter(element => tags.includes(element))
+                  if (intersection.length > 0 && reviews[r].cafe.name !== reviews[id].cafe.name) {
+                    moreLikeThisCount++
                     return (
                       <Col key={r + '-link'} xs={12} md={8}>
-                        <MoreReviewCard key={r}>
+                        <MoreReviewCard>
                           <Link href={`/reviews/${r}`}>
                             <a className="flex-center card-shadow">
                               <Card
@@ -468,6 +477,7 @@ export async function getServerSideProps () {
   reviewsDoc.forEach(r => {
     reviews[r.id] = r.data()
   })
+  const reviewsCount = Object.keys(reviews).length
 
   const cafes = []
   for (const c in reviews) {
@@ -488,7 +498,8 @@ export async function getServerSideProps () {
   // will receive `posts` as a prop at build time
   return {
     props: {
-      reviews
+      reviews,
+      reviewsCount
     }
   }
 }
@@ -787,6 +798,8 @@ const Content = styled.div`
     font-weight: 400;
     font-family: 'Work Sans', sans-serif;
     font-size: 1.2em;
+    white-space: nowrap;
+    padding: 5px;
   }
   h2.article-header{
     font-size: 1.7em;
@@ -846,6 +859,16 @@ const Content = styled.div`
       /* border: 1px solid #9e9e9e; */
       height: 100%;
       /* min-height: 100%; */
+  }
+  @media (max-width: 300px) {
+    h2.article-header{
+      white-space: inherit;
+      font-size: 1.2rem;
+    }
+    h4.article-header{
+      white-space: inherit;
+      font-size: 0.9rem;
+    }
   }
   @media (min-width: 562px) {
     .divide-image {width: 15px;}
