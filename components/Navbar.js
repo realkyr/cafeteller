@@ -50,7 +50,8 @@ const SocialBarBot = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  height: 29px;
+  height: 20px;
+  /* height: 29px; */
 
   background-image: url(${props => props.img});
   background-size: 250%;
@@ -217,7 +218,7 @@ const Logo = styled.div`
   background-position-y: center;
   background-repeat: no-repeat;
   
-  @media(min-width: 968px) {
+  @media(min-width: 991px) {
     background-image: none;
     height: auto;
     width: auto;
@@ -225,7 +226,7 @@ const Logo = styled.div`
 `
 const N2 = styled.div`
   background-image: url(${props => props.img});
-  background-size: 32%;
+  background-size: 26%;
   background-position-y: center;
   background-repeat: no-repeat;
   font-family: Georgia;
@@ -238,6 +239,15 @@ const N2 = styled.div`
   h3{
     margin: 0;
     font-size: 0.6rem;
+    white-space: nowrap;
+  }
+  @media(max-width: 300px) {
+    h1{
+      font-size: 1.4rem;
+    }
+    h3{
+      font-size: 0.6rem;
+    }
   }
   @media(min-width: 768px) {
     height: auto;
@@ -305,7 +315,7 @@ export default function Navbar () {
   const [refreshKey, setRefreshKey] = useState(0)
 
   const CheckPath = () => {
-    console.log('check path')
+    // console.log('check path')
     if (pathName === '/search') {
       searchHover()
       searchClick()
