@@ -90,5 +90,9 @@
   {
     "key": 23,
     "value": "Coffee"
+  },
+  {
+    "key": 24,
+    "value": "Recommended"
   }
 ]

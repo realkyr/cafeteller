@@ -175,7 +175,7 @@ export default function Editor (props) {
         const data =
           props.edit.review.review
             ? props.edit.review.review
-            : !props.selected
+            : !props.selected && props.selected !== 0
                 ? {}
                 : await content(props.posts.data[props.selected])
         if (document.getElementById('codex-editor') && !editor) {
