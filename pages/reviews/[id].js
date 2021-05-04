@@ -316,7 +316,7 @@ export default function Home ({ reviews }) {
     }
     didMount()
     return () => { unsub && unsub() }
-  }, [])
+  }, [id])
 
   const banner = reviews[id].cafe.banner || {}
   const thisTags = reviews[id].cafe.tags || {}

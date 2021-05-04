@@ -8,18 +8,31 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Link from 'next/link'
 import { Row, Col, Image, Card, Button, Space, Affix, Grid } from 'antd'
-import { UpOutlined } from '@ant-design/icons'
+import { UpOutlined, RightOutlined, LeftOutlined } from '@ant-design/icons'
 
 import styled from 'styled-components'
 
 const { Meta } = Card
 const { useBreakpoint } = Grid
+const pageAmount = 9
 
-export default function Home ({ reviews }) {
+export default function Home ({ reviews, recents, recentsOrder, reviewsOrder }) {
   const router = useRouter()
+  const [page, setPage] = useState(0)
+  const [order, setOrder] = useState(reviewsOrder.slice(0, pageAmount))
   const [user, setUser] = useState(null)
   const [isAdmin, setAdmin] = useState(false)
   const screens = useBreakpoint()
+
+  useEffect(() => {
+    const first = pageAmount * page
+    const last =
+      first + pageAmount > reviewsOrder.length
+        ? reviewsOrder.length
+        : first + pageAmount
+    const order = reviewsOrder.slice(first, last)
+    setOrder(order)
+  }, [page])
 
   const verifyToken = () => {
     // TODO: verify if token still valid
@@ -47,6 +60,23 @@ export default function Home ({ reviews }) {
     })
     return () => { unsub && unsub() }
   }, [])
+
+  const pageArrow = (
+    <Col xs={24} md={22} style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <Button
+        disabled={
+          page === 0
+        }
+        onClick={() => setPage(page - 1)}
+        icon={<LeftOutlined />}
+      />
+      <Button
+        onClick={() => setPage(page + 1)}
+        disabled={order[order.length - 1] === reviewsOrder[reviewsOrder.length - 1]}
+        icon={<RightOutlined />}
+      />
+    </Col>
+  )
 
   return (
     <>
@@ -95,7 +125,7 @@ export default function Home ({ reviews }) {
             }
               <Row gutter={{ xs: 7, md: 24 }}>
               {
-                Object.keys(reviews).map((r, i) => {
+                recentsOrder.map((r, i) => {
                   // <Link href={`/reviews/${r}`}>
                   // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
                   if (i < 2) {
@@ -108,19 +138,19 @@ export default function Home ({ reviews }) {
                               bordered={false}
                               cover={<Image height={'100%'}
                                 onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
-                                alt={reviews[r].cafe.name}
-                                src={reviews[r].cafe.banner.url}
+                                alt={recents[r].cafe.name}
+                                src={recents[r].cafe.banner.url}
                                 fallback="/assets/Images/placeholder.png"
                                 preview={false}
                                 placeholder={<Image
                                   height={'100%'}
-                                  alt={reviews[r].cafe.name}
+                                  alt={recents[r].cafe.name}
                                   src={'/assets/Images/placeholder.png'}
                                   preview={false}
                                 />}
                               />}
                             >
-                              <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
+                              <Meta title={recents[r].cafe.name} description={recents[r].cafe.sublocality_level_1} />
                             </Card>
                           </a>
                         </Link>
@@ -149,10 +179,11 @@ export default function Home ({ reviews }) {
                   <BackTopIcon><div onClick={scrollTop}><UpOutlined /></div></BackTopIcon>
                 </Affix>
                 : null
-            }
+              }
             <Row gutter={{ xs: 10, sm: 13, md: 14, lg: 20 }}>
+            { pageArrow }
             {
-              Object.keys(reviews).map(r => (
+              order.map(r => (
                 // <Link href={`/reviews/${r}`}>
                 // {/* <Title key={r} level={4}>{reviews[r].cafe.name}</Title> */}
                 <Col key={r + '-link'} xs={12} md={8}>
@@ -188,6 +219,7 @@ export default function Home ({ reviews }) {
             </Row>
           </AllReview>
         </Col>
+        { pageArrow }
       </Row>
       {/* </Container> */}
     </>
@@ -196,17 +228,51 @@ export default function Home ({ reviews }) {
 
 Home.propTypes = {
   // ...prop type definitions here
-  reviews: PropTypes.object
+  reviews: PropTypes.object,
+  recents: PropTypes.object,
+  recentsOrder: PropTypes.array,
+  reviewsOrder: PropTypes.array
 }
 
 // This function gets called at build time
-export async function getServerSideProps () {
+export async function getServerSideProps ({ query }) {
   // Call an external API endpoint to get posts
   const db = admin.firestore()
-  const reviewsDoc = await db.collection('reviews').get()
+  // query recent reviews
+  const recentsDoc = await db
+    .collection('reviews')
+    .orderBy('updateDate', 'desc')
+    .limit(2)
+    .get()
+  const recents = {}
+  const recentsOrder = []
+  recentsDoc.forEach(r => {
+    recents[r.id] = r.data()
+    recentsOrder.push(r.id)
+  })
+  const recentCafes = []
+  for (const c in recents) {
+    recentCafes.push(recents[c].cafe.get())
+  }
+  const reResult = await Promise.all(recentCafes)
+  Object.keys(recents).forEach((id, index) => {
+    recents[id].cafe = reResult[index].data()
+
+    // convert all timestamp to date
+    recents[id].createDate = recents[id].createDate.toString()
+    recents[id].updateDate = recents[id].updateDate.toString()
+  })
+
+  const ref = db
+    .collection('reviews')
+    .orderBy('updateDate', 'desc')
+
+  const reviewsDoc = await ref.get()
   const reviews = {}
+  const reviewsOrder = []
   reviewsDoc.forEach(r => {
     reviews[r.id] = r.data()
+    reviewsOrder.push(r.id)
   })
 
   const cafes = []
@@ -227,7 +293,10 @@ export async function getServerSideProps () {
   // will receive `posts` as a prop at build time
   return {
     props: {
-      reviews
+      reviews,
+      recents,
+      recentsOrder,
+      reviewsOrder
     }
   }
 }
