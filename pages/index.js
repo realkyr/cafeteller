@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Link from 'next/link'
-import { Row, Col, Image, Card, Button, Space, Affix, Grid } from 'antd'
+import { Row, Col, Image, Card, Button, Space, Affix, Grid, Carousel } from 'antd'
 import { UpOutlined, RightOutlined, LeftOutlined } from '@ant-design/icons'
 
 import styled from 'styled-components'
@@ -98,9 +98,14 @@ export default function Home ({ reviews, recents, recentsOrder, reviewsOrder }) 
       {/* <Container> */}
       <Row justify="center" style={{ overflow: 'hidden', paddingBottom: '1.4em' }} id='container'>
         <Col xs={24} xxl={24}>
+        <Carousel autoplay>
           <Banner>
             <Image style={{ objectFit: 'cover' }} src="/assets/Images/COVER1.png" preview={false}></Image>
           </Banner>
+          <Banner>
+            <Image style={{ objectFit: 'cover' }} src="/assets/Images/COVER1.png" preview={false}></Image>
+          </Banner>
+        </Carousel>
           <Pattern1 img={'/assets/Images/pattern4.jpg'}>
             <div>
             <BgIcon img={'/assets/Images/Star.png'}></BgIcon>
