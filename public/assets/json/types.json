@@ -94,5 +94,21 @@
   {
     "key": 24,
     "value": "Recommended"
+  },
+  {
+    "key": 25,
+    "value": "Art Gallery"
+  },
+  {
+    "key": 26,
+    "value": "Museum"
+  },
+  {
+    "key": 27,
+    "value": "Minimal"
+  },
+  {
+    "key": 28,
+    "value": "Post"
   }
 ]
