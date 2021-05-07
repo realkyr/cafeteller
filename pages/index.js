@@ -14,7 +14,7 @@ import styled from 'styled-components'
 
 const { Meta } = Card
 const { useBreakpoint } = Grid
-const pageAmount = 9
+const pageAmount = 24
 
 export default function Home ({ reviews, recents, recentsOrder, reviewsOrder }) {
   const router = useRouter()
@@ -102,9 +102,15 @@ export default function Home ({ reviews, recents, recentsOrder, reviewsOrder }) 
           <Banner>
             <Image style={{ objectFit: 'cover' }} src="/assets/Images/COVER1.png" preview={false}></Image>
           </Banner>
-          <Banner>
-            <Image style={{ objectFit: 'cover' }} src="/assets/Images/COVER1.png" preview={false}></Image>
-          </Banner>
+          {
+            reviewsOrder.filter(id => {
+              return recentsOrder.includes(id) || reviews[id].cafe.tags.includes('Recommended')
+            }).map(id => (
+              <Banner key={id + '-banner'}>
+                <Image style={{ objectFit: 'cover' }} src={reviews[id].cafe.banner.url} preview={false}></Image>
+              </Banner>
+            ))
+          }
         </Carousel>
           <Pattern1 img={'/assets/Images/pattern4.jpg'}>
             <div>

@@ -288,14 +288,18 @@ export default function Editor (props) {
     const db = firebase.firestore()
     const reviewRef = db.collection('reviews').doc(reviewID)
     const cafeRef = db.collection('cafes').doc(cafeID)
+    const payload = {
+      cafe: cafeRef,
+      createDate: firebase.firestore.FieldValue.serverTimestamp(),
+      updateDate: firebase.firestore.FieldValue.serverTimestamp(),
+      review
+    }
+    if (props.edit.cafe) {
+      delete payload.createDate
+    }
     await Promise.all(
       [
-        reviewRef.set({
-          cafe: cafeRef,
-          createDate: firebase.firestore.FieldValue.serverTimestamp(),
-          updateDate: firebase.firestore.FieldValue.serverTimestamp(),
-          review
-        }, { merge: true }),
+        reviewRef.set(payload, { merge: true }),
         cafeRef.set({
           ...cafeData
         }, { merge: true })
