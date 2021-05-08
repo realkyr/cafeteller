@@ -9,16 +9,22 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { Row, Col, Image, Card, Button, Space, Affix, Grid, Carousel } from 'antd'
 import { UpOutlined, RightOutlined, LeftOutlined } from '@ant-design/icons'
+import { useMediaQuery } from 'react-responsive'
 
 import styled from 'styled-components'
 
 const { Meta } = Card
 const { useBreakpoint } = Grid
-const pageAmount = 9
+const pageAmount = 3
 
 export default function Home ({ reviews, recents, recentsOrder, reviewsOrder }) {
   const router = useRouter()
   const [page, setPage] = useState(0)
+  const [totalPage, setTotalPage] = useState([])
+  const [pageDotRight, setPageDotRight] = useState(false)
+  const [pageDotLeft, setPageDotLeft] = useState(false)
+  const [pageDotRightMobile, setPageDotRightMobile] = useState(false)
+  const [pageDotLeftMobile, setPageDotLeftMobile] = useState(false)
   const [order, setOrder] = useState(reviewsOrder.slice(0, pageAmount))
   const [user, setUser] = useState(null)
   const [isAdmin, setAdmin] = useState(false)
@@ -32,6 +38,18 @@ export default function Home ({ reviews, recents, recentsOrder, reviewsOrder }) 
         : first + pageAmount
     const order = reviewsOrder.slice(first, last)
     setOrder(order)
+
+    const totalArray = []
+    const total = Math.floor((reviewsOrder.length + pageAmount - 1) / pageAmount)
+    for (let index = 0; index < total; index++) {
+      totalArray.push(index)
+    }
+    setTotalPage(totalArray)
+    page > 5 ? setPageDotLeft(true) : setPageDotLeft(false)
+    page < total - 5 ? setPageDotRight(true) : setPageDotRight(false)
+
+    page > 3 ? setPageDotLeftMobile(true) : setPageDotLeftMobile(false)
+    page < total - 3 ? setPageDotRightMobile(true) : setPageDotRightMobile(false)
   }, [page])
 
   const verifyToken = () => {
@@ -61,21 +79,139 @@ export default function Home ({ reviews, recents, recentsOrder, reviewsOrder }) 
     return () => { unsub && unsub() }
   }, [])
 
-  const pageArrow = (
-    <Col xs={24} md={22} style={{ display: 'flex', justifyContent: 'flex-end' }}>
+  const paginationDesktop = (
+    <PageRow>
       <Button
         disabled={
           page === 0
         }
         onClick={() => setPage(page - 1)}
         icon={<LeftOutlined />}
-      />
+        className="page left"
+        ></Button>
+      <Button
+        onClick={() => setPage(0)}
+        className="page"
+        type={page === 0 ? 'primary' : ''}
+      > 1
+      </Button>
+      {
+        pageDotLeft
+          ? <Button
+            className="page dot">
+            ...
+          </Button>
+          : null
+      }
+      {
+        totalPage.slice(1, -1).map((e, i) => {
+          console.log(e)
+          if ((Math.abs(page - e) < 4) ||
+             (e === totalPage.length - 1) ||
+             (e < 9 && page < 6) ||
+             (e > totalPage.length - 10 && page > totalPage.length - 6) ||
+             (e === 0)) {
+            return (
+              <Button
+              key = {i}
+              onClick={() => setPage(e)}
+              className="page"
+              type={e === page ? 'primary' : ''}
+            >
+              {e + 1}
+            </Button>)
+          }
+          return (null)
+        })
+      }
+      {
+        pageDotRight
+          ? <Button
+            className="page dot">
+            ...
+          </Button>
+          : null
+      }
+      <Button
+        onClick={() => setPage(totalPage.length - 1)}
+        className="page"
+        type={page === totalPage.length - 1 ? 'primary' : ''}
+      > {totalPage.length}
+      </Button>
       <Button
         onClick={() => setPage(page + 1)}
         disabled={order[order.length - 1] === reviewsOrder[reviewsOrder.length - 1]}
         icon={<RightOutlined />}
-      />
-    </Col>
+        className="page right"
+      ></Button>
+      </PageRow>
+  )
+  const paginationMobile = (
+    <PageRow>
+      <Button
+        disabled={
+          page === 0
+        }
+        onClick={() => setPage(page - 1)}
+        icon={<LeftOutlined />}
+        className="page left"
+        ></Button>
+      <Button
+        onClick={() => setPage(0)}
+        className="page"
+        type={page === 0 ? 'primary' : ''}
+      > 1
+      </Button>
+      {
+        pageDotLeftMobile
+          ? <Button
+            className="page dot">
+            ...
+          </Button>
+          : null
+      }
+      {
+        totalPage.slice(1, -1).map((e, i) => {
+          console.log(e)
+          if ((Math.abs(page - e) < 2) ||
+             (e === totalPage.length - 1) ||
+             (e < 5 && page < 4) ||
+             (e > totalPage.length - 6 && page > totalPage.length - 4) ||
+             (e === 0)) {
+            return (
+              <Button
+              key = {i}
+              onClick={() => setPage(e)}
+              className="page"
+              type={e === page ? 'primary' : ''}
+            >
+              {e + 1}
+            </Button>)
+          }
+          return (null)
+        })
+      }
+      {
+        pageDotRightMobile
+          ? <Button
+            className="page dot">
+            ...
+          </Button>
+          : null
+      }
+      <Button
+        onClick={() => setPage(totalPage.length - 1)}
+        className="page"
+        type={page === totalPage.length - 1 ? 'primary' : ''}
+      > {totalPage.length}
+      </Button>
+      <Button
+        onClick={() => setPage(page + 1)}
+        disabled={order[order.length - 1] === reviewsOrder[reviewsOrder.length - 1]}
+        icon={<RightOutlined />}
+        className="page right"
+      ></Button>
+      </PageRow>
   )
 
   return (
@@ -186,7 +322,6 @@ export default function Home ({ reviews, recents, recentsOrder, reviewsOrder }) 
                 : null
               }
             <Row gutter={{ xs: 10, sm: 13, md: 14, lg: 20 }}>
-            { pageArrow }
             {
               order.map(r => (
                 // <Link href={`/reviews/${r}`}>
@@ -223,8 +358,13 @@ export default function Home ({ reviews, recents, recentsOrder, reviewsOrder }) 
             }
             </Row>
           </AllReview>
+          <Desktop>
+            { paginationDesktop }
+          </Desktop>
+          <Mobile>
+            { paginationMobile }
+          </Mobile>
         </Col>
-        { pageArrow }
       </Row>
       {/* </Container> */}
     </>
@@ -306,6 +446,14 @@ export async function getServerSideProps ({ query }) {
   }
 }
 
+const Desktop = ({ children }) => {
+  const isDesktop = useMediaQuery({ minWidth: 992 })
+  return isDesktop ? children : null
+}
+const Mobile = ({ children }) => {
+  const isMobile = useMediaQuery({ maxWidth: 991.9 })
+  return isMobile ? children : null
+}
 const Banner = styled.div`
   padding-top: 40%;
   position: relative;
@@ -736,5 +884,30 @@ const BackTopIcon = styled.div`
     div {
       font-size: 3.4em;
     }
+  }
+`
+
+const PageRow = styled.div`
+  width: 95%;
+  margin: 10px auto 0;
+  text-align: center;
+  padding: 2em 0 0;
+  @media (min-width: 768px) {
+    margin: 20px auto 0;
+    padding: 2% 3%;
+    width: 95%;
+  }
+  @media (min-width: 1200px) {
+    width: 98%;
+    margin-top: 20px;
+    padding: 2% 10%;
+    h2 {
+      font-size: 2.2rem;
+      span{
+      }
+    }
+  }
+  @media (min-width: 1600px) {
+    padding: 2% 13% 0;
   }
 `

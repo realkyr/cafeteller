@@ -321,3 +321,85 @@ a:hover {
   height: 100%;
   position: absolute;
 }
+
+/* --------------ant-btn override for pagination style-------------- */
+.ant-btn.page:not([disabled]):active {
+  outline: 0;
+  box-shadow: none;
+}
+.ant-btn.page:not([disabled]):hover {
+  text-decoration: none;
+}
+.ant-btn.page:hover, .ant-btn.page:focus, .ant-btn.page:active {
+  text-decoration: none;
+  background: #fff;
+}
+.ant-btn.page:active {
+  color: #b39467;
+  background: #fff;
+  border-color: #b39467;
+}
+.ant-btn.page:hover, .ant-btn.page:focus {
+  color: #d4b585;
+  background: #fff;
+  border-color: #b39467;
+}
+.ant-btn-primary.page {
+  color: #fff;
+  background: #d2b181;
+  border-color: #b39467;
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+  box-shadow: 0 2px 0 rgb(0 0 0 / 5%);
+}
+.ant-btn.page {
+  border-color: #d0c7be;
+  /* margin-left: -1px; */
+  margin-left: 5px;
+  min-width: 45px;
+}
+.ant-btn.page.left {
+  border-top-left-radius: 17%;
+  border-bottom-left-radius: 17%;
+  color: #000;
+  background: #f5f1eb;
+}
+.ant-btn.page.right {
+  border-top-right-radius: 17%;
+  border-bottom-right-radius: 17%;
+  color: #000;
+  background: #f5f1eb;
+}
+.ant-btn-primary.page:hover, .ant-btn-primary.page:focus, .ant-btn-primary.page:active {
+  color: #fff;
+  background: #d2b181;
+  border-color: #b39467;
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+  box-shadow: 0 2px 0 rgb(0 0 0 / 5%);
+}
+.ant-btn.page[disabled], .ant-btn.page[disabled]:hover, .ant-btn.page[disabled]:focus, .ant-btn.page[disabled]:active {
+  color: rgba(0, 0, 0, 0.25);
+  background: #f5f5f5;
+  border-color: #d9d9d9;
+  text-shadow: none;
+  box-shadow: none;
+}
+.ant-btn-icon-only.page {
+  font-size: unset;
+  vertical-align: unset;
+}
+.ant-btn.page.dot:hover, .ant-btn.page.dot:focus, .ant-btn.page.dot:hover {
+  border-color: #d0c7be;
+  /* margin-left: -1px; */
+  margin-left: 5px;
+  min-width: 45px;
+}
+@media (max-width: 769px) {
+  .ant-btn.page {
+    margin-left: -1px;
+    min-width: 10vw;
+    padding: 4px 4px;
+  }
+  .ant-btn-icon-only.page {
+    width: 3em;
+  }
+}
