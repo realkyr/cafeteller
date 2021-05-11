@@ -392,6 +392,7 @@ a:hover {
   /* margin-left: -1px; */
   margin-left: 5px;
   min-width: 45px;
+  pointer-events: none;
 }
 @media (max-width: 769px) {
   .ant-btn.page {
@@ -401,5 +402,11 @@ a:hover {
   }
   .ant-btn-icon-only.page {
     width: 3em;
+  }
+  .ant-btn.page.dot:hover, .ant-btn.page.dot:focus, .ant-btn.page.dot:hover {
+    border-color: #d0c7be;
+    margin-left: -1px;
+    min-width: 10vw;
+    padding: 4px 4px;
   }
 }
