@@ -15,7 +15,7 @@ import styled from 'styled-components'
 
 const { Meta } = Card
 const { useBreakpoint } = Grid
-const pageAmount = 6
+const pageAmount = 24
 
 export default function Home ({ reviews, recents, recentsOrder, reviewsOrder }) {
   const router = useRouter()
