@@ -295,7 +295,7 @@ export default function Editor (props) {
       review
     }
 
-    if (Object.keys(props.edit.review).length) {
+    if (reviewID) {
       delete payload.createDate
     }
     await Promise.all(
