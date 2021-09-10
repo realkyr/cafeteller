@@ -286,15 +286,16 @@ export default function Editor (props) {
     cafeData.banner = banner || {}
 
     const db = firebase.firestore()
-    const reviewRef = db.collection('reviews').doc(reviewID)
-    const cafeRef = db.collection('cafes').doc(cafeID)
+    const reviewRef = reviewID ? db.collection('reviews').doc(reviewID) : db.collection('reviews').doc()
+    const cafeRef = cafeID ? db.collection('cafes').doc(cafeID) : db.collection('cafes').doc()
     const payload = {
       cafe: cafeRef,
       createDate: firebase.firestore.FieldValue.serverTimestamp(),
       updateDate: firebase.firestore.FieldValue.serverTimestamp(),
       review
     }
-    if (props.edit.cafe) {
+
+    if (Object.keys(props.edit.review).length) {
       delete payload.createDate
     }
     await Promise.all(
@@ -306,20 +307,7 @@ export default function Editor (props) {
       ]
     )
     message.success('บันทึกสำเร็จ')
-    props.save('/reviews/' + reviewID)
-    // const res = await this.$axios.post(
-    //   path,
-    //   JSON.stringify({
-    //     access_token: localStorage.getItem('access_token'),
-    //     post: {
-    //       review,
-    //       cafe: cafeData
-    //     }
-    //   }),
-    //   config
-    // )
-    // console.log(res.data)
-    // this.$router.push('/review/' + res.data)
+    props.save('/reviews/' + reviewRef.id)
   }
 
   const draggerProps = {
