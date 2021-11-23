@@ -237,7 +237,7 @@ export default function Home ({ reviews, recents, recentsOrder, reviewsOrder }) 
       {/* <Container> */}
       <Row justify="center" style={{ overflow: 'hidden', paddingBottom: '1.4em' }} id='container'>
         <Col xs={24} xxl={24}>
-        <Carousel autoplay>
+        <Carousel>
           <Banner>
             <Image style={{ objectFit: 'cover' }} src="/assets/Images/COVER1.png" preview={false}></Image>
           </Banner>
@@ -245,9 +245,36 @@ export default function Home ({ reviews, recents, recentsOrder, reviewsOrder }) 
             reviewsOrder.filter(id => {
               return recentsOrder.includes(id) || reviews[id].cafe.tags.includes('Recommended')
             }).map(id => (
-              <Banner key={id + '-banner'}>
-                <Image style={{ objectFit: 'cover' }} src={reviews[id].cafe.banner.url} preview={false}></Image>
-              </Banner>
+              <Link key={id + '-banner'} href={`/reviews/${id}`}>
+                <div style={{ overflow: 'hidden', cursor: 'pointer' }}>
+                  <div style={{ position: 'relative', width: 0, height: 0 }}>
+                    <h1 style={{
+                      position: 'absolute',
+                      top: '-1vh',
+                      left: '-5vw',
+                      zIndex: 100,
+                      background: 'white',
+                      paddingLeft: '15vw',
+                      paddingRight: '50vw',
+                      color: '#233d77',
+                      fontSize: '4vw',
+                      fontFamily: 'Confidante',
+                      fontWeight: 'normal',
+                      transform: 'rotate(-15deg)'
+                    }}>
+                      {
+                        reviews[id].cafe.tags.includes('Recommended') && <>Recommended<br/></>
+                      }
+                      {
+                        recentsOrder.includes(id) && <>Recent</>
+                      }
+                    </h1>
+                  </div>
+                  <Banner>
+                    <Image style={{ objectFit: 'cover' }} src={reviews[id].cafe.banner.url} preview={false}></Image>
+                  </Banner>
+                </div>
+              </Link>
             ))
           }
         </Carousel>
