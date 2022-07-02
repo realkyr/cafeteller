@@ -455,11 +455,14 @@ export default class Search extends Component {
       <div style={{ display: 'none' }}>
         {
           Object.keys(reviews).map(id => {
+            console.log(id)
             return (
-              <PopupContent key={id} ref={this.popup[id]}>
+              <Link key={id} href={`/reviews/${id}`}>
+              <PopupContent ref={this.popup[id]}>
                   <Title level={3}>{reviews[id].cafe.name}</Title>
                   <Text>{reviews[id].cafe.sublocality_level_1} &middot; Cafe</Text>
               </PopupContent>
+              </Link>
             )
           })
         }
