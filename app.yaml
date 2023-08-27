@@ -1,8 +1,13 @@
 env: standard
-runtime: nodejs12
+runtime: nodejs16
 service: default
 
 handlers:
   - url: /.*
     secure: always
     script: auto
+
+
+instance_class: F1
+automatic_scaling:
+  min_instances: 1
