@@ -2,8 +2,10 @@ import React from 'react'
 import admin from 'plugins/firebase'
 import PropTypes from 'prop-types'
 
-import Editor from 'components/reviews/Editor'
 import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
+
+const Editor = dynamic(() => import('components/reviews/Editor'), { ssr: false })
 
 export default function EditReview (props) {
   const router = useRouter()
