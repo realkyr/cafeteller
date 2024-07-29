@@ -9,6 +9,7 @@ import NProgress from 'nprogress' // nprogress module
 import 'nprogress/nprogress.css'
 import 'antd/dist/antd.css'
 import '../styles/globals.css'
+import Head from "next/head";
 
 Router.events.on('routeChangeStart', () => NProgress.start())
 Router.events.on('routeChangeComplete', () => {
@@ -23,14 +24,20 @@ function MyApp ({ Component, pageProps }) {
   const router = useRouter()
   return (
     <>
+      <Head>
+        <link rel="preconnect" href="https://fonts.googleapis.com"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin/>
+        <link href="https://fonts.googleapis.com/css2?family=Maitree:wght@200;300;400;500;600;700&display=swap"
+              rel="stylesheet"/>
+      </Head>
       {
         router.pathname === '/auth'
           ? <Component {...pageProps} />
           : (<>
-              <Navbar />
-              <Component {...pageProps} />
-              <Footer />
-            </>)
+            <Navbar/>
+            <Component {...pageProps} />
+            <Footer/>
+          </>)
       }
     </>
   )
