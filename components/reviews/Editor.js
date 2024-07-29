@@ -8,6 +8,11 @@ import 'firebase/firestore'
 import { InboxOutlined, LoadingOutlined, LeftOutlined, SaveOutlined } from '@ant-design/icons'
 import Banner from './Banner'
 
+import EditorJS from '@editorjs/editorjs'
+import Header from '@editorjs/header'
+import List from '@editorjs/list'
+import ImageTool from '@editorjs/image'
+
 import SimpleVideo from 'plugins/Video/index'
 import { loader } from 'plugins/gmap'
 import upload from 'plugins/Video/upload'
@@ -180,10 +185,6 @@ export default function Editor (props) {
                 : await content(props.posts.data[props.selected])
         if (document.getElementById('codex-editor') && !editor) {
           console.log('in case')
-          const EditorJS = require('@editorjs/editorjs')
-          const Header = require('@editorjs/header')
-          const List = require('@editorjs/list')
-          const ImageTool = require('@editorjs/image')
 
           tmpEditor = new EditorJS({
           /**
