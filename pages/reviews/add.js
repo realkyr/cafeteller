@@ -45,7 +45,6 @@ export default function add () {
   const getIGPosts = async path => {
     setPosts(null)
     const posts = await axios.get(path)
-    console.log(posts.data)
     setPosts(posts.data)
   }
 
