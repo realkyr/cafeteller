@@ -14,7 +14,7 @@ import { Typography, Space, Button, Row, Col, Image, Card } from 'antd'
 import Banner from 'components/reviews/Banner'
 import { useMediaQuery } from 'react-responsive'
 import axios from '../../utils/axios'
-import useSimilarCafe from "./hooks/useSimilarCafe";
+import useSimilarCafe from "../../hooks/useSimilarCafe";
 
 const { Meta } = Card
 const { Title } = Typography
