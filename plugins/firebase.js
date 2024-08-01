@@ -1,11 +1,12 @@
 import admin from 'firebase-admin'
 import serviceAccount from '../server/serviceAccountKey.json'
+import serviceAccountDev from '../server/serviceAccountKey-Dev.json'
 
 try {
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: 'https://cafeteller-f18b8.firebaseio.com',
-    storageBucket: 'cafeteller-f18b8.appspot.com'
+    credential: admin.credential.cert(process.env.APP_ENV === 'prod' ? serviceAccount : serviceAccountDev),
+    databaseURL: process.env.NEXT_PUBLIC_DATABASE_URL,
+    storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET
   })
 } catch (err) {
   if (!/already exists/.test(err.message)) {

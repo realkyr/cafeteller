@@ -3,13 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev:local": "next dev",
+    "dev": "dotenvx run -f .env.dev -- next dev",
+    "dev:prod": "dotenvx run -f .env.prod next dev",
     "build": "next build",
+    "build:dev": "dotenvx run -f .env.dev next build",
+    "build:prod": "dotenvx run -f .env.prod next build",
     "start": "next start -p 8080",
     "deploy": "yarn build && gcloud app deploy",
     "gcp-build": "yarn build"
   },
   "dependencies": {
+    "@dotenvx/dotenvx": "^1.6.4",
     "@editorjs/editorjs": "^2.19.1",
     "@editorjs/header": "^2.6.1",
     "@editorjs/image": "^2.6.0",
