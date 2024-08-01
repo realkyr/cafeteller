@@ -438,6 +438,7 @@ export async function getServerSideProps ({ query }) {
   const reResult = await Promise.all(recentCafes)
   Object.keys(recents).forEach((id, index) => {
     recents[id].cafe = reResult[index].data()
+    delete recents[id].cafe.reviews
 
     // convert all timestamp to date
     recents[id].createDate = recents[id].createDate.toString()
@@ -464,6 +465,7 @@ export async function getServerSideProps ({ query }) {
   const result = await Promise.all(cafes)
   Object.keys(reviews).forEach((id, index) => {
     reviews[id].cafe = result[index].data()
+    delete reviews[id].cafe.reviews
 
     // convert all timestamp to date
     reviews[id].createDate = reviews[id].createDate.toString()

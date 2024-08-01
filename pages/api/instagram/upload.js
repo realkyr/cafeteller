@@ -30,7 +30,7 @@ export default async (req, res) => {
           await bucketFile.makePublic()
           const isPublic = await bucketFile.isPublic()
           console.log(isPublic[0])
-          const publicURL = 'https://storage.googleapis.com/cafeteller-f18b8.appspot.com/' + path
+          const publicURL = `https://storage.googleapis.com/${process.env.NEXT_PUBLIC_STORAGE_BUCKET}/` + path
           const data = {
             success: 1,
             file: {

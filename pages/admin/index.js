@@ -43,7 +43,7 @@ export default function Admin () {
           {
             !user
               ? <a
-                href="https://api.instagram.com/oauth/authorize?app_id=569501966932938&redirect_uri=https://cafeteller.club/auth&scope=user_profile,user_media&response_type=code"
+                href={`https://api.instagram.com/oauth/authorize?app_id=569501966932938&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_IG_URL}/auth&scope=user_profile,user_media&response_type=code`}
               >
                 Log in
               </a>
