@@ -1,9 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400&display=swap');
+
+@font-face {
+  font-family: "Georgia";
+  src: local("Georgia") url(/assets/font/Georgia-Regular.ttf) format("truetype");
+}
+@font-face {
+  font-family: "Georgia";
+  src: local("Georgia Bold") url(/assets/font/georgia-bold.ttf) format("truetype");
+}
+@font-face {
+  font-family: "Worksans";
+  src: local("Worksans") url(/assets/font/WorkSans-Medium.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Confidante";
+  src: url(/assets/font/Confidante.ttf) format("truetype");
+}
+@font-face {
+  font-family: "Thaisans";
+  src: url(/assets/font/thaisanslite_r1.ttf) format("truetype");
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: Maitree, serif;
 }
 body.search-page {
   height: calc(100vh);
@@ -19,31 +42,8 @@ html {
   height: auto !important;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Maitree:100,200,300,400,600,700&display=swap&subset=latin-ext,thai');
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400&display=swap');
-@font-face {
-  font-family: "Georgia";
-  src: local("Georgia") url(/assets/font/Georgia-Regular.ttf) format("truetype");
-}
-@font-face {
-  font-family: "Georgia";
-  src: local("Georgia Bold") url(/assets/font/georgia-bold.ttf) format("truetype");
-}
-@font-face {
-  font-family: "Worksans";
-  src: local("Worksans") url(/assets/font/WorkSans-Medium.ttf) format("truetype");
-}
-@font-face {
-  font-family: "Confidante";
-  src: url(/assets/font/Confidante.ttf) format("truetype");
-}
-@font-face {
-  font-family: "Thaisans";
-  src: url(/assets/font/thaisanslite_r1.ttf) format("truetype");
-}
-
 a {
-  color: inherit;
+  color: inherit !important;
   text-decoration: none;
 }
 
@@ -52,7 +52,7 @@ a {
 }
 
 .flex-center {
-  display: flex;
+  display: flex !important;
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -160,9 +160,9 @@ a {
   text-align: center; */
 }
 .ant-card-meta-title {
-  white-space: normal;
-  font-family: Georgia, 'Times New Roman', Times, serif;
-  font-weight: bold;
+  white-space: normal !important;
+  font-family: Georgia, 'Times New Roman', Times, serif !important;
+  font-weight: bold !important;
 }
 .ant-card-body {
   height: 100%;

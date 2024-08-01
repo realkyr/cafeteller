@@ -1,4 +1,3 @@
-import admin from 'plugins/firebase'
 // const { instagram } = require('./module/instagram')
 
 export default async (req, res) => {

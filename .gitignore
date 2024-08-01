@@ -33,3 +33,4 @@ yarn.lock
 
 # vercel
 .vercel
+.env

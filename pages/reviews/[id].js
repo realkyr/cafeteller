@@ -1,4 +1,3 @@
-import admin from 'plugins/firebase'
 import firebase from 'plugins/firebaseclient'
 import 'firebase/auth'
 import 'firebase/firestore'
@@ -14,6 +13,8 @@ import { loader } from '../../plugins/gmap'
 import { Typography, Space, Button, Row, Col, Image, Card } from 'antd'
 import Banner from 'components/reviews/Banner'
 import { useMediaQuery } from 'react-responsive'
+import axios from '../../utils/axios'
+import useSimilarCafe from "../../hooks/useSimilarCafe";
 
 const { Meta } = Card
 const { Title } = Typography
@@ -28,6 +29,11 @@ export default function Home ({ reviews }) {
   const [shareBox, setShareBox] = useState([])
   const [contactBox, setContactBox] = useState([])
   const [visitPage, setVisitPage] = useState([])
+
+  const { similarCafe } = useSimilarCafe({
+    tags: reviews[id]?.cafe?.tags || [],
+    id
+  })
 
   const verifyToken = () => {
     // TODO: verify if token still valid
@@ -319,8 +325,10 @@ export default function Home ({ reviews }) {
   }, [id])
 
   const banner = reviews[id].cafe.banner || {}
-  const thisTags = reviews[id].cafe.tags || {}
-  let moreLikeThisCount = 0
+  const moreLikeThisCount = similarCafe?.length || 0
+  const moreLikeThisAmount = (useMediaQuery({ minWidth: 992 }) ? 3 : 2)
+  const shouldShowMoreLikeThis = moreLikeThisCount > moreLikeThisAmount
+
   return (
     <>
       <Head>
@@ -413,46 +421,34 @@ export default function Home ({ reviews }) {
             <Underline style={{ marginBottom: 12 }} />
             <Row gutter={{ xs: 10, sm: 12, md: 20 }}>
               {
-                Object.keys(reviews).map((r, i) => {
-                  const moreLikeThisAmount = (useMediaQuery({ minWidth: 992 }) ? 2 : 1)
-                  if (moreLikeThisCount > moreLikeThisAmount) {
-                    return null
-                  }
-                  const tags = reviews[r].cafe.tags
-                  const intersection = thisTags.filter(element => tags.includes(element))
-                  if (intersection.length > 0 && reviews[r].cafe.name !== reviews[id].cafe.name) {
-                    moreLikeThisCount++
-                    return (
-                      <Col key={r + '-link'} xs={12} md={8}>
-                        <MoreReviewCard>
-                          <Link href={`/reviews/${r}`}>
-                            <a className="flex-center card-shadow">
-                              <Card
-                                bordered={false}
-                                cover={<Image
-                                  height={'100%'}
-                                  onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
-                                  alt={reviews[r].cafe.name}
-                                  src={reviews[r].cafe.banner.url}
-                                  fallback="/assets/Images/placeholder.png"
-                                  preview={false}
-                                  placeholder={<Image
-                                    height={'100%'}
-                                    alt={reviews[r].cafe.name}
-                                    src={'/assets/Images/placeholder.png'}
-                                    preview={false} />}
-                                />}
-                              >
-                                <Meta title={reviews[r].cafe.name} description={reviews[r].cafe.sublocality_level_1} />
-                              </Card>
-                            </a>
-                          </Link>
-                        </MoreReviewCard>
-                      </Col>
-                    )
-                  }
-                  return null
-                })
+                shouldShowMoreLikeThis && similarCafe?.slice(0, moreLikeThisAmount).map((review, index) => (
+                  <Col key={review.id + '-link'} xs={12} md={8}>
+                    <MoreReviewCard>
+                      <Link href={`/reviews/${review.id}`}>
+                        <a className="flex-center card-shadow">
+                          <Card
+                            bordered={false}
+                            cover={<Image
+                              height={'100%'}
+                              onError={(e) => { e.target.onerror = null; e.target.src = '/assets/Images/placeholder.png' }}
+                              alt={review.cafe.name}
+                              src={review.cafe.banner.url}
+                              fallback="/assets/Images/placeholder.png"
+                              preview={false}
+                              placeholder={<Image
+                                height={'100%'}
+                                alt={review.cafe.name}
+                                src={'/assets/Images/placeholder.png'}
+                                preview={false} />}
+                            />}
+                          >
+                            <Meta title={review.cafe.name} description={review.cafe.sublocality_level_1} />
+                          </Card>
+                        </a>
+                      </Link>
+                    </MoreReviewCard>
+                  </Col>
+                ))
               }
             </Row>
           </MoreReview>
@@ -469,37 +465,18 @@ Home.propTypes = {
 }
 
 // This function gets called at build time
-export async function getServerSideProps () {
+export async function getServerSideProps (context) {
   // Call an external API endpoint to get posts
-  const db = admin.firestore()
-  const reviewsDoc = await db.collection('reviews').get()
-  const reviews = {}
-  reviewsDoc.forEach(r => {
-    reviews[r.id] = r.data()
-  })
-  const reviewsCount = Object.keys(reviews).length
-
-  const cafes = []
-  for (const c in reviews) {
-    cafes.push(reviews[c].cafe.get())
-  }
-
-  const result = await Promise.all(cafes)
-  Object.keys(reviews).forEach((id, index) => {
-    reviews[id].cafe = result[index].data()
-    reviews[id].cafe.id = result[index].id
-
-    // convert all timestamp to date
-    reviews[id].createDate = reviews[id].createDate.toString()
-    reviews[id].updateDate = reviews[id].updateDate.toString()
-  })
+  const id = context.params.id
+  const { data } = await axios.get(`/reviews/${id}`)
 
   // By returning { props: { posts } }, the Blog component
   // will receive `posts` as a prop at build time
   return {
     props: {
-      reviews,
-      reviewsCount
+      reviews: {
+        [id]: data
+      }
     }
   }
 }
