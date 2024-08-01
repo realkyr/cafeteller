@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import axios from '../../../utils/axios'
+import axios from '../utils/axios'
 
 const useSimilarCafe = ({ tags, id }) => {
   const [similarCafe, setSimilarCafe] = React.useState(null)
