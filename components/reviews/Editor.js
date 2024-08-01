@@ -303,7 +303,8 @@ export default function Editor (props) {
       [
         reviewRef.set(payload, { merge: true }),
         cafeRef.set({
-          ...cafeData
+          ...cafeData,
+          reviews: reviewRef
         }, { merge: true })
       ]
     )
