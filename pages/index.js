@@ -412,7 +412,7 @@ Home.propTypes = {
   reviews: PropTypes.object,
   recents: PropTypes.object,
   recentsOrder: PropTypes.array,
-  reviewsOrder: PropTypes.array
+  reviewsOrder: PropTypes.array,
 }
 
 // This function gets called at build time

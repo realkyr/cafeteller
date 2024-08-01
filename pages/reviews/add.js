@@ -4,8 +4,10 @@ import styled from 'styled-components'
 import axios from 'axios'
 import { RightOutlined, LeftOutlined, PlusOutlined } from '@ant-design/icons'
 
-import Reviews from 'components/reviews/Editor'
 import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
+
+const Reviews = dynamic(() => import('components/reviews/Editor'), { ssr: false })
 
 let {
   Row,
@@ -45,7 +47,6 @@ export default function add () {
   const getIGPosts = async path => {
     setPosts(null)
     const posts = await axios.get(path)
-    console.log(posts.data)
     setPosts(posts.data)
   }
 

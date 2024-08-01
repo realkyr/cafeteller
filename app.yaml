@@ -1,12 +1,8 @@
 env: standard
-runtime: nodejs12
+runtime: nodejs20
 service: default
 
 handlers:
   - url: /.*
     secure: always
     script: auto
-
-automatic_scaling:
-  min_instances: 1
-  max_instances: 10
