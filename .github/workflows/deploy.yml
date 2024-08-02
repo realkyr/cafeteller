@@ -25,6 +25,11 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
+      - name: Write Admin Service Account
+        run: |
+          echo "${{ secrets.ADMIN_SERVICE_ACCOUNT }}" >> server/serviceAccountKey.json
+          echo "${{ secrets.ADMIN_SERVICE_ACCOUNT_DEV }}" >> server/serviceAccountKey-Dev.json
+
       - name: Build
         env:
           CI: false
