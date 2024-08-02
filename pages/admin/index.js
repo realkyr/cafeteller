@@ -63,7 +63,7 @@ export default function Admin() {
       </ul>
 
       <div>
-        <h5>Commit Hash : {process.env.NEXT_PUBLIC_GIT_COMMIT?.slice(0, 8) || ''}</h5>
+        <h5>Commit Hash : {process.env.NEXT_PUBLIC_GIT_COMMIT?.slice(0, 7) || ''}</h5>
       </div>
     </div>
   )
