@@ -13,11 +13,14 @@ const firebaseConfig = {
 }
 
 try {
-  firebase.initializeApp(firebaseConfig)
-  firebase.analytics()
+  // check if this is on client
+  if (typeof window !== 'undefined') {
+    firebase.initializeApp(firebaseConfig)
+    firebase.analytics()
+  }
 } catch (err) {
   if (!/already exists/.test(err.message)) {
-    console.error('Firebase initialization error', err.stack)
+    console.error('Client Firebase initialization error', err.stack)
   }
 }
 const fire = firebase
