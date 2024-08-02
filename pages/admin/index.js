@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, {useState, useEffect} from 'react'
 import Link from 'next/link'
 import firebase from 'plugins/firebaseclient'
 import 'firebase/auth'
 
-import { Button, Typography } from 'antd'
+import {Button, Typography} from 'antd'
 
-const { Title } = Typography
+const {Title} = Typography
 
-export default function Admin () {
+export default function Admin() {
   const [user, setUser] = useState(null)
   const [isAdmin, setAdmin] = useState(false)
 
@@ -30,14 +30,16 @@ export default function Admin () {
       }
     })
 
-    return () => { unsub && unsub() }
+    return () => {
+      unsub && unsub()
+    }
   }, [])
 
   return (
-    <div style={{ minHeight: '80vh' }}>
+    <div style={{minHeight: '80vh'}}>
       <ul>
         <li>
-          <Title level={2}>Welcome { user ? user.uid : 'Guest' }</Title>
+          <Title level={2}>Welcome {user ? user.uid : 'Guest'}</Title>
         </li>
         <li>
           {
@@ -61,7 +63,7 @@ export default function Admin () {
       </ul>
 
       <div>
-        <h5>Commit Hash : {process.env.NEXT_PUBLIC_GIT_COMMIT}</h5>
+        <h5>Commit Hash : {process.env.NEXT_PUBLIC_GIT_COMMIT?.slice(0, 8) || ''}</h5>
       </div>
     </div>
   )

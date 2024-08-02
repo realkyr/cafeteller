@@ -95,8 +95,7 @@ jobs:
         uses: google-github-actions/deploy-appengine@v2
         with:
           deliverables: app.yaml
-          project_id: cafeteller-f18b8  # Replace with your main project ID
-          credentials: ${{ secrets.SERVICE_ACCOUNT_PROD }}
+          project_id: cafeteller-f18b8
 
       - uses: 'google-github-actions/auth@v2'
         if: github.ref == 'refs/heads/develop'
@@ -109,4 +108,3 @@ jobs:
         with:
           deliverables: app.yaml
           project_id: cafeteller-dev
-          credentials: ${{ secrets.SERVICE_ACCOUNT_DEV }}
