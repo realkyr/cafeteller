@@ -69,6 +69,11 @@ jobs:
           echo "${{ secrets.ENV_DEV }}" >> .env
           echo "NEXT_PUBLIC_GIT_COMMIT=${{ github.sha }}" >> .env
 
+      - uses: 'google-github-actions/auth@v2'
+        if: github.ref == 'refs/heads/main'
+        with:
+          credentials_json: ${{ secrets.SERVICE_ACCOUNT_PROD }}
+
       - name: Deploy to App Engine (main)
         if: github.ref == 'refs/heads/main'
         uses: google-github-actions/deploy-appengine@v2
@@ -76,6 +81,11 @@ jobs:
           deliverables: app.yaml
           project_id: cafeteller-f18b8  # Replace with your main project ID
           credentials: ${{ secrets.SERVICE_ACCOUNT_PROD }}
+
+      - uses: 'google-github-actions/auth@v2'
+        if: github.ref == 'refs/heads/develop'
+        with:
+          credentials_json: ${{ secrets.SERVICE_ACCOUNT_DEV }}
 
       - name: Deploy to App Engine (develop)
         if: github.ref == 'refs/heads/develop'
