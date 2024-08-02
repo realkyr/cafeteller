@@ -26,16 +26,13 @@ jobs:
         run: yarn
 
       - name: Write Admin Service Account
+        env:
+          SERVICE_ACCOUNT_JSON: ${{ secrets.ADMIN_SERVICE_ACCOUNT }}
+          SERVICE_ACCOUNT_JSON_DEV: ${{ secrets.ADMIN_SERVICE_ACCOUNT_DEV }}
         run: |
           mkdir server
-          echo "${{ secrets.ADMIN_SERVICE_ACCOUNT }}" >> server/serviceAccountKey.json
-          echo "${{ secrets.ADMIN_SERVICE_ACCOUNT_DEV }}" >> server/serviceAccountKey-Dev.json
-
-      - name: Test keep artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: server
-          path: server
+          echo "$SERVICE_ACCOUNT_JSON" >> server/serviceAccountKey.json
+          echo "$SERVICE_ACCOUNT_JSON_DEV" >> server/serviceAccountKey-Dev.json
 
       - name: Build
         env:
