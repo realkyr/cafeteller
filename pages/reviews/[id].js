@@ -468,14 +468,23 @@ Home.propTypes = {
 export async function getServerSideProps (context) {
   // Call an external API endpoint to get posts
   const id = context.params.id
-  const { data } = await axios.get(`/reviews/${id}`)
+  try {
+    const { data } = await axios.get(`/reviews/${id}`)
 
-  // By returning { props: { posts } }, the Blog component
-  // will receive `posts` as a prop at build time
-  return {
-    props: {
-      reviews: {
-        [id]: data
+    // By returning { props: { posts } }, the Blog component
+    // will receive `posts` as a prop at build time
+    return {
+      props: {
+        reviews: {
+          [id]: data
+        }
+      }
+    }
+  } catch (error) {
+    console.log(error)
+    return {
+      props: {
+        reviews: {}
       }
     }
   }

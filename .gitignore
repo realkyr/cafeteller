@@ -35,3 +35,6 @@ yarn.lock
 .vercel
 .env
 .env.*
+
+server/serviceAccountKey.json
+server/serviceAccountKey-Dev.json

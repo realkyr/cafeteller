@@ -59,6 +59,10 @@ export default function Admin () {
           </li>
         }
       </ul>
+
+      <div>
+        <h5>Commit Hash : {process.env.NEXT_PUBLIC_GIT_COMMIT}</h5>
+      </div>
     </div>
   )
 }
