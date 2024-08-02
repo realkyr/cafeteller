@@ -57,6 +57,15 @@ jobs:
           name: build
           path: build
 
+      - name: Write Admin Service Account
+        env:
+          SERVICE_ACCOUNT_JSON: ${{ secrets.ADMIN_SERVICE_ACCOUNT }}
+          SERVICE_ACCOUNT_JSON_DEV: ${{ secrets.ADMIN_SERVICE_ACCOUNT_DEV }}
+        run: |
+          mkdir server
+          echo "$SERVICE_ACCOUNT_JSON" >> server/serviceAccountKey.json
+          echo "$SERVICE_ACCOUNT_JSON_DEV" >> server/serviceAccountKey-Dev.json
+
       - name: Write .env file (main)
         if: github.ref == 'refs/heads/main'
         run: |
