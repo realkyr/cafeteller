@@ -34,8 +34,8 @@ jobs:
       - name: Test keep artifact
         uses: actions/upload-artifact@v3
         with:
-          name: sever
-          path: sever
+          name: server
+          path: server
 
       - name: Build
         env:
