@@ -5,10 +5,10 @@
   "scripts": {
     "dev:local": "next dev",
     "dev": "dotenvx run -f .env.dev -- next dev",
-    "dev:prod": "dotenvx run -f .env.prod next dev",
+    "dev:prod": "dotenvx run -f .env.prod -- next dev",
     "build": "next build",
-    "build:dev": "dotenvx run -f .env.dev next build",
-    "build:prod": "dotenvx run -f .env.prod next build",
+    "build:dev": "dotenvx run -f .env.dev -- next build",
+    "build:prod": "dotenvx run -f .env.prod -- next build",
     "start": "next start -p 8080",
     "deploy": "yarn build && gcloud app deploy",
     "gcp-build": "yarn build"

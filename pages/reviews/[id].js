@@ -305,8 +305,8 @@ export default function Home ({ reviews }) {
 
       const google = window.google
       const location = {
-        lng: reviews[id].cafe.location.lon,
-        lat: reviews[id].cafe.location.lat
+        lng: reviews[id].cafe.location?.lon,
+        lat: reviews[id].cafe.location?.lat
       }
       // eslint-disable-next-line no-unused-vars
       map = new google.maps.Map(document.getElementById('map'), {
