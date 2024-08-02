@@ -31,6 +31,12 @@ jobs:
           echo "${{ secrets.ADMIN_SERVICE_ACCOUNT }}" >> server/serviceAccountKey.json
           echo "${{ secrets.ADMIN_SERVICE_ACCOUNT_DEV }}" >> server/serviceAccountKey-Dev.json
 
+      - name: Test keep artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: sever
+          path: sever
+
       - name: Build
         env:
           CI: false
