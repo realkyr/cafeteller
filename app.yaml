@@ -10,5 +10,6 @@ handlers:
 inbound_services:
   - warmup
 
-min_instances: 1
-max_instances: 10
+automatic_scaling:
+    min_instances: 1
+    max_instances: 10
