@@ -25,6 +25,18 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
+      - name: Write .env file (main)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "${{ secrets.ENV_PROD }}" >> .env
+          echo "NEXT_PUBLIC_GIT_COMMIT=${{ github.sha }}" >> .env
+
+      - name: Write .env file (develop)
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          echo "${{ secrets.ENV_DEV }}" >> .env
+          echo "NEXT_PUBLIC_GIT_COMMIT=${{ github.sha }}" >> .env
+
       - name: Build
         env:
           CI: false
