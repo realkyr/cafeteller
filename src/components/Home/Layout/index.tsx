@@ -135,14 +135,14 @@ const Layout = ({ header, footer, outerRef }: LayoutProps) => {
           {visibleData.map((item, index) => (
             <div
               key={index}
-              className='grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8 px-5 md:px-20 lg:px-[13%] my-4 lg:my-8'
+              className='grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 px-5 md:px-20 lg:px-[13%] my-4 lg:my-6'
             >
               {item.map((review, index) => {
                 if (review.id === 'add-review')
                   return (
                     <AddCard
                       key='add-review'
-                      className='h-[30rem]'
+                      className='h-60 md:h-80 lg:h-[23rem]'
                       title='Add Review'
                       onClick={() => {
                         router.push('/reviews/add').then()
@@ -157,7 +157,7 @@ const Layout = ({ header, footer, outerRef }: LayoutProps) => {
 
                 return (
                   <Card
-                    className='h-60 md:h-80 lg:h-[25rem]'
+                    className='h-60 md:h-80 lg:h-[23rem]'
                     key={review.id}
                     titleProps={{
                       className:

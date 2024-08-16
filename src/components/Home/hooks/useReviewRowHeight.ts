@@ -4,7 +4,7 @@ import { breakpoints } from '@/utils/breakpoints'
 
 const ROW_HEIGHTS = {
   md: 320 + 16,
-  lg: 400 + 32,
+  lg: 368 + 24,
   default: 240 + 16
 }
 

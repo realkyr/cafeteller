@@ -190,14 +190,13 @@ const Navbar: React.FC = ({ container }: NavbarProps) => {
     }
   }, [refreshKey])
 
+  const portalRef = React.useRef<HTMLDivElement | null>(null)
   useEffect(() => {
     // scroll container is ref or window if not provide
     const scrollContainer = container?.current || window
 
-    console.log({
-      container,
-      scrollContainer
-    })
+    portalRef.current = document.querySelector('#navbar-portal')
+
     scrollContainer.addEventListener('scroll', handleScroll)
     return () => {
       scrollContainer.removeEventListener('scroll', handleScroll)
@@ -205,7 +204,7 @@ const Navbar: React.FC = ({ container }: NavbarProps) => {
   }, [container])
 
   const navbarIsHiding = HIDE_NAVBAR_ROUTE.includes(pathName)
-  const portal = document.querySelector('#navbar-portal')
+  const portal = portalRef.current
 
   const ScrolledNavbar = (
     <Row justify='center' className={scrollNavClass.join(' ')}>
