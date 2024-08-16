@@ -1,15 +1,8 @@
 env: standard
 runtime: nodejs20
-service: default
+service: migrate
 
 handlers:
   - url: /.*
     secure: always
     script: auto
-
-inbound_services:
-  - warmup
-
-automatic_scaling:
-    min_instances: 1
-    max_instances: 10
