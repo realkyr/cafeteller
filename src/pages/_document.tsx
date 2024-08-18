@@ -32,7 +32,11 @@ export default class MyDocument extends Document {
         <link
           key={key}
           rel='stylesheet'
-          href={`${process.env.NEXT_PUBLIC_CORE_MF}/${manifest[key]}`}
+          href={
+            `${process.env.NEXT_PUBLIC_CORE_MF}/${manifest[key]}` +
+            '?v=' +
+            Date.now()
+          }
         />
       ))
 
