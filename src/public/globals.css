@@ -30,7 +30,7 @@ html,
 body {
     padding: 0;
     margin: 0;
-    font-family: Maitree, serif;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 body.search-page {
     height: calc(100vh);

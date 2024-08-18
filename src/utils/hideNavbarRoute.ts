@@ -1,1 +1,1 @@
-export const HIDE_NAVBAR_ROUTE = ['/']
+export const HIDE_NAVBAR_ROUTE = ['/', '/admin']

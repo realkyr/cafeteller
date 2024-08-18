@@ -5,6 +5,7 @@ import useSWR from 'swr'
 import useProfile from '@/hooks/useProfile'
 import Show from '@/components/ui/Show'
 import dynamic from 'next/dynamic'
+import { Instagram } from '@/icons'
 
 const Button = dynamic(
   () => import('core_cafeteller/components').then((mod) => mod.Button),
@@ -25,25 +26,29 @@ const Admin = () => {
     getAPIHealthCheck()
   )
 
-  console.log({
-    isAdmin
-  })
+  if (!isAdmin)
+    return (
+      <div className='flex items-center justify-center h-screen bg-gray-100'>
+        <div className='text-center'>
+          <h1 className='text-2xl font-bold mb-2'>Admin Login</h1>
+          <p className='text-gray-500 mb-6'>
+            Please log in to access the admin dashboard.
+          </p>
+          <button
+            onClick={() => {
+              window.location.href = LOGIN_URL
+            }}
+            className='bg-pink-600 text-white px-6 py-3 rounded-lg inline-flex items-center'
+          >
+            <Instagram className='mr-2' />
+            Login with Instagram
+          </button>
+        </div>
+      </div>
+    )
 
   return (
     <div className='p-8'>
-      <h1>Admin Page</h1>
-
-      <Show when={!isAdmin}>
-        <Button
-          type='primary'
-          onClick={() => {
-            window.location.href = LOGIN_URL
-          }}
-        >
-          Sign In
-        </Button>
-      </Show>
-
       <Show when={isAdmin}>
         <div className='grid grid-cols-3'>
           <div>

@@ -1,7 +1,7 @@
 import type { AppProps } from 'next/app'
 import { SWRProvider } from '@/components/SWRProvider'
 import StyledComponentsRegistry from '@/lib/StyleComponentRegistry'
-import firebase, { initialFirebaseApp } from '@/utils/firebase'
+import { initialFirebaseApp } from '@/utils/firebase'
 
 import '../public/globals.css'
 import Footer from '@/components/ui/Footer'
