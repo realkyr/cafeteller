@@ -6,25 +6,31 @@ import useProfile from '@/hooks/useProfile'
 import Show from '@/components/ui/Show'
 import dynamic from 'next/dynamic'
 import { Instagram } from '@/icons'
+import { getAuth, signOut, User } from '@firebase/auth'
+import { useRouter } from 'next/router'
+import NavbarContainer from '@/components/ui/NavbarContainer'
+import Footer from '@/components/ui/Footer'
 
 const Button = dynamic(
   () => import('core_cafeteller/components').then((mod) => mod.Button),
   { ssr: false }
 )
 
-const CoffeeLoader = dynamic(
-  () =>
-    import('core_cafeteller/components').then((module) => module.CoffeeLoader),
-  { ssr: false }
-)
-
 const LOGIN_URL = `https://api.instagram.com/oauth/authorize?app_id=569501966932938&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_IG_URL}/auth&scope=user_profile,user_media&response_type=code`
 
 const Admin = () => {
+  const router = useRouter()
   const { profile, isAdmin } = useProfile()
   const { data, error } = useSWR(isAdmin && 'getAPIHealthCheck', () =>
     getAPIHealthCheck()
   )
+
+  const handleLogout = () => {
+    const auth = getAuth()
+    signOut(auth).then(() => {
+      router.push('/').then()
+    })
+  }
 
   if (!isAdmin)
     return (
@@ -47,33 +53,49 @@ const Admin = () => {
       </div>
     )
 
+  console.log({
+    profile
+  })
   return (
-    <div className='p-8'>
-      <Show when={isAdmin}>
-        <div className='grid grid-cols-3'>
-          <div>
-            <pre>
-              <h2>Site Status</h2>
-              <pre>
-                Version:{' '}
-                {process.env.NEXT_PUBLIC_GIT_COMMIT?.slice(0, 7) || 'local'}
-              </pre>
-            </pre>
-          </div>
+    <>
+      <NavbarContainer />
+      <div className='p-8 h-screen'>
+        <Show when={!!(isAdmin && profile)}>
+          <h1 className='text-2xl font-bold mb-4'>Admin Dashboard</h1>
+          <h2>
+            Welcome, {(profile as User).displayName}{' '}
+            <Button onClick={handleLogout} type='danger' outline>
+              Log Out
+            </Button>
+          </h2>
 
-          {data && (
+          <div className='grid grid-cols-3 mt-4'>
             <div>
               <pre>
-                <h2>API-V2 Status</h2>
-                Version: {data.version}
-                <br />
-                Environment: {data.environment}
+                <h2>Site Status</h2>
+                <pre>
+                  Version:{' '}
+                  {process.env.NEXT_PUBLIC_GIT_COMMIT?.slice(0, 7) || 'local'}
+                </pre>
               </pre>
             </div>
-          )}
-        </div>
-      </Show>
-    </div>
+
+            {data && (
+              <div>
+                <pre>
+                  <h2>API-V2 Status</h2>
+                  Version: {data.version}
+                  <br />
+                  Environment: {data.environment}
+                </pre>
+              </div>
+            )}
+          </div>
+        </Show>
+      </div>
+
+      <Footer />
+    </>
   )
 }
 

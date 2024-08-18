@@ -4,6 +4,7 @@ import { getReviewsService } from '@/services/list'
 import { DisplayReviewRow, Review } from '@/types'
 import { breakpoints } from '@/utils/breakpoints'
 import useViewport from '@/hooks/useViewport'
+import useProfile from '@/hooks/useProfile'
 
 function sortAndRemoveDuplicates(items: Review[]): Review[] {
   const uniqueItemsMap = new Map<string, Review>()
@@ -25,6 +26,7 @@ function sortAndRemoveDuplicates(items: Review[]): Review[] {
 }
 
 const useReviewsList = (key?: string) => {
+  const { isAdmin } = useProfile()
   const [data, setData] = useState<Review[]>([])
   const [updateDate, setUpdateDate] = useState<string>()
 
@@ -48,6 +50,8 @@ const useReviewsList = (key?: string) => {
   const rows: DisplayReviewRow[] = useMemo(() => {
     const _data: DisplayReviewRow = []
 
+    if (isAdmin) _data.push({ id: 'add-review' })
+
     const perRow = viewport.width < breakpoints.lg ? 2 : 3
     if (data) _data.push(...data)
 
@@ -57,7 +61,7 @@ const useReviewsList = (key?: string) => {
     }
 
     return result
-  }, [data, viewport])
+  }, [data, viewport, isAdmin])
 
   return { data, rows, isLoading, error, setUpdateDate }
 }

@@ -48,7 +48,7 @@ const useExchangeCode = () => {
           unsub = onAuthStateChanged(auth, (user) => {
             if (user) {
               message.success('Login Successful')
-              router.push('/')
+              router.push('/admin')
             }
           })
         } catch (error: any) {

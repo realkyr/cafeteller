@@ -10,8 +10,8 @@ const useProfile = () => {
     const unsub = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setProfile(user)
-        const idtoken = await user.getIdTokenResult()
-        setIsAdmin(idtoken.claims.isAdmin as boolean)
+        const idToken = await user.getIdTokenResult()
+        setIsAdmin(idToken.claims.isAdmin as boolean)
       } else {
         setProfile(false)
         setIsAdmin(false)
