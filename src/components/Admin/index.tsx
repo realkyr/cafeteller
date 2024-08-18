@@ -15,6 +15,10 @@ const Button = dynamic(
   () => import('core_cafeteller/components').then((mod) => mod.Button),
   { ssr: false }
 )
+const Editor = dynamic(
+  () => import('core_cafeteller/components').then((mod) => mod.Editor),
+  { ssr: false }
+)
 
 const LOGIN_URL = `https://api.instagram.com/oauth/authorize?app_id=569501966932938&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_IG_URL}/auth&scope=user_profile,user_media&response_type=code`
 
@@ -53,9 +57,6 @@ const Admin = () => {
       </div>
     )
 
-  console.log({
-    profile
-  })
   return (
     <>
       <NavbarContainer />
@@ -68,6 +69,8 @@ const Admin = () => {
               Log Out
             </Button>
           </h2>
+
+          <Editor />
 
           <div className='grid grid-cols-3 mt-4'>
             <div>
