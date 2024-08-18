@@ -22,7 +22,9 @@ declare module 'core_cafeteller/components' {
 
   const LazyImage: React.FC<any>
 
-  export { Card, AddCard, CoffeeLoader, LazyImage }
+  const Button: React.FC<any>
+
+  export { Card, AddCard, CoffeeLoader, LazyImage, Button }
 }
 
 declare module 'core_cafeteller/icons' {

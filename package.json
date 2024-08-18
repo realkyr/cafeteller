@@ -13,6 +13,7 @@
   "dependencies": {
     "antd": "^5.20.0",
     "axios": "^1.7.3",
+    "firebase": "10.13",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
