@@ -9,6 +9,7 @@ import { Underline } from '@/components/Home/_components/AllReview/AllReview.sty
 
 import useReviewsList from '@/components/Home/hooks/useReviewsList'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 
 const Card = dynamic(
   () => import('core_cafeteller/components').then((module) => module.Card),
@@ -39,13 +40,15 @@ const RecentReview = () => {
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-2'>
           {recentsOrder.map((r, i) => {
             return (
-              <Card
-                description={r.cafe.sublocality_level_1}
-                key={r.id}
-                title={r.cafe.name}
-                src={r.cafe.banner.url}
-                className='h-96 lg:h-[28rem]'
-              />
+              <Link href={`/reviews/${r.id}`} key={r.id}>
+                <Card
+                  description={r.cafe.sublocality_level_1}
+                  key={r.id}
+                  title={r.cafe.name}
+                  src={r.cafe.banner.url}
+                  className='h-96 lg:h-[28rem]'
+                />
+              </Link>
             )
           })}
         </div>

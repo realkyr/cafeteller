@@ -4,6 +4,7 @@ import useReviewsList from '@/components/Home/hooks/useReviewsList'
 import { DisplayReviewRow, Review } from '@/types'
 import { useRouter } from 'next/router'
 import useReviewRowHeight from '@/components/Home/hooks/useReviewRowHeight'
+import Link from 'next/link'
 
 const CoffeeLoader = dynamic(
   () =>
@@ -38,12 +39,14 @@ const Layout = ({ header, footer, outerRef }: LayoutProps) => {
   const router = useRouter()
   const {
     rows,
+    rowsID,
     data,
     isLoading: loading,
     setUpdateDate
   } = useReviewsList('getReviewsList')
 
   const [visibleData, setVisibleData] = useState<DisplayReviewRow[]>([])
+  const [visibleID, setVisibleID] = useState<string[]>([])
   const [startRow, setStartRow] = useState(0)
   const containerRef = useRef<HTMLDivElement | null>(null)
   const requestRef = useRef<number | null>(null)
@@ -71,6 +74,7 @@ const Layout = ({ header, footer, outerRef }: LayoutProps) => {
       )
       setStartRow(newStartRow)
       setVisibleData(rows.slice(newStartRow, lastIndex))
+      setVisibleID(rowsID.slice(newStartRow, lastIndex))
     }
   }, [rows])
 
@@ -134,7 +138,7 @@ const Layout = ({ header, footer, outerRef }: LayoutProps) => {
 
           {visibleData.map((item, index) => (
             <div
-              key={index}
+              key={visibleID[index]}
               className='grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 px-5 md:px-20 lg:px-[13%] my-4 lg:my-6'
             >
               {item.map((review, index) => {
@@ -156,21 +160,23 @@ const Layout = ({ header, footer, outerRef }: LayoutProps) => {
                   title.length > 25 ? title.slice(0, 25) + '...' : title
 
                 return (
-                  <Card
-                    className='h-60 md:h-80 lg:h-[23rem]'
-                    key={review.id}
-                    titleProps={{
-                      className:
-                        'text-[1rem] my-0 leading-5 md:leading-6 lg:leading-8 md:my-2 md:text-xl lg:text-[1.4rem] georgia-font'
-                    }}
-                    descriptionProps={{
-                      className:
-                        'text-2xl my-0 lg:my-4 lg:text-[1.8rem] worksans-font'
-                    }}
-                    src={(review as Review).cafe.banner.url}
-                    title={titleCutOff}
-                    description={(review as Review).cafe.sublocality_level_1}
-                  />
+                  <Link href={`reviews/${(review as Review).id}`}>
+                    <Card
+                      className='h-60 md:h-80 lg:h-[23rem]'
+                      key={review.id}
+                      titleProps={{
+                        className:
+                          'text-[1rem] my-0 leading-5 md:leading-6 lg:leading-8 md:my-2 md:text-xl lg:text-[1.4rem] georgia-font'
+                      }}
+                      descriptionProps={{
+                        className:
+                          'text-2xl my-0 lg:my-4 lg:text-[1.8rem] worksans-font'
+                      }}
+                      src={(review as Review).cafe.banner.url}
+                      title={titleCutOff}
+                      description={(review as Review).cafe.sublocality_level_1}
+                    />
+                  </Link>
                 )
               })}
             </div>

@@ -39,6 +39,11 @@ export interface File {
   name?: string
 }
 
+export interface Location {
+  lat: number
+  lon: number
+}
+
 export interface Cafe {
   administrative_area_level_1: string
   banner: Banner
@@ -65,3 +70,15 @@ export interface Cafe {
 
 export type DisplayReview = Review | { id: 'add-review' }
 export type DisplayReviewRow = DisplayReview[]
+
+export interface URLSImageSrc {
+  '@1980': string
+  '@1024': string
+  '@720': string
+}
+
+export interface UploadResponse {
+  success: number
+  id: number
+  urls: URLSImageSrc
+}

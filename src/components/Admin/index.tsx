@@ -10,6 +10,7 @@ import { getAuth, signOut, User } from '@firebase/auth'
 import { useRouter } from 'next/router'
 import NavbarContainer from '@/components/ui/NavbarContainer'
 import Footer from '@/components/ui/Footer'
+import { uploadImageService } from '@/services/media/images'
 
 const Button = dynamic(
   () => import('core_cafeteller/components').then((mod) => mod.Button),
@@ -70,7 +71,11 @@ const Admin = () => {
             </Button>
           </h2>
 
-          <Editor />
+          <Editor
+            uploadCallback={async (file: File) => {
+              return await uploadImageService(file)
+            }}
+          />
 
           <div className='grid grid-cols-3 mt-4'>
             <div>

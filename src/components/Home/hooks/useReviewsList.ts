@@ -63,7 +63,11 @@ const useReviewsList = (key?: string) => {
     return result
   }, [data, viewport, isAdmin])
 
-  return { data, rows, isLoading, error, setUpdateDate }
+  const rowsID = useMemo(() => {
+    return rows.map((_, i) => i.toString())
+  }, [rows])
+
+  return { data, rows, rowsID, isLoading, error, setUpdateDate }
 }
 
 export default useReviewsList
