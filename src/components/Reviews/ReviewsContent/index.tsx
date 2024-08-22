@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 import Head from 'next/head'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
 import { Space, Button, Row, Col, Image, Card } from 'antd'
-import { useMediaQuery } from 'react-responsive'
 import axios from '@/utils/axios'
 
 import useSimilarCafe from '@/hooks/useSimilarCafe'
@@ -18,10 +16,10 @@ import useGenerateContent from '@/components/Reviews/ReviewsContent/hooks/useGen
 import useInitMap from '@/components/Reviews/ReviewsContent/hooks/useInitMap'
 
 import dynamic from 'next/dynamic'
-import MoreLikeThis from '@/components/ui/MoreLikeThis'
 
-const { Meta } = Card
-
+const MoreLikeThis = dynamic(() => import('@/components/ui/MoreLikeThis'), {
+  ssr: false
+})
 const CafeInformation = dynamic(() => import('./_components/CafeInformation'), {
   ssr: false
 })
@@ -171,10 +169,10 @@ export default function ReviewContent({ reviews }: ReviewDetailProps) {
                 height={'100%'}
                 width={'100%'}
                 style={{ objectFit: 'cover' }}
-                onError={(e) => {
-                  e.target.onerror = null
-                  e.target.src = '/assets/Images/placeholder.png'
-                }}
+                // onError={(e) => {
+                //   e.target.onerror = null
+                //   e.target.src = '/assets/Images/placeholder.png'
+                // }}
                 alt={reviews[id].cafe.name}
                 src={reviews[id].cafe.banner.url}
                 fallback='/assets/Images/placeholder.png'

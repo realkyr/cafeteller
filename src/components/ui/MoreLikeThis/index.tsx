@@ -7,7 +7,8 @@ import { MoreReview, MoreReviewCard, Underline } from './MoreLikeThis.style'
 import { Review } from '@/types'
 import dynamic from 'next/dynamic'
 import useSimilarCafe from '@/hooks/useSimilarCafe'
-import { useMediaQuery } from 'react-responsive'
+import useViewport from '@/hooks/useViewport'
+import { breakpoints } from '@/utils/breakpoints'
 
 const Card = dynamic(
   () => import('core_cafeteller/components').then((module) => module.Card),
@@ -22,13 +23,14 @@ interface MoreLikeThisProps {
 }
 
 const MoreLikeThis = ({ tags, id }: MoreLikeThisProps) => {
+  const { width } = useViewport()
   const { similarCafe } = useSimilarCafe({
     tags,
     id
   })
 
   const moreLikeThisCount = similarCafe?.length || 0
-  const moreLikeThisAmount = useMediaQuery({ minWidth: 992 }) ? 3 : 2
+  const moreLikeThisAmount = width >= breakpoints.lg ? 3 : 2
   const shouldShowMoreLikeThis = moreLikeThisCount > moreLikeThisAmount
 
   return (
