@@ -7,4 +7,4 @@ handlers:
     secure: always
     script: auto
 
-instance_class: F2
+instance_class: F1
