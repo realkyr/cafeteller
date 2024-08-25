@@ -5,6 +5,7 @@ import { IGPost } from '@/components/Reviews/types'
 import IGPosts from '@/components/Reviews/AddReviewController/_components/IGPosts'
 import ReviewsEditor from '@/components/Reviews/AddReviewController/_components/ReviewsEditor'
 import Head from 'next/head'
+import ProtectedRoute from '@/components/ProtectedRoute'
 
 let { Row, Typography, Col, Steps, Button, Result } = require('antd')
 const { Title } = Typography
@@ -25,7 +26,7 @@ const Wrapper = styled.div`
   margin: 10px 0;
 `
 
-export default function add() {
+export default function Add() {
   const [step, setStep] = useState(0)
   const [selected, setSelected] = useState<IGPost | undefined>(undefined)
   const [path, setPath] = useState('')
@@ -88,24 +89,26 @@ export default function add() {
         <link rel='stylesheet' href='/assets/css/editor.css' />
       </Head>
 
-      <Wrapper>
-        <Row justify='center' align='top'>
-          <Col xs={24} md={22}>
-            <Title level={3}>Add Review</Title>
-          </Col>
-          <Col xs={24} md={22}>
-            <Steps className='th' current={step} responsive='true'>
-              <Step
-                title='เลือกโพสต์จาก Instagram'
-                description='เลือกโพสต์ตั้งต้นจาก Instagram'
-              />
-              <Step title='เขียนรีวิว' />
-              <Step title='Save เรียบร้อย' />
-            </Steps>
-          </Col>
-          {stepsContent()}
-        </Row>
-      </Wrapper>
+      <ProtectedRoute>
+        <Wrapper>
+          <Row justify='center' align='top'>
+            <Col xs={24} md={22}>
+              <Title level={3}>Add Review</Title>
+            </Col>
+            <Col xs={24} md={22}>
+              <Steps className='th' current={step} responsive='true'>
+                <Step
+                  title='เลือกโพสต์จาก Instagram'
+                  description='เลือกโพสต์ตั้งต้นจาก Instagram'
+                />
+                <Step title='เขียนรีวิว' />
+                <Step title='Save เรียบร้อย' />
+              </Steps>
+            </Col>
+            {stepsContent()}
+          </Row>
+        </Wrapper>
+      </ProtectedRoute>
     </>
   )
 }

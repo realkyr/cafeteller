@@ -52,6 +52,7 @@ export interface Cafe {
   details: string
   fb?: string
   ig?: string
+  tw?: string
   review_id?: string
   landmark?: string
   location: Location
