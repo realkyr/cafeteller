@@ -26,7 +26,7 @@ const useInitMap = () => {
     )) as google.maps.MarkerLibrary
 
     const image = document.createElement('img')
-    image.src = '/assets/images/pin.png'
+    image.src = '/assets/Images/pin.png'
 
     new AdvancedMarkerElement({
       position: mapOptions.center,

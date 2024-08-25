@@ -1,0 +1,57 @@
+.cx-video {
+    max-width: 600px;
+}
+
+.cx-video video {
+    max-width: 600px;
+    width: 100%;
+}
+
+.editor-section {
+    max-width: 1100px;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.ce-block__content {
+    max-width: 100%;
+}
+
+.ce-toolbar__content {
+    max-width: 100%;
+}
+
+.ce-settings__button:not(:nth-child(3n + 3)),
+.cdx-settings-button:not(:nth-child(3n + 3)) {
+    margin-right: 0;
+}
+
+.ce-block:first-of-type h2.ce-header {
+    font-size: 40px;
+}
+
+.ce-header {
+    font-weight: 600;
+}
+
+h2.ce-header {
+    font-size: 30px;
+}
+
+h3.ce-header {
+    font-size: 24px;
+}
+
+h4.ce-header {
+    font-size: 18px;
+}
+
+.cx-video {
+    display: flex;
+}
+
+.cx-video video {
+    margin: 0 auto;
+    max-height: 600px;
+}
