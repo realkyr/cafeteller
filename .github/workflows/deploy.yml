@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
+        with:
+          submodules: "recursive"
 
       - name: Use Node.js 20.10.0 # Specify Node.js version if needed
         uses: actions/setup-node@v3
@@ -53,6 +55,8 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: "recursive"
 
       - name: Download Artifact
         uses: actions/download-artifact@v2
