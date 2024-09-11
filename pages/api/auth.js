@@ -17,7 +17,7 @@ export default async (req, res) => {
       'https://api.instagram.com/oauth/access_token',
       qs.stringify({
         app_id: '569501966932938',
-        app_secret: '***REMOVED***',
+        app_secret: 'XXX',
         code: req.query.code,
         grant_type: 'authorization_code',
         redirect_uri: `${process.env.NEXT_PUBLIC_REDIRECT_IG_URL}/auth`
