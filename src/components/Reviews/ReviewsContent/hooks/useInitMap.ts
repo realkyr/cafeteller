@@ -1,13 +1,13 @@
 import { loader } from '@/utils/gmap'
 import { Location } from '@/types'
+import useMap from '@/hooks/map/useMap'
+import { useEffect, useRef } from 'react'
+import useMarker from '@/hooks/map/useMarker'
 
-const useInitMap = () => {
-  const initializeMap = async (location: Location) => {
-    if (!location) return
-
-    const { Map } = await loader.importLibrary('maps')
-
-    const mapOptions = {
+const useInitMap = (element: HTMLElement | null, location: Location) => {
+  const { loading, mapRef } = useMap({
+    element: element,
+    options: {
       center: {
         lng: location.lon,
         lat: location.lat
@@ -15,28 +15,20 @@ const useInitMap = () => {
       zoom: 15,
       mapId: 'map'
     }
+  })
 
-    const element = document.getElementById('map')
-    if (!element) return
-
-    const map = new Map(element, mapOptions)
-
-    const { AdvancedMarkerElement, PinElement } = (await loader.importLibrary(
-      'marker'
-    )) as google.maps.MarkerLibrary
-
-    const image = document.createElement('img')
-    image.src = '/assets/Images/pin.png'
-
-    new AdvancedMarkerElement({
-      position: mapOptions.center,
-      map: map,
-      content: image,
+  useMarker({
+    map: mapRef.current,
+    options: {
+      position: {
+        lng: location.lon,
+        lat: location.lat
+      },
       title: 'Marker'
-    })
-  }
+    }
+  })
 
-  return { initializeMap }
+  return { loading }
 }
 
 export default useInitMap

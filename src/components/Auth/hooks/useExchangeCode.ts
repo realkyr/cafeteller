@@ -31,11 +31,14 @@ const useExchangeCode = () => {
       // verify code
       if (router.query.code) {
         try {
-          const response = await axios.get<CodeExchangeResponse>('/auth', {
-            params: {
-              code: router.query.code
+          const response = await axios.get<CodeExchangeResponse>(
+            process.env.NEXT_PUBLIC_PATH_AUTH || '/auth',
+            {
+              params: {
+                code: router.query.code
+              }
             }
-          })
+          )
 
           localStorage.setItem('methods', 'instagram')
           localStorage.setItem(

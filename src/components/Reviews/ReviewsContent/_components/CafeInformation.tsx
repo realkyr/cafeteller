@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
 
 import { Cafe } from '@/types'
@@ -9,18 +9,26 @@ import Mobile from '@/components/ui/Show/Mobile'
 import ContactBox from './ContactBox'
 import VisitPage from './VisitPage'
 import ShareBox from './ShareBox'
+import useInitMap from '@/components/Reviews/ReviewsContent/hooks/useInitMap'
 
 interface CafeInformationProps {
   cafeData: Cafe
 }
 
 const CafeInformation = ({ cafeData }: CafeInformationProps) => {
+  const ref = useRef<HTMLDivElement>(null)
+  useInitMap(ref.current, cafeData.location)
+
   return (
     <>
       <ContactInfo>
         <ContactBox cafeData={cafeData} />
 
-        <Map id='map'></Map>
+        <div
+          ref={ref}
+          className='w-full h-96 bg-gray-500 border-b-2 border-gray-300'
+          id='map'
+        />
 
         <Desktop>
           <VisitPage cafeData={cafeData} />
@@ -33,13 +41,6 @@ const CafeInformation = ({ cafeData }: CafeInformationProps) => {
     </>
   )
 }
-
-const Map = styled.div`
-  width: 100%;
-  height: 400px;
-  background: grey;
-  border-bottom: 2px solid #d2c5b8;
-`
 
 const ContactInfo = styled.div`
   font-size: 1rem;

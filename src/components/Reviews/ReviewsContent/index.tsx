@@ -68,28 +68,8 @@ export default function ReviewContent({ reviews }: ReviewDetailProps) {
     cafetellerVersion: 'v1',
     blocks: reviews?.[id] ? [...reviews[id].review.blocks] : []
   })
-  const { initializeMap } = useInitMap()
 
   const { isAdmin } = useProfile()
-
-  const { similarCafe } = useSimilarCafe({
-    tags: reviews?.[id]?.cafe?.tags || [],
-    id
-  })
-
-  useEffect(() => {
-    const didMount = async () => {
-      if (!reviews?.[id]) return
-
-      await initializeMap(reviews[id].cafe.location)
-    }
-
-    didMount().then()
-
-    return () => {
-      // Cleanup if needed
-    }
-  }, [id])
 
   const banner = reviews?.[id].cafe.banner || {}
 
