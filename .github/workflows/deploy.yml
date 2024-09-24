@@ -44,6 +44,15 @@ jobs:
           CI: false
         run: yarn build
 
+      - name: Ensure .next file exists
+        env:
+          CI: false
+        run: |
+          if [ ! -d ".next" ]; then
+            echo "Error: No .next directory found"
+            exit 1
+          fi
+
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v3
         with:
