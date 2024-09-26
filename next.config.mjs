@@ -26,7 +26,7 @@ const nextConfig = {
 const initModuleMF = (name, url) =>  `promise new Promise(resolve => {
       const urlParams = new URLSearchParams(window.location.search)
       // This part depends on how you plan on hosting and versioning your federated modules
-      const remoteUrlWithVersion = '${url}' + '/remoteEntry.js' + "?v=" + Date.now();
+      const remoteUrlWithVersion = '${url}' + '/assets/remoteEntry.js';
       const script = document.createElement('script')
       script.src = remoteUrlWithVersion
       script.onload = () => {
