@@ -1,10 +1,13 @@
 import { loader } from '@/utils/gmap'
 import { Location } from '@/types'
 import useMap from '@/hooks/map/useMap'
-import { useEffect, useRef } from 'react'
 import useMarker from '@/hooks/map/useMarker'
+import { MutableRefObject } from 'react'
 
-const useInitMap = (element: HTMLElement | null, location: Location) => {
+const useInitMap = (
+  element: MutableRefObject<HTMLElement | null>,
+  location: Location
+) => {
   const { loading, mapRef } = useMap({
     element: element,
     options: {
@@ -18,7 +21,7 @@ const useInitMap = (element: HTMLElement | null, location: Location) => {
   })
 
   useMarker({
-    map: mapRef.current,
+    map: mapRef,
     options: {
       position: {
         lng: location.lon,

@@ -1,21 +1,21 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Col } from 'antd'
 import { uploadImageService } from '@/services/media/images'
-import CafeDetail from '@/components/Reviews/AddReviewController/_components/CafeDetail'
 import { TAGS } from '@/components/Reviews/AddReviewController/constants'
 import { Button } from '@/components/ui/MF'
-import { Cafe } from '@/types'
-
-import Editor from './EditorMF'
 import { Instagram } from '@/icons'
 
+import CafeDetail from '../CafeDetail'
+import Editor from './EditorMF'
+import CafeLocation from '@/components/Reviews/AddReviewController/_components/CafeLocation'
+
 const ReviewsEditor = () => {
-  const [cafe, setCafe] = useState<Partial<Cafe>>({})
   const editorRef = React.useRef<any>(null)
 
   const onSave = async () => {
     console.log(await editorRef.current?.save())
   }
+
   return (
     <>
       <Col className='pl-20 py-5' span={15}>
@@ -36,7 +36,9 @@ const ReviewsEditor = () => {
           Load Post From Instagram
         </Button>
 
-        <CafeDetail tags={TAGS} cafe={cafe} setCafe={setCafe} />
+        <CafeLocation />
+
+        <CafeDetail tags={TAGS} />
       </Col>
     </>
   )

@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { MutableRefObject, useEffect } from 'react'
 import { loader } from '@/utils/gmap'
 
 interface MapProps {
-  element?: HTMLElement | null
+  element?: MutableRefObject<HTMLElement | null>
   options: google.maps.MapOptions
 }
 
@@ -14,9 +14,9 @@ const useMap = ({ element, options }: MapProps) => {
     const initMap = async () => {
       const { Map } = await loader.importLibrary('maps')
 
-      if (!element) return
+      if (!element?.current) return
 
-      mapRef.current = new Map(element, options)
+      mapRef.current = new Map(element.current, options)
 
       setLoading(false)
     }

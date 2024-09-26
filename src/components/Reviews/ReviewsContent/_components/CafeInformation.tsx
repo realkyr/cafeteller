@@ -17,7 +17,7 @@ interface CafeInformationProps {
 
 const CafeInformation = ({ cafeData }: CafeInformationProps) => {
   const ref = useRef<HTMLDivElement>(null)
-  useInitMap(ref.current, cafeData.location)
+  useInitMap(ref, cafeData.location)
 
   return (
     <>

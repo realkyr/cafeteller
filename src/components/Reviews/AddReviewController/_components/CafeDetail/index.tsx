@@ -1,7 +1,9 @@
 import React from 'react'
 import { Input, Select } from 'antd'
 import { Cafe } from '@/types'
-import { ContactInfo } from '@/components/Reviews/AddReviewController/_components/AddReview.style' // Replace with your actual imports
+import { ContactInfo } from '@/components/Reviews/AddReviewController/_components/AddReview.style'
+import { useAtom } from 'jotai'
+import { cafeAtom } from '@/components/Reviews/AddReviewController/atom/cafe'
 
 const { TextArea } = Input
 const { Option } = Select
@@ -13,12 +15,12 @@ type ContactItem = {
 }
 
 type Props = {
-  cafe: Partial<Cafe>
-  setCafe: (data: Partial<Cafe>) => void
   tags: { key: number; value: string }[]
 }
 
-const CafeDetail = ({ cafe, setCafe, tags }: Props) => {
+const CafeDetail = ({ tags }: Props) => {
+  const [cafe, setCafe] = useAtom(cafeAtom)
+
   const handleChange = (key: keyof Cafe, value: any) => {
     setCafe({ [key]: value })
   }

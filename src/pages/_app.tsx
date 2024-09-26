@@ -12,6 +12,8 @@ import { useEffect } from 'react'
 import { getAnalytics, logEvent } from '@firebase/analytics'
 import useInjectStylesFromManifest from '@/hooks/useInjectStylesFromManifest'
 
+import { Provider } from 'jotai'
+
 initialFirebaseApp()
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -32,13 +34,15 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const shouldHide = HIDE_NAVBAR_ROUTE.includes(router.pathname)
   return (
-    <SWRProvider>
-      <StyledComponentsRegistry>
-        {!shouldHide && <NavbarContainer />}
-        {shouldHide && <div id='navbar-portal' />}
-        <Component {...pageProps} />
-        {!shouldHide && <Footer />}
-      </StyledComponentsRegistry>
-    </SWRProvider>
+    <Provider>
+      <SWRProvider>
+        <StyledComponentsRegistry>
+          {!shouldHide && <NavbarContainer />}
+          {shouldHide && <div id='navbar-portal' />}
+          <Component {...pageProps} />
+          {!shouldHide && <Footer />}
+        </StyledComponentsRegistry>
+      </SWRProvider>
+    </Provider>
   )
 }
