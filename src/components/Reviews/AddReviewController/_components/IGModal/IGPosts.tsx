@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, Col, Row, Skeleton } from 'antd'
-import { LeftOutlined, PlusOutlined, RightOutlined } from '@ant-design/icons'
+import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import { IGPost, InstagramPostsResponse } from '@/components/Reviews/types'
 import axios from 'axios'
 import dynamic from 'next/dynamic'
@@ -12,11 +12,10 @@ const Card = dynamic(
 )
 
 interface IgPostsProps {
-  onSkip: () => void
   onSelect: (data: IGPost) => void
 }
 
-const IgPosts = ({ onSkip, onSelect }: IgPostsProps) => {
+const IgPosts = ({ onSelect }: IgPostsProps) => {
   const [path, setPath] = useState('')
   const { data: posts, isLoading } = useSWR(['getIGPosts', path], () =>
     path
@@ -32,15 +31,12 @@ const IgPosts = ({ onSkip, onSelect }: IgPostsProps) => {
   }
 
   return (
-    <>
+    <Row>
       <Col
         xs={24}
         md={22}
         style={{ display: 'flex', justifyContent: 'flex-end' }}
       >
-        <Button onClick={onSkip} icon={<PlusOutlined />}>
-          ข้ามขั้นตอนนี้
-        </Button>
         <Button
           disabled={!posts || !posts.paging.previous}
           onClick={() =>
@@ -54,7 +50,7 @@ const IgPosts = ({ onSkip, onSelect }: IgPostsProps) => {
           icon={<RightOutlined />}
         />
       </Col>
-      <Col xs={24} md={22}>
+      <Col span={24}>
         {isLoading || !posts ? (
           <Skeleton active paragraph={false} />
         ) : (
@@ -80,7 +76,7 @@ const IgPosts = ({ onSkip, onSelect }: IgPostsProps) => {
           </Row>
         )}
       </Col>
-    </>
+    </Row>
   )
 }
 

@@ -2,18 +2,28 @@ import React from 'react'
 import { Col } from 'antd'
 import { uploadImageService } from '@/services/media/images'
 import { TAGS } from '@/components/Reviews/AddReviewController/constants'
-import { Button } from '@/components/ui/MF'
-import { Instagram } from '@/icons'
 
 import CafeDetail from '../CafeDetail'
 import Editor from './EditorMF'
 import CafeLocation from '@/components/Reviews/AddReviewController/_components/CafeLocation'
+import IGModal from '@/components/Reviews/AddReviewController/_components/IGModal'
+import { IGPost } from '@/components/Reviews/types'
+import { convertIGToBlock } from '@/components/Reviews/AddReviewController/_components/IGModal/helper'
+import { Button } from '@/components/ui/MF'
 
 const ReviewsEditor = () => {
   const editorRef = React.useRef<any>(null)
 
   const onSave = async () => {
     console.log(await editorRef.current?.save())
+  }
+
+  const onLoadPostInstagram = async (data: IGPost) => {
+    const convertedData = await convertIGToBlock(data)
+
+    const editor = editorRef.current.getEditorRef()
+    console.log(convertedData)
+    editor.blocks.insertMany(convertedData.blocks)
   }
 
   return (
@@ -28,13 +38,17 @@ const ReviewsEditor = () => {
       </Col>
 
       <Col className='pr-8 py-5' span={9}>
-        <Button
-          onClick={() => {}}
-          className='bg-pink-600 hover:bg-pink-700 text-white inline-flex items-center my-2'
-        >
-          <Instagram className='mr-2' />
-          Load Post From Instagram
-        </Button>
+        <div className='flex items-center'>
+          <IGModal onSelect={onLoadPostInstagram} />
+
+          <Button
+            onClick={onSave}
+            type='primary'
+            className='inline-flex items-center mx-2'
+          >
+            Save
+          </Button>
+        </div>
 
         <CafeLocation />
 
