@@ -1,42 +1,11 @@
+import { Review } from '@/types/reviews'
+
+export * from './reviews'
+
 export interface Banner {
   date: string
   name: string
   url: string
-}
-
-export interface Review {
-  cafe: Cafe
-  createDate: string
-  id: string
-  review: ReviewBlog
-  updateDate: string
-}
-
-export interface ReviewBlog {
-  blocks: Block[]
-  time: number
-  version: string
-}
-
-export interface Block {
-  data: Data
-  type: string
-}
-
-export interface Data {
-  level?: number
-  text?: string
-  caption?: string
-  file?: File
-  stretched?: boolean
-  withBackground?: boolean
-  withBorder?: boolean
-}
-
-export interface File {
-  url: string
-  date?: string
-  name?: string
 }
 
 export interface Location {

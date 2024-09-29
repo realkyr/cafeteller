@@ -22,7 +22,7 @@ const CafeDetail = ({ tags }: Props) => {
   const [cafe, setCafe] = useAtom(cafeAtom)
 
   const handleChange = (key: keyof Cafe, value: any) => {
-    setCafe({ [key]: value })
+    setCafe((prev) => ({ ...prev, [key]: value }))
   }
 
   const contact: ContactItem[] = [

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 export const ContactInfo = styled.div`
   font-size: 1rem;
   border-top: 2px solid #d2c5b8;
+  border-bottom: 2px solid #d2c5b8;
   background-color: #f5f1eb;
   font-family: 'Maitree', serif;
   .ant-row {
@@ -19,8 +20,7 @@ export const ContactInfo = styled.div`
   }
   @media (min-width: 768px) {
     border: 2px solid #d2c5b8;
-    border-bottom: 0;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     font-size: 1.1rem;
     .ant-row {
       padding-top: 17px;
@@ -34,6 +34,5 @@ export const ContactInfo = styled.div`
   @media (min-width: 992px) {
     border: 2px solid #d2c5b8;
     margin-bottom: 20px;
-    border-bottom: 0;
   }
 `
