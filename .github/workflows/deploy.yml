@@ -111,4 +111,4 @@ jobs:
             docker pull 207567761428.dkr.ecr.ap-southeast-2.amazonaws.com/cafeteller/app:latest
             docker stop app || true
             docker rm app || true
-            docker run -d -p 80:80 --name app 207567761428.dkr.ecr.ap-southeast-2.amazonaws.com/cafeteller/app:latest
+            docker run -d -p 80:3000 --name app 207567761428.dkr.ecr.ap-southeast-2.amazonaws.com/cafeteller/app:latest
