@@ -106,6 +106,9 @@ jobs:
         with:
           instance_name: 'app'
           zone: 'us-central1-a'
-          project_id: 'cafeteller-dev'
           ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
-          command: 'echo Hello world!'
+          command: |
+            docker pull 207567761428.dkr.ecr.ap-southeast-2.amazonaws.com/cafeteller/app:latest
+            docker stop app || true
+            docker rm app || true
+            docker run -d -p 80:80 --name app 207567761428.dkr.ecr.ap-southeast-2.amazonaws.com/cafeteller/app:latest
