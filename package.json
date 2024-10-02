@@ -8,7 +8,7 @@
     "dev": "dotenvx run -f .env.dev -- next dev",
     "dev:prod": "dotenvx run -f .env.prod -- next dev",
     "build": "next build",
-    "start": "next start -p 8080"
+    "start": "next start -p 3000"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.8",

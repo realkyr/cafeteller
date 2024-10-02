@@ -1,0 +1,8 @@
+# Ignore node_modules except in production build stage
+node_modules
+yarn-error.log
+.env.local
+.env.development
+.env.test
+*.md
+.next/cache
