@@ -6,3 +6,5 @@ yarn-error.log
 .env.test
 *.md
 .next/cache
+.next
+.git

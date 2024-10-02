@@ -4,13 +4,13 @@ import StyledComponentsRegistry from '@/lib/StyleComponentRegistry'
 import { initialFirebaseApp } from '@/utils/firebase'
 
 import '../public/globals.css'
+
 import Footer from '@/components/ui/Footer'
 import NavbarContainer from '@/components/ui/NavbarContainer'
 import { useRouter } from 'next/router'
 import { HIDE_NAVBAR_ROUTE } from '@/utils/hideNavbarRoute'
 import { useEffect } from 'react'
 import { getAnalytics, logEvent } from '@firebase/analytics'
-import useInjectStylesFromManifest from '@/hooks/useInjectStylesFromManifest'
 
 import { Provider } from 'jotai'
 import LoadingOverlay from '@/components/ui/LoadingOverlay'
@@ -19,8 +19,6 @@ initialFirebaseApp()
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
-
-  useInjectStylesFromManifest()
 
   useEffect(() => {
     const analytics = getAnalytics()

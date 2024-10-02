@@ -2,6 +2,7 @@ import { NextFederationPlugin } from "@module-federation/nextjs-mf";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "standalone",
   compiler: {
     styledComponents: true,
   },
@@ -26,7 +27,7 @@ const nextConfig = {
 const initModuleMF = (name, url) =>  `promise new Promise(resolve => {
       const urlParams = new URLSearchParams(window.location.search)
       // This part depends on how you plan on hosting and versioning your federated modules
-      const remoteUrlWithVersion = '${url}' + '/assets/remoteEntry.js';
+      const remoteUrlWithVersion = '${url}' + '/assets/remoteEntry.js' + '?v=' + new Date().getTime()
       const script = document.createElement('script')
       script.src = remoteUrlWithVersion
       script.onload = () => {
