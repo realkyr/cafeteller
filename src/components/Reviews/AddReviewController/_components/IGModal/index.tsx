@@ -29,7 +29,12 @@ const IGModal = ({ onSelect }: IgModalProps) => {
         onCancel={() => setOpen(false)}
         onClose={() => setOpen(false)}
       >
-        <IGPosts onSelect={onSelect} />
+        <IGPosts
+          onSelect={(select) => {
+            onSelect(select)
+            setOpen(false)
+          }}
+        />
       </Modal>
     </>
   )

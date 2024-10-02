@@ -13,6 +13,7 @@ import { getAnalytics, logEvent } from '@firebase/analytics'
 import useInjectStylesFromManifest from '@/hooks/useInjectStylesFromManifest'
 
 import { Provider } from 'jotai'
+import LoadingOverlay from '@/components/ui/LoadingOverlay'
 
 initialFirebaseApp()
 
@@ -39,6 +40,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <StyledComponentsRegistry>
           {!shouldHide && <NavbarContainer />}
           {shouldHide && <div id='navbar-portal' />}
+          <LoadingOverlay />
           <Component {...pageProps} />
           {!shouldHide && <Footer />}
         </StyledComponentsRegistry>

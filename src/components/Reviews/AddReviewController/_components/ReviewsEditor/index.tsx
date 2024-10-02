@@ -22,9 +22,11 @@ import {
 } from '@firebase/firestore'
 import { useRouter } from 'next/router'
 import { ReviewsPayload } from '@/types/reviews'
+import useLoadingOverlay from '@/hooks/useLoadingOverlay'
 
 const ReviewsEditor = () => {
   const [cafe] = useAtom(cafeAtom)
+  const setLoading = useLoadingOverlay()
   const editorRef = React.useRef<any>(null)
   const router = useRouter()
   const { id } = router.query
@@ -62,6 +64,7 @@ const ReviewsEditor = () => {
       delete payload.createDate
     }
 
+    setLoading(true)
     await Promise.all([
       setDoc(reviewRef, payload, { merge: true }),
       setDoc(
@@ -76,14 +79,16 @@ const ReviewsEditor = () => {
 
     message.success('บันทึกสำเร็จ')
 
-    router.push(`/reviews/${reviewRef.id}`).then()
+    router.push(`/reviews/${reviewRef.id}`).then(() => setLoading(false))
   }
 
   const onLoadPostInstagram = async (data: IGPost) => {
+    setLoading(true)
     const convertedData = await convertIGToBlock(data)
 
     const editor = editorRef.current.getEditorRef()
     editor.blocks.insertMany(convertedData.blocks)
+    setLoading(false)
   }
 
   return (
