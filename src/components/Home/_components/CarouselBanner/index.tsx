@@ -21,7 +21,7 @@ const CarouselBanner = () => {
           className='inner-image'
           placeholderClassName='inner-image'
           style={{ objectFit: 'cover', width: '100%' }}
-          src='/assets/Images/COVER1.png'
+          src='/assets/Images/COVER1.jpg'
           preview={false}
         />
       </Banner>

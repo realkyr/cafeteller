@@ -105,7 +105,7 @@ export default function ReviewContent({ reviews }: ReviewDetailProps) {
         />
         <meta
           property='og:image'
-          content={banner.url || '/assets/Images/COVER1.png'}
+          content={banner.url || '/assets/Images/COVER1.jpg'}
         />
       </Head>
 
