@@ -108,6 +108,7 @@ jobs:
           zone: 'us-central1-a'
           ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
           command: |
+            aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 207567761428.dkr.ecr.ap-southeast-2.amazonaws.com
             docker pull 207567761428.dkr.ecr.ap-southeast-2.amazonaws.com/cafeteller/app:latest
             docker stop app || true
             docker rm app || true
