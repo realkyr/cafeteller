@@ -104,7 +104,7 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.GCE_PUBLIC_IP }}  # Store GCE public IP in GitHub Secrets
-          username: yora46 # Use the appropriate EC2 user (e.g., ubuntu or ec2-user)
+          username: ${{ secrets.SSH_USERNAME }} # Use the appropriate EC2 user (e.g., ubuntu or ec2-user)
           key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}  # Store private SSH key in GitHub Secrets
           port: 22
           script: |
