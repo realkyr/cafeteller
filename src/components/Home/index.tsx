@@ -31,6 +31,10 @@ function Home() {
 
 export default withMeta(Home, {
   title: 'Home',
-  description: 'Home page',
-  keywords: ['home', 'page']
+  description: 'Because good cafés deserve a shout out',
+  keywords: ['home', 'page', 'cafeteller'],
+  'og:title': 'Home',
+  'og:description': 'Because good cafés deserve a shout out',
+  'og:type': 'website',
+  'og:image': '/assets/Images/COVER1.jpg'
 })

@@ -16,7 +16,12 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head />
+        <Head>
+          <meta
+            property='fb:app_id'
+            content={process.env.NEXT_PUBLIC_FB_APP_ID}
+          />
+        </Head>
         <body>
           <Main />
           <NextScript />
