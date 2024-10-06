@@ -100,14 +100,14 @@ jobs:
         with:
           credentials_json: ${{ secrets.SERVICE_ACCOUNT_DEV }}
 
-      - name: Deploy to Cloud Compute (develop)
-        if: github.ref == 'refs/heads/develop'
-        uses: 'google-github-actions/ssh-compute@v1'
+      - name: Connect to GCE and deploy new image
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          instance_name: 'app'
-          zone: 'us-central1-a'
-          ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
-          command: |
+          host: ${{ secrets.GCE_PUBLIC_IP }}  # Store GCE public IP in GitHub Secrets
+          username: yora46 # Use the appropriate EC2 user (e.g., ubuntu or ec2-user)
+          key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}  # Store private SSH key in GitHub Secrets
+          port: 22
+          script: |
             aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 207567761428.dkr.ecr.ap-southeast-2.amazonaws.com
             docker pull 207567761428.dkr.ecr.ap-southeast-2.amazonaws.com/cafeteller/app:latest
             docker stop app || true
