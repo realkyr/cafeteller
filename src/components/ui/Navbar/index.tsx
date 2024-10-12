@@ -87,6 +87,11 @@ const Navbar: React.FC = ({ container }: NavbarProps) => {
     // if container is provided; check the scroll position of the container
     const offset = container?.current?.scrollTop || window.scrollY
 
+    console.log({
+      container,
+      offset
+    })
+
     if (offset > 200) {
       setScrolled(true)
     } else {
@@ -397,6 +402,7 @@ const Navbar: React.FC = ({ container }: NavbarProps) => {
         </Col>
       </Row>
 
+      {!navbarIsHiding && ScrolledNavbar}
       {navbarIsHiding && portal && createPortal(ScrolledNavbar, portal)}
     </>
   )

@@ -36,7 +36,6 @@ export const SocialButton = styled.div`
   justify-content: space-evenly;
   display: flex;
   align-items: center;
-  height: 80px;
   width: 100%;
   margin: 0px;
   padding: 0px;
