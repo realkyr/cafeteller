@@ -14,6 +14,8 @@ import { getAnalytics, logEvent } from '@firebase/analytics'
 
 import { Provider } from 'jotai'
 import LoadingOverlay from '@/components/ui/LoadingOverlay'
+import useRouteChange from '@/hooks/useRouteChange'
+import RouteLoading from '@/components/ui/RouteLoading'
 
 initialFirebaseApp()
 
@@ -38,6 +40,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <StyledComponentsRegistry>
           {!shouldHide && <NavbarContainer />}
           {shouldHide && <div id='navbar-portal' />}
+          <RouteLoading />
           <LoadingOverlay />
           <Component {...pageProps} />
           {!shouldHide && <Footer />}
