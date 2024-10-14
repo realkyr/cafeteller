@@ -61,7 +61,7 @@ const CarouselBanner = () => {
                 style={{ objectFit: 'cover' }}
                 src={item.banner.url}
                 preview={false}
-              ></Image>
+              />
             </Banner>
           </div>
         </Link>

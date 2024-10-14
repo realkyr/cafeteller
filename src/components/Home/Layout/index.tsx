@@ -120,7 +120,7 @@ const Layout = ({ header, footer, outerRef }: LayoutProps) => {
 
   return (
     <div
-      className='h-screen overflow-y-auto'
+      className='h-screen w-screen overflow-y-auto overflow-x-hidden'
       ref={(el) => {
         if (el) {
           containerRef.current = el
@@ -172,7 +172,7 @@ const Layout = ({ header, footer, outerRef }: LayoutProps) => {
                         className:
                           'text-2xl my-0 lg:my-4 lg:text-[1.8rem] worksans-font'
                       }}
-                      src={(review as Review).cafe.banner.url}
+                      src={(review as Review).cafe.banner?.url}
                       title={titleCutOff}
                       description={(review as Review).cafe.sublocality_level_1}
                     />

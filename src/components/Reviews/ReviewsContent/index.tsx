@@ -154,7 +154,7 @@ export default function ReviewContent({ reviews }: ReviewDetailProps) {
                 //   e.target.src = '/assets/Images/placeholder.png'
                 // }}
                 alt={reviews[id].cafe.name}
-                src={reviews[id].cafe.banner.url}
+                src={reviews[id].cafe.banner?.url}
                 fallback='/assets/Images/placeholder.png'
                 preview={false}
                 placeholder={

@@ -128,7 +128,7 @@ a {
     position: fixed;
     top: 0;
     background-color: rgb(253, 253, 253);
-    z-index: 1112;
+    z-index: 40;
     transform: translateY(-210px);
     transition-duration: .1s;
     text-align: center;

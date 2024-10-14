@@ -45,7 +45,7 @@ const RecentReview = () => {
                   description={r.cafe.sublocality_level_1}
                   key={r.id}
                   title={r.cafe.name}
-                  src={r.cafe.banner.url}
+                  src={r.cafe.banner?.url}
                   className='h-96 lg:h-[28rem]'
                 />
               </Link>

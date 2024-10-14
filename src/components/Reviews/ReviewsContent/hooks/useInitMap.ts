@@ -12,8 +12,8 @@ const useInitMap = (
     element: element,
     options: {
       center: {
-        lng: location.lon,
-        lat: location.lat
+        lng: location?.lon,
+        lat: location?.lat
       },
       zoom: 15,
       mapId: 'map'
@@ -24,8 +24,8 @@ const useInitMap = (
     map: mapRef,
     options: {
       position: {
-        lng: location.lon,
-        lat: location.lat
+        lng: location?.lon,
+        lat: location?.lat
       },
       title: 'Marker'
     }

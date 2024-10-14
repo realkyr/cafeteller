@@ -37,8 +37,8 @@ export const SocialButton = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
 `
 
 export const SocialBarBot = styled.div<{ img: string }>`
