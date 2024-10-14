@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { useRouter } from 'next/router'
-import { IGPost } from '@/components/Reviews/types'
-import IGPosts from '@/components/Reviews/AddReviewController/_components/IGModal/IGPosts'
 import ReviewsEditor from '@/components/Reviews/AddReviewController/_components/ReviewsEditor'
 import Head from 'next/head'
 import ProtectedRoute from '@/components/ProtectedRoute'
+import useFetchReview from '@/components/Reviews/AddReviewController/hooks/useFetchReview'
 
 let { Row, Typography, Col, Steps, Button, Result } = require('antd')
 const { Title } = Typography
@@ -15,18 +13,14 @@ Row = styled(Row)`
   font-family: Georgia;
 `
 
-const Link = styled.div`
-  width: 100%;
-  height: 250px;
-  padding: 25px;
-`
-
 const Wrapper = styled.div`
   min-height: 80vh;
   margin: 10px 0;
 `
 
 export default function Add() {
+  useFetchReview()
+
   return (
     <>
       <Head>

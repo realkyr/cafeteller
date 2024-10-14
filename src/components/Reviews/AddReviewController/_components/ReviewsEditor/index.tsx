@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Col, message } from 'antd'
 import { uploadImageService } from '@/services/media/images'
 import { TAGS } from '@/components/Reviews/AddReviewController/constants'
@@ -23,9 +23,11 @@ import {
 import { useRouter } from 'next/router'
 import { ReviewsPayload } from '@/types/reviews'
 import useLoadingOverlay from '@/hooks/useLoadingOverlay'
+import { reviewAtom } from '@/components/Reviews/AddReviewController/atom/review'
 
 const ReviewsEditor = () => {
   const [cafe] = useAtom(cafeAtom)
+  const [review] = useAtom(reviewAtom)
   const setLoading = useLoadingOverlay()
   const editorRef = React.useRef<any>(null)
   const router = useRouter()
@@ -90,6 +92,20 @@ const ReviewsEditor = () => {
     editor.blocks.insertMany(convertedData.blocks)
     setLoading(false)
   }
+
+  useEffect(() => {
+    if (review && editorRef.current) {
+      const editor = editorRef.current.getEditorRef()
+
+      if (!editor.blocks) return
+
+      // clear editor
+      editor.blocks.clear()
+      // insert
+      console.log(review.review?.blocks)
+      editor.blocks.insertMany(review.review?.blocks || [])
+    }
+  }, [review, editorRef.current])
 
   return (
     <>
