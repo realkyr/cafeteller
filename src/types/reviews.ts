@@ -7,6 +7,7 @@ export interface Review {
   id: string
   review: ReviewBlog
   updateDate: string
+  version?: 'v2'
 }
 
 export interface ReviewBlog {
@@ -41,4 +42,5 @@ export interface ReviewsPayload
   createDate?: FieldValue
   updateDate: FieldValue
   cafe: DocumentReference
+  version: 'v2'
 }

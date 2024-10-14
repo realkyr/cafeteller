@@ -65,7 +65,7 @@ export default function ReviewContent({ reviews }: ReviewDetailProps) {
   const id = _id as string
 
   const { content } = useGenerateContent({
-    cafetellerVersion: 'v1',
+    cafetellerVersion: reviews?.[id]?.version || 'v1',
     blocks: reviews?.[id] ? [...reviews[id].review.blocks] : []
   })
 

@@ -27,6 +27,10 @@ interface BlockData {
   file?: {
     url: string
   }
+  data?: {
+    src: any
+    captions: string
+  }[]
   caption?: string
 }
 
@@ -66,9 +70,13 @@ const useGenerateContent = ({
           consecImage = 0
           break
         case 'image':
-          const imageContent = generateImage(block, index, raw, consecImage)
-          raw = imageContent.raw
-          consecImage = imageContent.consecImage
+          if (cafetellerVersion === 'v1') {
+            const imageContent = generateImage(block, index, raw, consecImage)
+            raw = imageContent.raw
+            consecImage = imageContent.consecImage
+          } else {
+            generateImageV2(raw, block, index)
+          }
           break
         default:
           raw.push(<p key={index}>{block.data.text || ''}</p>)
@@ -77,6 +85,56 @@ const useGenerateContent = ({
     })
 
     return raw
+  }
+
+  const generateImageV2 = (
+    raw: React.ReactNode[],
+    block: Block,
+    index: number
+  ): void => {
+    const data = block.data.data
+
+    console.log({ data })
+
+    const imagesDiv = (
+      <div className={'image-container' + (data?.length || 0 > 1 ? '-2' : '')}>
+        {data?.map((image, i) => (
+          <>
+            <div key={i} className='content-wrap'>
+              <div className='image-container-img'>
+                <div className='caption-border'>
+                  <Image
+                    height={'100%'}
+                    width={'100%'}
+                    className='res-img'
+                    onError={(e) => {
+                      ;(e.target as HTMLImageElement).onerror = null
+                      ;(e.target as HTMLImageElement).src =
+                        '/assets/Images/placeholder.png'
+                    }}
+                    src={image.src.urls['@720'] || ''}
+                    fallback='/assets/Images/placeholder.png'
+                    preview={false}
+                  />
+                </div>
+              </div>
+
+              {image.captions && (
+                <div className='caption-wrap'>
+                  <div className='caption'>{image.captions}</div>
+                </div>
+              )}
+            </div>
+
+            {i < data.length - 1 && data?.length > 1 && (
+              <div className='divide-image'></div>
+            )}
+          </>
+        ))}
+      </div>
+    )
+
+    raw.push(imagesDiv)
   }
 
   const generateHeader = (block: Block, index: number): React.ReactNode[] => {

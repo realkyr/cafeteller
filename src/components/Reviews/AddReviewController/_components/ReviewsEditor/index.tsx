@@ -59,6 +59,7 @@ const ReviewsEditor = () => {
       cafe: cafeRef,
       createDate: serverTimestamp(),
       updateDate: serverTimestamp(),
+      version: 'v2',
       review
     }
 
