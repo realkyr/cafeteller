@@ -6,11 +6,33 @@ import Document, {
   NextScript,
   DocumentContext
 } from 'next/document'
+import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs'
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
+    const cache = createCache()
     const initialProps = await Document.getInitialProps(ctx)
-    return { ...initialProps }
+    const originalRenderPage = ctx.renderPage
+
+    ctx.renderPage = () =>
+      originalRenderPage({
+        enhanceApp: (App) => (props) => (
+          <StyleProvider cache={cache}>
+            <App {...props} />
+          </StyleProvider>
+        )
+      })
+
+    const style = extractStyle(cache, true)
+    return {
+      ...initialProps,
+      styles: (
+        <>
+          {initialProps.styles}
+          <style dangerouslySetInnerHTML={{ __html: style }} />
+        </>
+      )
+    }
   }
 
   render() {

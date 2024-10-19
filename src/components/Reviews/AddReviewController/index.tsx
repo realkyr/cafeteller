@@ -1,13 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import ReviewsEditor from '@/components/Reviews/AddReviewController/_components/ReviewsEditor'
 import Head from 'next/head'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import useFetchReview from '@/components/Reviews/AddReviewController/hooks/useFetchReview'
 
-let { Row, Typography, Col, Steps, Button, Result } = require('antd')
+let { Row, Typography, Col, Steps } = require('antd')
 const { Title } = Typography
-const { Step } = Steps
 
 Row = styled(Row)`
   font-family: Georgia;
