@@ -1,21 +1,27 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
-import { Space, Button, Row, Col, Image, Card } from 'antd'
+import { Space, Button, Row, Col, Image, Typography } from 'antd'
 import axios from '@/utils/axios'
 
-import useSimilarCafe from '@/hooks/useSimilarCafe'
 import Banner from '@/components/Reviews/components/Banner'
 import { Review } from '@/types'
 import useProfile from '@/hooks/useProfile'
 import { deleteDoc, doc, getFirestore } from '@firebase/firestore'
-import useGenerateContent from '@/components/Reviews/ReviewsContent/hooks/useGenerateContent'
-import useInitMap from '@/components/Reviews/ReviewsContent/hooks/useInitMap'
+
+const { Title } = Typography
 
 import dynamic from 'next/dynamic'
+import Mobile from '@/components/ui/Show/Mobile'
+import {
+  TitleBox,
+  TitlePattern
+} from '@/components/Reviews/ReviewsContent/content.style'
+import useGenerateContent from '@/components/Reviews/ReviewsContent/hooks/useGenerateContent'
+import Show from '@/components/ui/Show'
 
 const MoreLikeThis = dynamic(() => import('@/components/ui/MoreLikeThis'), {
   ssr: false
@@ -113,7 +119,7 @@ export default function ReviewContent({ reviews }: ReviewDetailProps) {
         <Row align='middle' justify='center'>
           <Col xs={24} xxl={18}>
             {isAdmin ? (
-              <Space size='small'>
+              <Space className='my-2' size='small'>
                 <Button
                   onClick={() => {
                     router.push('/reviews/edit/' + id)
@@ -169,9 +175,30 @@ export default function ReviewContent({ reviews }: ReviewDetailProps) {
                 }
               />
             </Banner>
+
             <Row justify='space-around'>
               <Col xs={24} md={19} lg={15} xxl={16}>
                 <Content>
+                  {/* Cafe's name and location section*/}
+                  <Show when={reviews?.[id]?.version === 'v2'}>
+                    <Title level={2} className='article-header'>
+                      {reviews[id].cafe.name}
+                    </Title>
+                    <TitleBox>
+                      <TitlePattern
+                        key={0}
+                        img={'/assets/Images/pattern4.jpg'}
+                      />
+                      <Title level={4} className='article-header'>
+                        {reviews[id].cafe.sublocality_level_1}
+                      </Title>
+                      <TitlePattern
+                        key={1}
+                        img={'/assets/Images/pattern4.jpg'}
+                      />
+                    </TitleBox>
+                  </Show>
+
                   {content}
 
                   <ForWork>

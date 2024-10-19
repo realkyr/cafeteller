@@ -9,6 +9,12 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}'
   ],
   theme: {
+    backgroundSize: {
+      auto: 'auto',
+      cover: 'cover',
+      contain: 'contain',
+      '100%': '100%'
+    },
     colors: {
       ...colors,
       primary: '#1e315c',

@@ -74,6 +74,7 @@ const ReviewsEditor = () => {
         cafeRef,
         {
           ...cafeData,
+          name_search: cafeData.name.toLowerCase(),
           reviews: reviewRef
         },
         { merge: true }

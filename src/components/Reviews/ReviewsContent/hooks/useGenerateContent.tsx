@@ -1,28 +1,16 @@
 import React from 'react'
 import { Image, Typography } from 'antd'
-import styled from 'styled-components'
+import {
+  TitleBox,
+  TitlePattern
+} from '@/components/Reviews/ReviewsContent/content.style'
 
 const { Title } = Typography
 
-const TitlePattern = styled.div<{ img: string }>`
-  border-bottom: 0;
-  height: 100px;
-  background-image: url(${(props) => props.img});
-  background-size: 100%;
-  width: 30%;
-  @media (min-width: 768px) {
-    display: none;
-  }
-`
-const TitleBox = styled.div`
-  display: flex;
-  height: 40px;
-  align-items: center;
-  place-content: space-between;
-  margin: 0 0 30px 0;
-`
+type Level = 1 | 2 | 3 | 4 | 5
 
 interface BlockData {
+  level?: number
   text?: string
   file?: {
     url: string
@@ -61,7 +49,7 @@ const useGenerateContent = ({
     blocks.forEach((block, index) => {
       switch (block.type) {
         case 'header':
-          const headerContent = generateHeader(block, index)
+          const headerContent = generateHeader(block, index, cafetellerVersion)
           raw = [...raw, ...headerContent]
           consecImage = 0
           break
@@ -75,7 +63,7 @@ const useGenerateContent = ({
             raw = imageContent.raw
             consecImage = imageContent.consecImage
           } else {
-            generateImageV2(raw, block, index)
+            generateImageV2(raw, block)
           }
           break
         default:
@@ -87,14 +75,8 @@ const useGenerateContent = ({
     return raw
   }
 
-  const generateImageV2 = (
-    raw: React.ReactNode[],
-    block: Block,
-    index: number
-  ): void => {
+  const generateImageV2 = (raw: React.ReactNode[], block: Block): void => {
     const data = block.data.data
-
-    console.log({ data })
 
     const imagesDiv = (
       <div className={'image-container' + (data?.length || 0 > 1 ? '-2' : '')}>
@@ -137,7 +119,16 @@ const useGenerateContent = ({
     raw.push(imagesDiv)
   }
 
-  const generateHeader = (block: Block, index: number): React.ReactNode[] => {
+  const generateHeader = (
+    block: Block,
+    index: number,
+    version?: string
+  ): React.ReactNode[] => {
+    if (version === 'v2')
+      return [
+        <Title level={block.data.level as Level}>{block.data.text}</Title>
+      ]
+
     const fullCafeName = block.data.text || ''
     const [cafeName, cafeArea] = fullCafeName.split('—')
     return [
