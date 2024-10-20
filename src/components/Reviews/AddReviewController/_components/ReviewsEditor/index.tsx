@@ -18,7 +18,8 @@ import {
   setDoc,
   getFirestore,
   serverTimestamp,
-  collection
+  collection,
+  increment
 } from '@firebase/firestore'
 import { useRouter } from 'next/router'
 import { ReviewsPayload } from '@/types/reviews'
@@ -33,6 +34,7 @@ const ReviewsEditor = () => {
   const router = useRouter()
   const { id } = router.query
 
+  const isCreate = !id
   const isUpdate = !!id
 
   const onSave = async () => {
@@ -78,7 +80,17 @@ const ReviewsEditor = () => {
           reviews: reviewRef
         },
         { merge: true }
-      )
+      ),
+      isCreate
+        ? setDoc(
+            doc(db, 'meta', 'reviews'),
+            {
+              // +1
+              amount: increment(1)
+            },
+            { merge: true }
+          )
+        : () => {}
     ])
 
     message.success('บันทึกสำเร็จ')

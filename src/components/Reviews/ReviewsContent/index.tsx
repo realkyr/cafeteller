@@ -10,7 +10,13 @@ import axios from '@/utils/axios'
 import Banner from '@/components/Reviews/components/Banner'
 import { Review } from '@/types'
 import useProfile from '@/hooks/useProfile'
-import { deleteDoc, doc, getFirestore } from '@firebase/firestore'
+import {
+  deleteDoc,
+  doc,
+  getFirestore,
+  increment,
+  setDoc
+} from '@firebase/firestore'
 
 const { Title } = Typography
 
@@ -141,6 +147,15 @@ export default function ReviewContent({ reviews }: ReviewDetailProps) {
 
                     await deleteDoc(reviewDocRef)
                     await deleteDoc(cafeDocRef)
+
+                    await setDoc(
+                      doc(db, 'meta', 'reviews'),
+                      {
+                        // +1
+                        amount: increment(-1)
+                      },
+                      { merge: true }
+                    )
 
                     router.push('/')
                   }}

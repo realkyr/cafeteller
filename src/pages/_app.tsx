@@ -8,7 +8,7 @@ import '../public/globals.css'
 import Footer from '@/components/ui/Footer'
 import NavbarContainer from '@/components/ui/NavbarContainer'
 import { useRouter } from 'next/router'
-import { HIDE_NAVBAR_ROUTE } from '@/utils/hideNavbarRoute'
+import { HIDE_FOOTER_ROUTE, HIDE_NAVBAR_ROUTE } from '@/utils/hideNavbarRoute'
 import { useEffect } from 'react'
 import { getAnalytics, logEvent } from '@firebase/analytics'
 
@@ -33,6 +33,7 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [])
 
   const shouldHide = HIDE_NAVBAR_ROUTE.includes(router.pathname)
+  const shouldHideFooter = HIDE_FOOTER_ROUTE.includes(router.pathname)
   return (
     <Provider>
       <SWRProvider>
@@ -42,7 +43,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <RouteLoading />
           <LoadingOverlay />
           <Component {...pageProps} />
-          {!shouldHide && <Footer />}
+          {!shouldHideFooter && <Footer />}
         </StyledComponentsRegistry>
       </SWRProvider>
     </Provider>

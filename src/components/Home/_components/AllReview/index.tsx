@@ -12,12 +12,10 @@ const AllReview = () => {
     <>
       <Pattern img={'/assets/Images/pattern2.jpg'}>
         <div>
-          <BgIcon1
-            img={'/assets/Images/graphic-element-homepage/Tag@1x.svg'}
-          ></BgIcon1>
+          <BgIcon1 img={'/assets/Images/graphic-element-homepage/Tag@1x.svg'} />
           <BgIcon2
             img={'/assets/Images/graphic-element-homepage/Hexagon@1x.svg'}
-          ></BgIcon2>
+          />
         </div>
       </Pattern>
 
