@@ -60,6 +60,7 @@ const ReviewsEditor = () => {
     const cafeRef = isUpdate
       ? doc(db, 'cafes', cafeID)
       : doc(collection(db, 'cafes'))
+
     const payload: ReviewsPayload = {
       cafe: cafeRef,
       createDate: serverTimestamp(),

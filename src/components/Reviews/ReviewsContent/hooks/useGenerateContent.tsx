@@ -78,7 +78,7 @@ const useGenerateContent = ({
     const imagesDiv = (
       <div className={'image-container' + (data?.length || 0 > 1 ? '-2' : '')}>
         {data?.map((image, i) => (
-          <>
+          image && <>
             <div key={i} className='content-wrap'>
               <div className='image-container-img'>
                 <div className='caption-border'>
