@@ -60,7 +60,7 @@ const CarouselBanner = () => {
               <Image
                 className='inner-image'
                 style={{ objectFit: 'cover' }}
-                src={item.banner.url}
+                src={item.banner?.url}
                 preview={false}
               />
             </Banner>
