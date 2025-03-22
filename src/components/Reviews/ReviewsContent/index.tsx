@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
@@ -9,15 +9,6 @@ import { instance_server } from '@/utils/axios'
 import Banner from '@/components/Reviews/components/Banner'
 import { Review } from '@/types'
 import useProfile from '@/hooks/useProfile'
-import {
-  deleteDoc,
-  doc,
-  getFirestore,
-  increment,
-  setDoc
-} from '@firebase/firestore'
-
-const { Title } = Typography
 
 import dynamic from 'next/dynamic'
 import {
@@ -29,6 +20,9 @@ import Show from '@/components/ui/Show'
 
 import { maitree } from '@/utils/font'
 import withMeta from '@/hoc/withMeta'
+import DeleteModal from '@/components/Reviews/ReviewsContent/_components/DeleteModal'
+
+const { Title } = Typography
 
 const MoreLikeThis = dynamic(() => import('@/components/ui/MoreLikeThis'), {
   ssr: false
@@ -47,6 +41,8 @@ export async function getServerSideProps(context: { params: { id: any } }) {
   const id = context.params.id
   try {
     const { data } = await instance_server.get(`/reviews/${id}`)
+
+    console.log({ data })
 
     // By returning { props: { posts } }, the Blog component
     // will receive `posts` as a prop at build time
@@ -74,6 +70,7 @@ interface ReviewDetailProps {
 
 function ReviewContent({ reviews }: ReviewDetailProps) {
   const router = useRouter()
+  const [deleteModal, setDeleteModal] = useState<boolean>(false)
 
   const { id: _id } = router.query
   const id = _id as string
@@ -87,6 +84,8 @@ function ReviewContent({ reviews }: ReviewDetailProps) {
 
   return (
     <>
+      <DeleteModal reviews={reviews} open={deleteModal} onClose={() => setDeleteModal(false)} />
+
       <Container>
         <Row align='middle' justify='center'>
           <Col xs={24} xxl={18}>
@@ -101,29 +100,7 @@ function ReviewContent({ reviews }: ReviewDetailProps) {
                 </Button>
                 <Button
                   onClick={async () => {
-                    const db = getFirestore()
-                    const router = useRouter()
-
-                    const reviewDocRef = doc(db, 'reviews', id)
-                    const cafeDocRef = doc(
-                      db,
-                      'cafes',
-                      reviews[id].cafe.id || ''
-                    )
-
-                    await deleteDoc(reviewDocRef)
-                    await deleteDoc(cafeDocRef)
-
-                    await setDoc(
-                      doc(db, 'meta', 'reviews'),
-                      {
-                        // +1
-                        amount: increment(-1)
-                      },
-                      { merge: true }
-                    )
-
-                    router.push('/')
+                    setDeleteModal(true)
                   }}
                   danger
                 >
